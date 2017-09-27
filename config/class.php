@@ -1,0 +1,12 @@
+<?php
+# 类的映射
+return [
+    # 缓存类
+    'Cache'=>\Service\Cache::class,
+    # 数据库类
+    'DB'=>\Service\DB::class,
+    # Hash
+    'Hash'=>\Service\Hash::class,
+    # 系统配置
+    'Config'=>\App\Model\Config::class,
+];
