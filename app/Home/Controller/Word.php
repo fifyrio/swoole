@@ -8,6 +8,14 @@ namespace App\Home\Controller;
  */
 class Word extends Base
 {
+    public function index()
+    {
+        $this -> display();
+    }
+    public function add()
+    {
+        $this -> display();
+    }
     public function detail()
     {
         $this -> display();
