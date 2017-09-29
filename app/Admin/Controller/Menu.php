@@ -41,7 +41,7 @@ class Menu extends Base
             dd($_POST);
         }else{
             # 获取一级导航
-            $this -> assign('nav_data',Menu::where(['pid'=>0]) -> get());
+            $this -> assign('nav_data',\App\Model\Menu::where(['pid'=>0]) -> get());
             # 分配图标数据
             $this -> assign('icon_data',$this -> icon_data);
             # 渲染模板
