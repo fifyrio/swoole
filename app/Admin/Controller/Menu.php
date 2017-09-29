@@ -24,7 +24,7 @@ class Menu extends Base
             # 从哪开始
             $start = $page_num * ($page-1);
             # 获取数据
-            if($data['list'] = \App\Model\Menu::skip($start) -> take($page_num) -> orderByRaw('concat(id,pid) DESC') -> get()){
+            if($data['list'] = \App\Model\Menu::skip($start) -> take($page_num) -> orderByRaw('concat(path,id),pid DESC') -> get()){
                 $data['list'] = $data['list'] -> toArray();
             }
             # 处理数据
