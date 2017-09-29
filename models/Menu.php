@@ -119,10 +119,10 @@ class Menu extends Model
         $insert['created_at'] = time();
         # 数据最后更新时间
         $insert['updated_at'] = $insert['created_at'];
-        if(self::insert($insert)){
-            return true;
-        }else{
-            throw new \Exception('添加导航失败');
+        try{
+            self::insert($insert);
+        }catch (\Itxiao6\Database\QueryException $exception){
+            throw new \Exception($exception -> getMessage());
         }
     }
 
