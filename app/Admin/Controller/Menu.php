@@ -36,7 +36,7 @@ class Menu extends Base
             # 获取一级导航
             if($data['pnav'] = \App\Model\Menu::where(['pid'=>0]) -> pluck('title','id')){
                 $data['pnav'] = $data['pnav'] -> toArray();
-            };
+            }
             # 设置根导航的名称
             $data['pnav'][0] = '根';
             # 获取总数量
