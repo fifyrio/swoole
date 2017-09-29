@@ -134,7 +134,10 @@
                     var id = $(this).attr('data-id');
                     console.log(id);
                 });
-
+                // 绑定搜索按钮组件
+                $('#search').on('click', function() {
+                    parent.layer.alert('你点击了搜索按钮')
+                });
             },
         });
 
