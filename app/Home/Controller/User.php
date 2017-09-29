@@ -23,4 +23,14 @@ class User extends Base
     {
         $this -> display();
     }
+    # 基本设置
+    public function set()
+    {
+        $this -> display();
+    }
+    # 我的消息
+    public function message()
+    {
+        $this -> display();
+    }
 }
