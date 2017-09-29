@@ -13,6 +13,11 @@ class User extends Base
     {
         $this -> display();
     }
+    # 我的帖子
+    public function index()
+    {
+        $this -> display();
+    }
     # 用户注册
     public function reg()
     {
