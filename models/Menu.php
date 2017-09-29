@@ -99,6 +99,12 @@ class Menu extends Model
         }else{
             throw new \Exception('所属导航无效');
         }
+        # 获取path
+        if($insert['pid']==0){
+            $insert['path'] = '0,';
+        }else{
+            $insert['path'] = self::where(['id'=>$insert['pid']]) -> value('path').$insert['pid'].',';
+        }
         # 导航链接
         if(isset($data['href']) && $data['href']!=''){
             $insert['href'] = $data['href'];
