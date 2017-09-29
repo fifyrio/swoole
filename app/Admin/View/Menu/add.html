@@ -67,7 +67,7 @@
                 <select name="icon" lay-filter="icon" lay-verify="icon">
                     @foreach($icon_data as $key=>$item)
                     <option value="{{$item}}">
-                        <i class="layui-icon">{{$item}}</i>
+                        <i class="layui-icon" data-icon="{{$item}}">{{$item}}</i>
                         {{$key}}
                     </option>
                     @endforeach
