@@ -75,9 +75,25 @@ class Base extends Controller{
         # 提示完成
         $this -> success('清空缓存完成');
     }
+
+    /**
+     * 后台消息页面
+     * @param $message
+     * @param string $href
+     */
     public function message($message,$href='history.go(-1);')
     {
-        exit('<script type="text/javascript">alert(\''.$message.'\');'.($href=='history.go(-1);')?$href:'window.location="'.$href.'";</script>');
+        if($href=='history.go(-1);'){
+            exit('<script type="text/javascript">
+                    alert(\''.$message.'\');
+                    '.$href.'
+                  </script>');
+        }else{
+            exit('<script type="text/javascript">
+                    alert(\''.$message.'\');
+                    window.location="'.$href.'";
+                  </script>');
+        }
     }
     protected $icon_data = [
         '首页'=>'&#xe68e;',
