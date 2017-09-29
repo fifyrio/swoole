@@ -9,7 +9,6 @@ use Service\Exception;
  */
 class Menu extends Base
 {
-    public function test(){$this -> display();}
     # 导航列表
     public function index()
     {
@@ -25,8 +24,12 @@ class Menu extends Base
             # 从哪开始
             $start = $page_num * ($page-1);
             # 获取数据
-            if($data['list'] = \App\Model\Menu::skip($start) -> take($page_num) -> orderBy('sort','DESC') -> orderBy('id','DESC') -> get()){
+            if($data['list'] = \App\Model\Menu::skip($start) -> take($page_num) -> orderRaw('concat(id,pid) DESC') -> get()){
                 $data['list'] = $data['list'] -> toArray();
+            }
+            # 处理数据
+            foreach ($data['list'] as $key=>$item){
+
             }
             # 获取一级导航
             if($data['pnav'] = \App\Model\Menu::where(['pid'=>0]) -> pluck('title','id')){
