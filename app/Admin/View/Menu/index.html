@@ -122,13 +122,17 @@
                     });
                 });
 
-                //绑定所有编辑按钮事件
-                $('#content').children('tr').each(function() {
-                    var $that = $(this);
-                    $that.children('td:last-child').children('a[data-opt=edit]').on('click', function() {
-//                        layer.msg($(this).data('name'));
-                    });
-
+                // 绑定编辑按钮事件
+                $('.btn-edit').on('click',function(){
+                    // 获取数据ID
+                    var id = $(this).attr('data-id');
+                    console.log(id);
+                });
+                // 绑定删除按钮事件
+                $('.btn-delete').on('click',function(){
+                    // 获取数据ID
+                    var id = $(this).attr('data-id');
+                    console.log(id);
                 });
 
             },
@@ -141,18 +145,7 @@
             var index = layer.tips('只想提示地精准些', that, { tips: [1, 'white'] });
             $('#layui-layer' + index).children('div.layui-layer-content').css('color', '#000000');
         });
-        // 绑定编辑按钮事件
-        $('.btn-edit').on('click',function(){
-            // 获取数据ID
-            var id = $(this).attr('data-id');
-            console.log(id);
-        });
-        // 绑定删除按钮事件
-        $('.btn-delete').on('click',function(){
-            // 获取数据ID
-            var id = $(this).attr('data-id');
-            console.log(id);
-        });
+
     });
 </script>
 </body>
