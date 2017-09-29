@@ -23,4 +23,9 @@ class Word extends Base
     {
         $this -> display();
     }
+    # 编辑文章
+    public function edit()
+    {
+        $this -> display();
+    }
 }
