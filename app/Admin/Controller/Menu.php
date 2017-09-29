@@ -83,7 +83,7 @@ class Menu extends Base
         if(\App\Model\Menu::where(['pid'=>$_GET['id']]) -> first()){
             $this -> message('次导航下面还有子级导航不能直接删除');
         }
-        if(\App\Model\Menu::delete($_GET['id'])){
+        if(\App\Model\Menu::deleted($_GET['id'])){
             $this -> message('删除成功');
         }else{
             $this -> message('删除失败');
