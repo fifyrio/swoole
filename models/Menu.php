@@ -93,7 +93,8 @@ class Menu extends Model
             throw new \Exception('无效的图标');
         }
         # 所属导航是否有效
-        if(isset($data['pid']) && $data['pid']!='' && self::where(['id'=>$data['pid']]) -> first()){
+        if((isset($data['pid']) && $data['pid']!='' && self::where(['id'=>$data['pid']]) -> first()) ||
+            $data['pid']==0){
             $insert['pid'] = $data['pid'];
         }else{
             throw new \Exception('所属导航无效');
