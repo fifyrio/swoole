@@ -42,9 +42,9 @@ class Menu extends Base
         if(IS_POST){
             try{
                 \App\Model\Menu::add_data($_POST);
-                $this -> ajaxReturn(['status'=>1,'message'=>'添加成功']);
+                $this -> success('添加成功');
             }catch (\Exception $exception){
-                $this -> ajaxReturn(['status'=>2,'message'=>$exception -> getMessage()]);
+                $this -> success($exception -> getMessage());
             }
         }else{
             # 获取一级导航
