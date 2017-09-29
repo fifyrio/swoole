@@ -66,6 +66,8 @@ class Menu extends Model
         if(count($data)==0){
             throw new \Exception('数据不能为空');
         }
+        # 类型过滤
+        $data['sort'] = (Int) $data['sort'];
         # 判断排序位是否有效
         if(isset($data['sort']) && $data['sort']!=''){
             $insert['sort'] = $data + 0;
