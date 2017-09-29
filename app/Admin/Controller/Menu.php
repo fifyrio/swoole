@@ -42,9 +42,9 @@ class Menu extends Base
         if(IS_POST){
             try{
                 \App\Model\Menu::add_data($_POST);
-                $this -> success('添加成功');
+                $this -> message('添加成功');
             }catch (\Exception $exception){
-                $this -> success($exception -> getMessage());
+                $this -> message($exception -> getMessage());
             }
         }else{
             # 获取一级导航
@@ -69,12 +69,12 @@ class Menu extends Base
     {
         # 判断是否存在下级
         if(\App\Model\Menu::where(['pid'=>$_GET['id']]) -> first()){
-            $this -> error('次导航下面还有子级导航不能直接删除');
+            $this -> message('次导航下面还有子级导航不能直接删除');
         }
         if(\App\Model\Menu::delete($_GET['id'])){
-            $this -> success('删除成功');
+            $this -> message('删除成功');
         }else{
-            $this -> error('删除失败');
+            $this -> message('删除失败');
         }
     }
 }
