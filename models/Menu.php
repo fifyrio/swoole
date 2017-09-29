@@ -70,7 +70,7 @@ class Menu extends Model
         $data['sort'] = (Int) $data['sort'];
         # 判断排序位是否有效
         if(isset($data['sort']) && $data['sort']!=''){
-            $insert['sort'] = $data + 0;
+            $insert['sort'] = $data['sort'] + 0;
         }else{
             throw new \Exception('排序位无效');
         }
