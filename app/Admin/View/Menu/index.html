@@ -69,8 +69,8 @@
         <td>
             <!--<a href="/detail-1" target="_blank" class="layui-btn layui-btn-normal layui-btn-mini">预览</a>-->
             <div class="layui-btn-group">
-                <a data-id="@{{item.id}}" href="javascript:;" data-name="@{{ item.id }}" data-opt="edit" class="layui-btn layui-btn-mini">编辑</a>
-                <a data-id="@{{item.id}}" href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini">删除</a>
+                <a data-id="@{{item.id}}" href="javascript:;" data-name="@{{ item.id }}" data-opt="edit" class="layui-btn layui-btn-mini btn-edit">编辑</a>
+                <a data-id="@{{item.id}}" href="javascript:;" data-id="1" data-opt="del" class="layui-btn layui-btn-danger layui-btn-mini btn-delete">删除</a>
             </div>
         </td>
     </tr>
@@ -141,7 +141,18 @@
             var index = layer.tips('只想提示地精准些', that, { tips: [1, 'white'] });
             $('#layui-layer' + index).children('div.layui-layer-content').css('color', '#000000');
         });
-        console.log($);
+        // 绑定编辑按钮事件
+        $('.btn-edit').on('click',function(){
+            // 获取数据ID
+            var id = $(this).attr('data-id');
+            console.log(id);
+        });
+        // 绑定删除按钮事件
+        $('.btn-delete').on('click',function(){
+            // 获取数据ID
+            var id = $(this).attr('data-id');
+            console.log(id);
+        });
     });
 </script>
 </body>
