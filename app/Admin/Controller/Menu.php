@@ -30,7 +30,7 @@ class Menu extends Base
             # 处理数据
             foreach ($data['list'] as $key=>$item){
                 if($item['pid'] != 0){
-                    $data['list'][$key]['title'] = '|-->'.$item['title'];
+                    $data['list'][$key]['title'] = '|--'.$item['title'];
                 }
             }
             # 获取一级导航
