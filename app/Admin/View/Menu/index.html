@@ -126,7 +126,7 @@
                 $('.btn-edit').on('click',function(){
                     // 获取数据ID
                     var id = $(this).attr('data-id');
-                    console.log(id);
+                    // 打开修改页面
                     layer.open({
                         type: 2,
                         title: '修改导航',
@@ -139,16 +139,10 @@
 //                      time: 2000,
                         anim: 2,
                         content: ['/Menu/edit.html?id='+id, 'no'], //iframe的url，no代表不显示滚动条
-                        end: function () { //此处用于演示
-//                            layer.open({
-//                                type: 2,
-//                                title: '很多时候，我们想最大化看，比如像这个页面。',
-//                                shadeClose: true,
-//                                shade: false,
-//                                maxmin: true, //开启最大化最小化按钮
-//                                area: ['893px', '600px'],
-//                                content: '//fly.layui.com/'
-//                            });
+                        end: function () {
+                            // 刷新当前页面
+                            window.location.reload();
+                            //此处用于演示
                         }
                     });
                 });
@@ -156,7 +150,16 @@
                 $('.btn-delete').on('click',function(){
                     // 获取数据ID
                     var id = $(this).attr('data-id');
-                    console.log(id);
+                    // 请求删除接口
+                    $.get('/Menu/delete.html?id'+id,function(data){
+                        if(data.status==1){
+                            layer.msg('删除成功');
+                            // 刷新当前页面
+                            window.location.reload();
+                        }else{
+                            layer.msg('删除失败');
+                        }
+                    })
                 });
                 // 绑定搜索按钮组件
                 $('#search').on('click', function() {
