@@ -1,6 +1,7 @@
 <?php
 namespace App\Model;
 use Kernel\Model;
+use Service\Exception;
 
 /**
  * 配置模型
@@ -49,6 +50,71 @@ class Menu extends Model
         return $this -> hasMany(self::class,'pid','id')
 //            -> remember(3600*24)
             ;
+    }
+
+    /**
+     * 添加导航
+     * @param array $data
+     * @return bool
+     * @throws \Exception
+     */
+    public static function add_data($data = [])
+    {
+        # 定义要插入的数据
+        $insert = [];
+        # 判断数组是否为空
+        if(count($data)==0){
+            throw new \Exception('数据不能为空');
+        }
+        # 判断排序位是否有效
+        if(isset($data['sort']) && $data['sort']!=''){
+            $insert['sort'] = $data + 0;
+        }else{
+            throw new \Exception('排序位无效');
+        }
+        # 判断导航名称是否有效
+        if(isset($data['title']) && $data['title']!=''){
+            $insert['title'] = $data['title'];
+        }else{
+            throw new \Exception('无效的导航名称');
+        }
+        # 控制器名称
+        if(isset($data['controller']) && $data['controller']!=''){
+            $insert['controller'] = $data['controller'];
+        }else{
+            throw new \Exception('无效的控制器名称');
+        }
+        # 图标
+        if(isset($data['icon']) && $data['icon']!=''){
+            $insert['icon'] = $data['icon'];
+        }else{
+            throw new \Exception('无效的图标');
+        }
+        # 所属导航是否有效
+        if(isset($data['pid']) && $data['pid']!='' && self::where(['id'=>$data['pid']]) -> first()){
+            $insert['pid'] = $data['pid'];
+        }else{
+            throw new \Exception('所属导航无效');
+        }
+        # 导航链接
+        if(isset($data['href']) && $data['href']!=''){
+            $insert['href'] = $data['href'];
+        }else if($data['pid']==0){
+            if(isset($data['href'])){
+                unset($data['href']);
+            }
+        }else if($data['pid']!=0){
+            $insert['href'] = '/'.$data['controller'].'/'.$data['action'].'.html';
+        }
+        # 数据创建时间
+        $insert['created_at'] = time();
+        # 数据最后更新时间
+        $insert['updated_at'] = $insert['created_at'];
+        if(self::insert($insert)){
+            return true;
+        }else{
+            throw new \Exception('添加导航失败');
+        }
     }
 
 }

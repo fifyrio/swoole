@@ -1,5 +1,7 @@
 <?php
 namespace App\Admin\Controller;
+use Service\Exception;
+
 /**
  * 导航管理
  * Class Menu
@@ -38,7 +40,12 @@ class Menu extends Base
     public function add()
     {
         if(IS_POST){
-            dd($_POST);
+            try{
+                \App\Model\Menu::add_data($_POST);
+                $this -> ajaxReturn(['status'=>1,'message'=>'添加成功']);
+            }catch (\Exception $exception){
+                $this -> ajaxReturn(['status'=>2,'message'=>$exception -> getMessage()]);
+            }
         }else{
             # 获取一级导航
             $this -> assign('nav_data',\App\Model\Menu::where(['pid'=>0]) -> get());
