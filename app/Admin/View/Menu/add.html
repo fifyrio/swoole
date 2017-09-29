@@ -65,9 +65,8 @@
             <label class="layui-form-label">图标</label>
             <div class="layui-input-block">
                 <select name="icon" lay-filter="icon" lay-verify="icon">
-                    <option value="0">根</option>
                     @foreach($icon_data as $key=>$item)
-                    <option value="{{$key}}">
+                    <option value="{{$item}}">
                         <i class="layui-icon">{{$item}}</i>
                         {{$key}}
                     </option>
