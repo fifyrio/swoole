@@ -83,14 +83,14 @@
     layui.config({
         base: '/assets/js/'
     });
-
-    layui.use(['paging', 'form'], function() {
+    var layer;
+    layui.use(['layer','paging', 'form'], function() {
         var $ = layui.jquery,
             paging = layui.paging(),
             layerTips = parent.layer === undefined ? layui.layer : parent.layer, //获取父窗口的layer对象
-            layer = layui.layer, //获取当前窗口的layer对象
+             //获取当前窗口的layer对象
             form = layui.form();
-
+        layer = layui.layer;
         paging.init({
             openWait: true,
             url: '/Menu/index.html', //地址
