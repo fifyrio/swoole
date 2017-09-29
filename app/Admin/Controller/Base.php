@@ -77,7 +77,7 @@ class Base extends Controller{
     }
     public function message($message,$href='history.go(-1);')
     {
-        exit('<script>alert(\''.$message.'\');'.($href=='history.go(-1);')?$href:'window.location="'.$href.'"'.'</script>');
+        exit('<script type="text/javascript">alert(\''.$message.'\');'.($href=='history.go(-1);')?$href:'window.location="'.$href.'";</script>');
     }
     protected $icon_data = [
         '首页'=>'&#xe68e;',
