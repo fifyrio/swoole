@@ -129,12 +129,14 @@
                     console.log(id);
                     layer.open({
                         type: 2,
-                        title: false,
-                        closeBtn: 0, //不显示关闭按钮
+                        title: '修改导航',
+                        closeBtn: true, //不显示关闭按钮
                         shade: [0],
-                        area: ['340px', '215px'],
-                        offset: 'rb', //右下角弹出
-                        time: 2000, //2秒后自动关闭
+//                        area: ['340px', '215px'],
+                        //右下角弹出
+//                        offset: 'rb',
+//                        2秒后自动关闭
+//                      time: 2000,
                         anim: 2,
                         content: ['/Index/main.html', 'no'], //iframe的url，no代表不显示滚动条
                         end: function () { //此处用于演示
