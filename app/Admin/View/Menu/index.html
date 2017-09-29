@@ -143,14 +143,6 @@
         });
         $('.layui-btn-group .layui-btn').on('click',function(){
             console.log($);
-            layer.config({
-                base: '/assets/js/'
-            });
-            var id = $(this).attr('data-id');
-            layer.open({
-                content:'/Menu/edit.html?id='+id,
-
-            });
         });
     });
 </script>
