@@ -142,6 +142,9 @@
             $('#layui-layer' + index).children('div.layui-layer-content').css('color', '#000000');
         });
         $('.layui-btn-group .layui-btn').on('click',function(){
+            layer.config({
+                base: '/assets/js/'
+            });
             var id = $(this).attr('data-id');
             layer.open({
                 content:'/Menu/edit.html?id='+id,
