@@ -9,6 +9,7 @@ use Service\Exception;
  */
 class Menu extends Base
 {
+    public function test(){$this -> display();}
     # 导航列表
     public function index()
     {
