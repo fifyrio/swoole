@@ -183,8 +183,6 @@ class User extends Model
                 }else{
                     throw new \Exception('旧密码不正确');
                 }
-                # 设置用户密码
-
                 break;
             case 'bind':
                 # 账号绑定
