@@ -36,6 +36,12 @@ class User extends Base
             $this -> display();
         }
     }
+    # 退出登录
+    public function logout()
+    {
+        $_SESSION['home'] = null;
+        redirect('/User/login.html');
+    }
     # 我的帖子
     public function index()
     {
