@@ -68,7 +68,7 @@
             <div class="layui-form-item">
               <label for="L_username" class="layui-form-label">昵称</label>
               <div class="layui-input-inline">
-                <input type="text" id="L_username" name="nickname" required lay-verify="nickname" autocomplete="off" value="" class="layui-input">
+                <input type="text" id="L_username" name="nickname" required lay-verify="nickname" autocomplete="off" value="{{$_SESSION['home']['user']['nickname']}}" class="layui-input">
               </div>
               <div class="layui-inline">
                 <div class="layui-input-inline">

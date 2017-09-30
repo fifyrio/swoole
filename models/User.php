@@ -103,7 +103,6 @@ class User extends Model
                     # 设置email
                     $info['email'] = $data['email'];
                 }
-                dd(self::where(['id'=>$_SESSION['home']['user']['id']]) -> value('nickname'));
                 # 判断昵称是否有效
                 if(isset($data['nickname']) &&
                     $data['nickname']!='' &&
