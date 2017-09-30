@@ -1,6 +1,7 @@
 <?php
 namespace App\Model;
 use Kernel\Model;
+use Service\Hash;
 
 /**
  * 用户模型
@@ -23,22 +24,30 @@ class User extends Model
         if(count($data)==0){
             throw new \Exception('数据不能为空');
         }
-        $data['email'] = '123456';
-        dd(preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/",$data['email']));
         # 邮箱
-        if(isset($data['email']) && $data['email']!='' && preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/",$data['email'])){
+        if(isset($data['email']) &&
+            $data['email']!='' &&
+            preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/",$data['email']) != 0){
             $insert['email'] = $data['email'];
         }else{
             throw new \Exception('无效的邮箱');
         }
-        # 邮箱
+        # 用户名
         if(isset($data['nickname']) && $data['nickname']!=''){
             $insert['nickname'] = $data['nickname'];
         }else{
-            throw new \Exception('无效的图标');
+            throw new \Exception('无效的昵称');
         }
-
-
+        # 两次密码验证
+        if($data['password'] != $data['repassword']){
+            throw new \Exception('两次输入的密码不一样');
+        }
+        # 密码
+        if(isset($data['password']) && $data['password']!=''){
+            $insert['password'] = Hash::make($data['password']);
+        }else{
+            throw new \Exception('无效的密码');
+        }
         # 数据创建时间
         $insert['created_at'] = time();
         # 数据最后更新时间
