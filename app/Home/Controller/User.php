@@ -70,7 +70,20 @@ class User extends Base
     # 基本设置
     public function set()
     {
-        $this -> display();
+        if(IS_POST){
+            try{
+                # 修改资料
+                \App\Model\User::set_info($_POST,function($user){
+                    $_SESSION['home']['user'] = $user -> toArray();
+                });
+                $this -> ajaxReturn(['status'=>0,'msg'=>'修改成功']);
+            }catch (\Exception $exception){
+                $this -> ajaxReturn(['status'=>1,'msg'=>$exception -> getMessage()]);
+            }
+        }else{
+            # 渲染模板
+            $this -> display();
+        }
     }
     # 我的消息
     public function message()

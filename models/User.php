@@ -84,4 +84,71 @@ class User extends Model
             throw new \Exception('登录失败');
         }
     }
+
+    /**
+     * @param array $data
+     * @param \Closure $fun
+     * @throws \Exception
+     */
+    public function set_info($data = [],$fun){
+        switch ($data['action']){
+            case 'info':
+                # 判断邮箱是否有效
+                $preg_str = "/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/";
+                if(isset($data['email']) &&
+                    $data['email']!='' &&
+                    preg_match($preg_str,$data['email']) != 0 &&
+                    self::where(['id'=>$_SESSION['home']['user']['id']]) -> value('email')!=$data['email']
+                ){
+                    # 设置email
+                    $info['email'] = $data['email'];
+                }
+                # 判断昵称是否有效
+                if(isset($data['nickname']) &&
+                    $data['nickname']!='' &&
+                    self::where(['id'=>$_SESSION['home']['user']['id']]) -> value('nickname') != $data['nickname']
+                ){
+                    $info['nickname'] = $data['nickname'];
+                }
+                # 判断城市是否有效
+                if(isset($data['city']) &&
+                    $data['city']!='' &&
+                    self::where(['id'=>$_SESSION['home']['user']['id']]) -> value('city') != $data['city']
+                ){
+                    $info['city'] = $data['city'];
+                }
+                # 判断签名是否有效
+                if(isset($data['sign']) &&
+                    $data['sign']!='' &&
+                    self::where(['id'=>$_SESSION['home']['user']['id']]) -> value('sign_name') != $data['sign']
+                ){
+                    $info['sign_name'] = $data['sign'];
+                }
+                # 判断是否存在要修改的内容
+                if(count($info) == 0){
+                    throw new \Exception('没有要修改的内容');
+                }
+                try{
+                    # 修改
+                    self::where(['id'=>$_SESSION['home']['user']['id']]) -> update($info);
+                    # 回调
+                    $fun(self::where(['id'=>$_SESSION['home']['user']['id']]) -> first());
+                }catch (\Itxiao6\Database\QueryException $exception){
+                    throw new \Exception($exception -> getMessage());
+                }
+                # 设置用户信息
+                break;
+            case 'headimg':
+                # 设置用户头像
+                break;
+            case 'pass':
+                # 设置用户密码
+                break;
+            case 'bind':
+                # 账号绑定
+                break;
+            default:
+                throw new \Exception('找不到指定操作');
+        }
+    }
 }
