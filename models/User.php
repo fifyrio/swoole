@@ -23,6 +23,7 @@ class User extends Model
         if(count($data)==0){
             throw new \Exception('数据不能为空');
         }
+        $data['email'] = '123456';
         dd(preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/",$data['email']));
         # 邮箱
         if(isset($data['email']) && $data['email']!='' && preg_match("/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/",$data['email'])){
