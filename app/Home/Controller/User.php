@@ -1,5 +1,6 @@
 <?php
 namespace App\Home\Controller;
+use Service\Verify;
 
 /**
  * 用户操作类
@@ -22,6 +23,12 @@ class User extends Base
     public function reg()
     {
         if(IS_POST){
+            # 验证码验证
+            $verify = new Verify;
+            if(!$verify -> check($_POST['vcode'])){
+                $this -> ajaxReturn(['status'=>2,'msg'=>'验证码错误']);
+            }
+            # 添加用户数据
             try{
                 \App\Model\User::add_user($_POST);
                 $this -> ajaxReturn(['status'=>1,'msg'=>'注册成功']);
