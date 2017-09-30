@@ -109,8 +109,13 @@ class User extends Base
     # 上传头像
     public function upload()
     {
+        # 上传结果消息(错误时用到)
+        $data['msg'] = '上传文件失败';
+        # 状态 0 = 成功
         $data['status'] = 0;
+        # 上传成功的图片url
         $data['url'] = '/images/avatar/default.png';
+        # 返回信息
         $this -> ajaxReturn($data);
     }
 }
