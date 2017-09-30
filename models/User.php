@@ -15,7 +15,7 @@ class User extends Model
      */
     protected $table = 'users';
 
-    public function add_user($data = [])
+    public static function add_user($data = [])
     {
         # 定义要插入的数据
         $insert = [];
