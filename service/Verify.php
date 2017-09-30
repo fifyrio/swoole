@@ -80,6 +80,10 @@ class Verify {
      */
     public function check($code, $id = 0)
     {
+        var_dump($_SESSION);
+        var_dump($_SESSION['verify_code'][$id]);
+        var_dump($code);
+        die();
         if(strtoupper($_SESSION['verify_code'][$id]) ==  strtoupper($code)){
             return true;
         }else{
