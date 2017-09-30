@@ -58,7 +58,7 @@
                   <input type="text" id="L_vercode" name="vcode" required lay-verify="vcode" placeholder="请填写图形验证码" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid">
-                  <img style="width: 150px;" src="/Auth/get_code.html?id=reg" alt="验证码">
+                  <img onclick="this.src='/Auth/get_code.html?id=reg&time='+Math.random();" style="width: 150px;" src="/Auth/get_code.html?id=reg" alt="验证码">
                 </div>
               </div>
               <div class="layui-form-item">
