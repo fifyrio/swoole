@@ -1,5 +1,6 @@
 <?php
 namespace App\Home\Controller;
+use Service\Exception;
 use Service\Verify;
 
 /**
@@ -12,7 +13,24 @@ class User extends Base
     # 用户登录
     public function login()
     {
-        $this -> display();
+        if(IS_POST){
+            try{
+                # 验证码验证
+                $verify = new Verify;
+                if(!$verify -> check($_POST['vcode'],'login')){
+                    $this -> ajaxReturn(['status'=>1,'msg'=>'验证码错误']);
+                }
+                # 登录
+                \App\Model\User::login($_POST['email'],$_POST['password'],function($user){
+                    $_SESSION['home']['user'] = $user -> toArray();
+                });
+                $this -> ajaxReturn(['status'=>0,'msg'=>'登录成功']);
+            }catch (\Exception $exception){
+                $this -> ajaxReturn(['status'=>1,'msg'=>$exception -> getMessage()]);
+            }
+        }else{
+            $this -> display();
+        }
     }
     # 我的帖子
     public function index()
@@ -26,14 +44,14 @@ class User extends Base
             # 验证码验证
             $verify = new Verify;
             if(!$verify -> check($_POST['vcode'],'reg')){
-                $this -> ajaxReturn(['status'=>2,'msg'=>'验证码错误']);
+                $this -> ajaxReturn(['status'=>1,'msg'=>'验证码错误']);
             }
             # 添加用户数据
             try{
                 \App\Model\User::add_user($_POST);
-                $this -> ajaxReturn(['status'=>1,'msg'=>'注册成功']);
+                $this -> ajaxReturn(['status'=>0,'msg'=>'注册成功']);
             }catch (\Exception $exception){
-                $this -> ajaxReturn(['status'=>2,'msg'=>$exception -> getMessage()]);
+                $this -> ajaxReturn(['status'=>1,'msg'=>$exception -> getMessage()]);
             }
         }else{
             $this -> display();

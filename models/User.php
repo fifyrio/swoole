@@ -16,6 +16,11 @@ class User extends Model
      */
     protected $table = 'users';
 
+    /**
+     * 用户登录
+     * @param array $data
+     * @throws \Exception
+     */
     public static function add_user($data = [])
     {
         # 定义要插入的数据
@@ -56,6 +61,26 @@ class User extends Model
             self::insert($insert);
         }catch (\Itxiao6\Database\QueryException $exception){
             throw new \Exception($exception -> getMessage());
+        }
+    }
+
+    /**
+     * 用户登录
+     * @param $username
+     * @param $password
+     * @param \Closure $fun
+     * @return mixed
+     * @throws \Exception
+     */
+    public static function login($username,$password,$fun)
+    {
+        # 获取要登录的密码
+        $user_password = self::where(['email'=>$username]) -> value('password');
+        # 验证
+        if(Hash::check($password,$user_password)){
+            return self::where(['email'=>$username]) -> first();
+        }else{
+            throw new \Exception('登录失败');
         }
     }
 }
