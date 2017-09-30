@@ -92,4 +92,9 @@ class User extends Base
     {
         $this -> display();
     }
+    # 上传头像
+    public function upload()
+    {
+
+    }
 }
