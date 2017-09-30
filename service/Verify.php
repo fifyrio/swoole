@@ -75,14 +75,11 @@ class Verify {
      * 验证验证码是否正确
      * @access public
      * @param string $code 用户验证码
-     * @param string $id 验证码标识
+     * @param int $id 验证码标识
      * @return bool 用户验证码是否正确
      */
-    public function check($code, $id = '')
+    public function check($code, $id = 0)
     {
-        var_dump(strtoupper($_SESSION['verify_code'][$id]));
-        var_dump(strtoupper($code));
-        die();
         if(strtoupper($_SESSION['verify_code'][$id]) ==  strtoupper($code)){
             return true;
         }else{
@@ -94,10 +91,10 @@ class Verify {
      * 输出验证码并把验证码的值保存的session中
      * 验证码保存到session的格式为： array('verify_code' => '验证码值', 'verify_time' => '验证码创建时间');
      * @access public
-     * @param string $id 要生成验证码的标识
+     * @param int $id 要生成验证码的标识
      * @return void
      */
-    public function entry($id = '')
+    public function entry($id = 0)
     {
         # 图片宽(px)
         $this->imageW || $this->imageW = $this->length*$this->fontSize*1.5 + $this->length*$this->fontSize/2;
