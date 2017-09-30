@@ -139,7 +139,20 @@ class User extends Model
                 # 设置用户信息
                 break;
             case 'headimg':
+                # 判断头像是否有效
+                if(isset($data['avatar']) && $data['avatar']!=''){
+                    $info['avatar'] = $data['avatar'];
+                }
+                # 判断头像是否需要修改
+                if(count($info) == 0){
+                    throw new \Exception('没有要修改的内容');
+                }
                 # 设置用户头像
+                try{
+                    self::where(['id'=>$_SESSION['home']['user']['id']]) -> update($info);
+                }catch (\Exception $exception){
+                    throw new \Exception($exception -> getMessage());
+                }
                 break;
             case 'pass':
                 # 设置用户密码

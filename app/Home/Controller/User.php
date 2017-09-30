@@ -109,7 +109,7 @@ class User extends Base
     # 上传头像
     public function upload()
     {
-        dd($_FILES);
-//        Upload::upload('');
+        $data['status'] = 0;
+        $data['url'] = '/images/avatar/default.png';
     }
 }
