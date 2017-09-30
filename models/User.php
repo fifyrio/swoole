@@ -90,7 +90,7 @@ class User extends Model
      * @param \Closure $fun
      * @throws \Exception
      */
-    public function set_info($data = [],$fun){
+    public static function set_info($data = [],$fun){
         switch ($data['action']){
             case 'info':
                 # 判断邮箱是否有效
