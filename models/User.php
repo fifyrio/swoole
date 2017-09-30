@@ -78,7 +78,8 @@ class User extends Model
         $user_password = self::where(['email'=>$username]) -> value('password');
         # 验证
         if(Hash::check($password,$user_password)){
-            return self::where(['email'=>$username]) -> first();
+            # 回调
+            $fun(self::where(['email'=>$username]) -> first());
         }else{
             throw new \Exception('登录失败');
         }

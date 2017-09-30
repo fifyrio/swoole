@@ -336,7 +336,7 @@ layui.define(['layer', 'laytpl', 'form', 'upload', 'util'], function(exports){
         if(res.action){
           location.href = res.action;
         } else {
-          // gather.form[action||button.attr('key')](data.field, data.form);
+          gather.form[action||button.attr('key')](data.field, data.form);
         }
       };
       if(res.status == 0){
