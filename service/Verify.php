@@ -79,7 +79,10 @@ class Verify {
      * @return bool 用户验证码是否正确
      */
     public function check($code, $id = '')
-    {   
+    {
+        var_dump(strtoupper($_SESSION['verify_code'][$id]));
+        var_dump(strtoupper($code));
+        die();
         if(strtoupper($_SESSION['verify_code'][$id]) ==  strtoupper($code)){
             return true;
         }else{
