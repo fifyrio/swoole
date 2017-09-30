@@ -21,7 +21,16 @@ class User extends Base
     # 用户注册
     public function reg()
     {
-        $this -> display();
+        if(IS_POST){
+            try{
+                \App\Model\User::add_user($_POST);
+                $this -> ajaxReturn(['status'=>1,'msg'=>'注册成功']);
+            }catch (\Exception $exception){
+                $this -> ajaxReturn(['status'=>2,'msg'=>$exception -> getMessage()]);
+            }
+        }else{
+            $this -> display();
+        }
     }
     # 基本设置
     public function set()
