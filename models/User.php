@@ -147,15 +147,44 @@ class User extends Model
                 if(count($info) == 0){
                     throw new \Exception('没有要修改的内容');
                 }
-                # 设置用户头像
                 try{
+                    # 设置用户头像
                     self::where(['id'=>$_SESSION['home']['user']['id']]) -> update($info);
+                    # 回调
+                    $fun(self::where(['id'=>$_SESSION['home']['user']['id']]) -> first());
                 }catch (\Exception $exception){
                     throw new \Exception($exception -> getMessage());
                 }
                 break;
             case 'pass':
+                # 判断两次输入的密码是否相同
+                if(!(isset($data['pass']) && isset($data['repass']) && $data['pass'] == $data['repass'])){
+                    throw new \Exception('两次输入的密码不同');
+                }
+                # 获取现在的密码
+                try{
+                    $now_hash_pass = self::where(['id'=>$_SESSION['home']['user']['id']]) -> value('password');
+                }catch (\Itxiao6\Database\QueryException $exception){
+                    throw new \Exception($exception -> getMessage());
+                }
+                # 验证当前密码是否正确
+                if(Hash::check($data['nowpass'],$now_hash_pass)){
+                    try{
+                        # 设置新密码
+                        self::where(['id'=>$_SESSION['home']['user']['id']]) ->
+                        update(['password'=>Hash::make($data['pass'])]);
+                        # 回调
+                        $fun(self::where(['id'=>$_SESSION['home']['user']['id']]) -> first());
+                    }catch (\Exception $exception){
+                        throw new \Exception($exception -> getMessage());
+                    }catch (\Itxiao6\Database\QueryException $exception){
+                        throw new \Exception($exception -> getMessage());
+                    }
+                }else{
+                    throw new \Exception('旧密码不正确');
+                }
                 # 设置用户密码
+
                 break;
             case 'bind':
                 # 账号绑定
