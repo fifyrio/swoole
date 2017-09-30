@@ -25,7 +25,7 @@ class User extends Base
         if(IS_POST){
             # 验证码验证
             $verify = new Verify;
-            if(!$verify -> check($_POST['vcode'])){
+            if(!$verify -> check($_POST['vcode'],'reg')){
                 $this -> ajaxReturn(['status'=>2,'msg'=>'验证码错误']);
             }
             # 添加用户数据
