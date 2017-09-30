@@ -22,7 +22,7 @@ class Controller
 
     public function __construct()
     {
-        C('debugbar','sys',false);
+//        C('debugbar','sys',false);
         # 判断初始化函数属否定义
         if(method_exists($this,'__init')){
           $this -> __init();
