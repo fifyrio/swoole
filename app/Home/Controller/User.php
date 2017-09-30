@@ -111,5 +111,6 @@ class User extends Base
     {
         $data['status'] = 0;
         $data['url'] = '/images/avatar/default.png';
+        $this -> ajaxReturn($data);
     }
 }
