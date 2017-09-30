@@ -1,6 +1,7 @@
 <?php
 namespace App\Home\Controller;
 use Service\Exception;
+use Service\Upload;
 use Service\Verify;
 
 /**
@@ -108,6 +109,7 @@ class User extends Base
     # 上传头像
     public function upload()
     {
-
+        dd($_FILES);
+//        Upload::upload('');
     }
 }
