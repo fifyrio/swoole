@@ -25,9 +25,9 @@ class User extends Base
     public function login()
     {
         # 判断是否已经登陆过了
-        if(isset($_SESSION['home']['user']['id']) && $_SESSION['home']['user']['id']!=''){
-            redirect('/Index/index.html');
-        }
+//        if(isset($_SESSION['home']['user']['id']) && $_SESSION['home']['user']['id']!=''){
+//            redirect('/Index/index.html');
+//        }
         if(IS_POST){
             try{
                 # 验证码验证
