@@ -119,13 +119,20 @@ class User extends Base
     # 上传头像
     public function upload()
     {
-        # 上传结果消息(错误时用到)
-        $data['msg'] = '上传文件失败';
-        # 状态 0 = 成功
-        $data['status'] = 0;
-        # 上传成功的图片url
-        $data['url'] = '/images/avatar/default.png';
-        # 返回信息
-        $this -> ajaxReturn($data);
+        try{
+            # 上传成功的图片url
+            $data['url'] = Upload::upload('headimg');
+            # 状态 0 = 成功
+            $data['status'] = 0;
+            # 返回信息
+            $this -> ajaxReturn($data);
+        }catch (\Exception $exception){
+            # 获取错误信息
+            $data['msg'] = $exception -> getMessage();
+            # 状态 1 = 失败
+            $data['status'] = 1;
+            # 返回信息
+            $this -> ajaxReturn($data);
+        }
     }
 }

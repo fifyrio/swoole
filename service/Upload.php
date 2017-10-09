@@ -33,7 +33,7 @@ class Upload
             self::$upload = self::getDriver();
         }
         # 使用驱动方法
-        self::$upload -> $name(...$arguments);
+        return self::$upload -> $name(...$arguments);
     }
     # 获取驱动
     protected static function getDriver()
@@ -45,6 +45,8 @@ class Upload
         if($type == 'local'){
             # 上传文件夹
             $param['directory'] = ROOT_PATH.'public/upload/';
+            # web 访问目录
+            $param['webUrl'] = '/upload/';
         }
         # 返回接口
         return File::getInterface($type,$param);
