@@ -16,18 +16,8 @@
   <div class="wrap">
     <div class="content" style="margin-right:0">
       <div class="fly-tab">
-        <span>
-          <a href="/Word/index/status/0.html"
-             @if((!isset($_GET['status'])) || $_GET['status']==0) class="tab-this" @endif>全部</a>
-          <a href="/Word/index/status/1.html" @if($_GET['status']==1) class="tab-this" @endif>未结帖</a>
-          <a href="/Word/index/status/2.html" @if($_GET['status']==2) class="tab-this" @endif>已采纳</a>
-          <a href="/Word/index/status/3.html" @if($_GET['status']==3) class="tab-this" @endif>精帖</a>
-          <a href="/User/index.html">我的帖</a>
-        </span>
-        <form target="_blank" action="https://www.baidu.com/s" class="fly-search" method="get">
-          <i class="iconfont icon-sousuo"></i>
-          <input class="layui-input" autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="wd">
-        </form>
+        @include('Public.menu')
+        @include('Public.search')
         <a href="/Word/add.html" class="layui-btn jie-add">发布问题</a>
       </div>
     

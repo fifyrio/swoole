@@ -1,0 +1,8 @@
+<span>
+    <a href="/Word/index/status/0.html"
+     @if((!isset($_GET['status'])) || $_GET['status']==0) class="tab-this" @endif>全部</a>
+    <a href="/Word/index/status/1.html" @if($_GET['status']==1) class="tab-this" @endif>未结帖</a>
+    <a href="/Word/index/status/2.html" @if($_GET['status']==2) class="tab-this" @endif>已采纳</a>
+    <a href="/Word/index/status/3.html" @if($_GET['status']==3) class="tab-this" @endif>精帖</a>
+    <a href="/User/index.html">我的帖</a>
+</span>
