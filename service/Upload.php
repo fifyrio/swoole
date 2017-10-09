@@ -53,6 +53,17 @@ class Upload
     }
 
     /**
+     * 添加文件上传驱动
+     * @param $name
+     * @param $class
+     * @return mixed
+     */
+    public static function add_driver($name,$class)
+    {
+        return File::add_class($name,$class);
+    }
+
+    /**
      * 获取当前文件储存驱动
      * @return mixed
      */
