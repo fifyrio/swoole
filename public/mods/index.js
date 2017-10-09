@@ -345,7 +345,9 @@ layui.define(['layer', 'laytpl', 'form', 'upload', 'util'], function(exports){
           time: 10*1000,
           end: end
         }) : end();
-      };
+      }else if(!typeof(res.url)){
+          window.location.href = res.url ;
+      }
     });
     return false;
   });
