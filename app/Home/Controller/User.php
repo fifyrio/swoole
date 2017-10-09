@@ -126,7 +126,7 @@ class User extends Base
             $data['status'] = 0;
             # 返回信息
             $this -> ajaxReturn($data);
-        }catch (\Exception $exception){
+        }catch (\Itxiao6\Upload\Exception\UploadException $exception){
             # 获取错误信息
             $data['msg'] = $exception -> getMessage();
             # 状态 1 = 失败
