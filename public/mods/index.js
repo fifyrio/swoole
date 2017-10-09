@@ -340,7 +340,8 @@ layui.define(['layer', 'laytpl', 'form', 'upload', 'util'], function(exports){
         }
       };
       if(res.status == 0 && (!typeof(res.url))){
-          window.location.href = res.url ;
+        layer.msg(res.msg);
+          location.href = res.url;
         // button.attr('alert') ? layer.alert(res.msg, {
         //   icon: 1,
         //   time: 10*1000,

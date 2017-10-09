@@ -39,7 +39,7 @@ class User extends Base
                 \App\Model\User::login($_POST['email'],$_POST['password'],function($user){
                     $_SESSION['home']['user'] = $user -> toArray();
                 });
-                $this -> ajaxReturn(['status'=>0,'url'=>'/Index/index.html']);
+                $this -> ajaxReturn(['msg'=>'登录成功','status'=>0,'url'=>'/Index/index.html']);
             }catch (\Exception $exception){
                 $this -> ajaxReturn(['status'=>1,'msg'=>$exception -> getMessage()]);
             }
