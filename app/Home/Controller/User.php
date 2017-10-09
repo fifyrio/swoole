@@ -1,5 +1,6 @@
 <?php
 namespace App\Home\Controller;
+use Itxiao6\Upload\Exception\UploadException;
 use Service\Exception;
 use Service\Upload;
 use Service\Verify;
@@ -121,7 +122,12 @@ class User extends Base
     {
         try{
             # 上传成功的图片url
-            $data['url'] = Upload::upload('headimg');
+            $data['url'] = Upload::upload('headimg',function($file){
+                # 验证规则
+                if($file['size'] > 5000){
+                    throw new UploadException('文件尺寸大于5M');
+                }
+            });
             # 状态 0 = 成功
             $data['status'] = 0;
             # 返回信息
