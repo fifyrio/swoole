@@ -53,6 +53,34 @@ class Upload
     }
 
     /**
+     * 上传文件
+     * @return mixed
+     */
+    public static function upload()
+    {
+        if(self::$upload===false){
+            # 初始化驱动
+            self::$upload = self::getDriver();
+        }
+        # 使用驱动方法
+        return self::$upload -> upload(...func_get_args());
+    }
+
+    /**
+     * 上传多个文件
+     * @return mixed
+     */
+    public static function uploads()
+    {
+        if(self::$upload===false){
+            # 初始化驱动
+            self::$upload = self::getDriver();
+        }
+        # 使用驱动方法
+        return self::$upload -> uploads(...func_get_args());
+    }
+
+    /**
      * 添加文件上传驱动
      * @param $name
      * @param $class
