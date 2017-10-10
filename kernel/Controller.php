@@ -11,8 +11,10 @@ use Service\Timeer;
 use Service\Umeditor;
 
 /**
- * 控制器父类
-*/
+ * 控制器基类
+ * Class Controller
+ * @package Kernel
+ */
 class Controller
 {
 
