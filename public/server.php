@@ -10,8 +10,11 @@ require( ROOT_PATH.'kernel'.DIRECTORY_SEPARATOR.'Kernel.php');
 
 # Swoole
 $http = new swoole_http_server("0.0.0.0",8081);
+$task = 0;
 # 监听请求
-$http->on('request', function ($request, $response) {
+$http->on('request', function ($request, $response) use (&$task){
+    $task++;
+    echo '请求'.$task."\n";
     # 定义当前使用的是swoole服务
     define('SWOOLE',true);
     $_HEADER = $request -> header;
