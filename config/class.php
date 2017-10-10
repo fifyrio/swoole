@@ -7,6 +7,8 @@ return [
     'DB'=>\Service\DB::class,
     # Hash
     'Hash'=>\Service\Hash::class,
-    # 系统配置
-    'Config'=>\App\Model\Config::class,
+    # 配置类
+    'Config'=>\Kernel\Config::class,
+    # url 处理类
+    'Url'=>\Service\Url::class,
 ];
