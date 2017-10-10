@@ -1,47 +1,5 @@
 <?php
 /**
-* [get_excel 获取excel表文件]
-* @param [Array] $data [是否分页]
-* @param [String] $data [数据表名]
-* @return [Object] $this [文件]
-*/
-function get_excel($data,$filename='数据表'){
-    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename='.$filename.'.xlsx');
-    header('Cache-Control: max-age=0');
-    # 默认跳过第一行表头
-    # 更多使用请查看 src\Excel 注释
-    \YExcel\Excel::put('php://output', $data);
-    exit();
-}
-
-/**
- * 缓存函数
- * @param String $key 键
- * @param String $fun 数据
- * @param int $outTime 过期时间
- * @return mixed 结果
- */
-function cache($key,$fun='',$outTime = -1)
-{
-    # 判断是否开启了缓存
-    if(C('cache_time','sys') == - 1){
-        return $fun();
-    }
-    # 判断缓存是否存在
-//    if(!($data = unserialize(\Service\Redis::get($key)))){
-        # 获取新的数据
-        $data = $fun();
-        # 缓存
-//        \Service\Redis::set($key,serialize($data),$outTime == -1 ? C('cache_time','sys') : $outTime);
-        # 返回缓存过后的结果
-        return $data;
-//    }else{
-        # 返回缓存
-//        return $data;
-//    }
-}
-/**
 * [function_dump 打印函数定义的文件名和位置]
 * @param [String] $funcname [函数名]
 * @return [String] 函数信息

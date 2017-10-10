@@ -264,7 +264,7 @@ class Kernel
             '.svg'=>'image/svg+xml',
         ]);
         # 加载路由
-        Route::init(function($app,$controller,$action){
+        return Route::init(function($app,$controller,$action){
             C('view_path','sys',['app' => ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View']);
             # 应用名
             define('APP_NAME',$app);

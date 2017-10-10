@@ -45,7 +45,7 @@ class User extends Base
                 $this -> ajaxReturn(['status'=>1,'msg'=>$exception -> getMessage()]);
             }
         }else{
-            $this -> display();
+            return $this -> display();
         }
     }
     # 退出登录
@@ -57,7 +57,7 @@ class User extends Base
     # 我的帖子
     public function index()
     {
-        $this -> display();
+        return $this -> display();
     }
     # 用户注册
     public function reg()
@@ -76,7 +76,7 @@ class User extends Base
                 $this -> ajaxReturn(['status'=>1,'msg'=>$exception -> getMessage()]);
             }
         }else{
-            $this -> display();
+            return $this -> display();
         }
     }
     # 基本设置
@@ -94,28 +94,28 @@ class User extends Base
             }
         }else{
             # 渲染模板
-            $this -> display();
+            return $this -> display();
         }
     }
     # 我的消息
     public function message()
     {
-        $this -> display();
+        return $this -> display();
     }
     # 激活邮箱
     public function activate()
     {
-        $this -> display();
+        return $this -> display();
     }
     # 找回密码/重置密码
     public function forget()
     {
-        $this -> display();
+        return $this -> display();
     }
     # 用户主页
     public function home()
     {
-        $this -> display();
+        return $this -> display();
     }
     # 上传头像
     public function upload()

@@ -1,29 +1,29 @@
 <?php
+# php版本检测
+if( PHP_VERSION < 5.6 ){ exit('PHP version <= 5.6'); }
+# 定义项目根目录
+define('ROOT_PATH',__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
+# 开启调试模式
+define('DE_BUG',true);
+# 引入
+require( ROOT_PATH.'kernel'.DIRECTORY_SEPARATOR.'Kernel.php');
+
 # Swoole
-# 监听主机
-$host = '0.0.0.0';
-# 端口
-$port = 9501;
-# 是否多线程
-$mode = SWOOLE_PROCESS;
-# 方式
-$sock_type = SWOOLE_SOCK_TCP;
-
-//$server = swoole_server($host,$port,$mode,$sock_type);
-$server = swoole_server($host,$port);
-
-$server -> on('connect',function($server,$fd){
-    var_dump($server);
-    var_dump($fd);
-    echo '建立链接成功'."\n";
+$http = new swoole_http_server("0.0.0.0", 8081);
+# 监听请求
+$http->on('request', function ($request, $response) {
+    $_HEADER = $request -> header;
+    $_SERVER = $request -> server;
+    foreach ($_SERVER as $key=>$item){
+        $_SERVER[strtoupper($key)] = $item;
+        unset($_SERVER[$key]);
+    }
+    $_COOKIE = $request -> cookie;
+    $_GET = $request -> get;
+    $_POST = $request -> post;
+    $_FILES_ = $request -> files;
+    # 启动程序
+    $response->end(Kernel\Kernel::start());
 });
-
-$server -> on('receive',function($server,$fd,$form_id,$data){
-    echo '接收到数据'."\n";
-});
-
-$server -> on('close',function($server,$fd){
-    echo '链接关闭';
-});
-
-$server -> start();
+# 启动web服务器
+$http->start();

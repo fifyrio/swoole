@@ -8,4 +8,4 @@ define('DE_BUG',true);
 # 引入
 require( ROOT_PATH.'kernel'.DIRECTORY_SEPARATOR.'Kernel.php');
 # 启动
-Kernel\Kernel::start();	
+echo Kernel\Kernel::start();

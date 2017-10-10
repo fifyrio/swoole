@@ -36,7 +36,7 @@ class Controller
      */
     public function display($view='default',Array $data = [])
     {
-        echo $this -> getView($view,$data);
+        return $this -> getView($view,$data);
     }
 
     /**
