@@ -9,7 +9,7 @@ define('DE_BUG',true);
 require( ROOT_PATH.'kernel'.DIRECTORY_SEPARATOR.'Kernel.php');
 
 # Swoole
-$http = new swoole_http_server("0.0.0.0",80);
+$http = new swoole_http_server("0.0.0.0",8081);
 # 监听请求
 $http->on('request', function ($request, $response) {
     # 定义当前使用的是swoole服务
