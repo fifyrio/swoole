@@ -36,6 +36,9 @@ class Controller
      */
     public function __construct()
     {
+        # 定义默认的协议头
+        global $content_type;
+        $content_type = 'text/html';
         # 判断初始化函数属否定义
         if(method_exists($this,'__init')){
           $this -> __init();

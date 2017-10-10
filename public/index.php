@@ -6,6 +6,7 @@ define('ROOT_PATH',__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
 # 开启调试模式
 define('DE_BUG',true);
 # 定义默认的协议头
+global $content_type;
 $content_type = 'text/html';
 # 定义使用的是nginx 或 apache
 define('SWOOLE',false);

@@ -5,16 +5,16 @@ if( PHP_VERSION < 5.6 ){ exit('PHP version <= 5.6'); }
 define('ROOT_PATH',__DIR__.DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR);
 # 开启调试模式
 define('DE_BUG',true);
-# 定义默认的协议头
-$content_type = 'text/html';
 # 引入
 require( ROOT_PATH.'kernel'.DIRECTORY_SEPARATOR.'Kernel.php');
-
+# 定义默认的协议头
+global $content_type;
+$content_type = 'text/html';
 # Swoole
 $http = new swoole_http_server("0.0.0.0",8081);
 $task = 0;
 # 监听请求
-$http->on('request', function ($request, $response) use (&$task,$content_type){
+$http->on('request', function ($request, $response) use (&$task,&$content_type){
     $task++;
     echo '请求'.$task."\n";
     # 定义当前使用的是swoole服务
