@@ -22,7 +22,6 @@ class Controller
 
     public function __construct()
     {
-        C('debugbar','sys',false);
         # 判断初始化函数属否定义
         if(method_exists($this,'__init')){
           $this -> __init();
@@ -51,7 +50,7 @@ class Controller
         # 计时开始
         Timeer::start();
         # 循环处理模板目录
-        foreach(C('view_path','sys') as $value){
+        foreach(Config::get('sys','view_path') as $value){
           # 判断模板目录是否存在
           if( !file_exists($value) ){
               Exception::message("模板目录不存在或没有权限".$value);
@@ -67,7 +66,7 @@ class Controller
         # 实例化 编译器
         $engine = new CompilerEngine($compiler);
         # 实例化文件系统
-        $finder = new FileViewFinder(C('view_path','sys'),C('extensions','sys'));
+        $finder = new FileViewFinder(Config::get('sys','view_path'),Config::get('sys','extensions'));
         # 实例化模板
         $factory = new Factory($engine,$finder);
 
@@ -80,7 +79,7 @@ class Controller
           $view = str_replace('/','.',$view);
         }
         # 判断是否开启了 debugbar
-        if(C('debugbar','sys')) {
+        if(Config::get('sys','debugbar')) {
             # 定义全局变量
             global $debugbar;
             # 记录渲染的模板
@@ -151,7 +150,7 @@ class Controller
     protected function ajaxReturn($data,$type='',$json_option=0) {
         # 不渲染debugbar
         $this -> debugbar = false;
-        if(empty($type)) $type  =   C('default_ajax_return','sys');
+        if(empty($type)) $type  =   Config::get('sys','default_ajax_return');
         switch (strtoupper($type)){
             case 'JSON' :
                 # 返回JSON数据格式到客户端 包含状态信息
@@ -192,7 +191,7 @@ class Controller
         global $debugbarRenderer;
         global $database;
         # 判断是否开启了数据库日志 并且数据库有查询语句
-        if($database && is_array(DB::DB_LOG()) && C('debugbar','sys')  && (!IS_AJAX) && $this ->debugbar){
+        if($database && is_array(DB::DB_LOG()) && Config::get('sys','debugbar')  && (!IS_AJAX) && $this ->debugbar){
             # 遍历计时器事件
             foreach (Timeer::get_event() as $item) {
                 $debugbar["Time"]
@@ -205,7 +204,7 @@ class Controller
             }
         }
         # 判断是否开启了 debugbar
-        if(C('debugbar','sys') && (!IS_AJAX) && $this ->debugbar){
+        if(Config::get('sys','debugbar') && (!IS_AJAX) && $this ->debugbar){
           echo preg_replace('!\/vendor\/maximebf\/debugbar\/src\/DebugBar\/!','/',$debugbarRenderer->renderHead());
           echo $debugbarRenderer->render();
         }

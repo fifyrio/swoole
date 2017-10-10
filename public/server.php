@@ -20,6 +20,7 @@ $http->on('request', function ($request, $response) {
         $_SERVER[strtoupper($key)] = $item;
         unset($_SERVER[$key]);
     }
+    $_SERVER['HTTP_HOST'] = $request -> header['host'];
     $_COOKIE = $request -> cookie;
     $_GET = $request -> get;
     $_POST = $request -> post;

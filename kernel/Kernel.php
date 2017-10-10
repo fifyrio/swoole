@@ -22,7 +22,7 @@ class Kernel
     public static function auto_load($class){
         if(count(self::$class)==0){
             # 加载配置文件
-            self::$class = C('all','class');
+            self::$class = Config::get('class');
         }
         # 判断类是否存在
         if(isset(self::$class[$class])){
@@ -110,23 +110,12 @@ class Kernel
             # 屏蔽所有错误
             error_reporting(0);
         }
-        try{
-            # 加载公用函数库
-            include(ROOT_PATH.'common'.DIRECTORY_SEPARATOR.'functions.php');
-        }catch (\Exception $exception){
-            # 抛出异常位置
-            Exception::__throw(
-                $exception -> getMessage(),
-                $exception -> getCode(),
-                $exception -> getPrevious(),
-                $exception ->getFile(),
-                $exception -> getLine());
-        }
 
         # 设置时区
-        date_default_timezone_set(C('default_timezone','sys'));
+        date_default_timezone_set(Config::get('sys','default_timezone'));
+
         # 判断是否开启了debugbar
-        if( C('debugbar','sys') ) {
+        if(Config::get('sys','debugbar')) {
             # 定义全局变量
             global $debugbar;
             global $debugbarRenderer;
@@ -162,10 +151,10 @@ class Kernel
         define('IS_DELETE',Http::IS_DELETE());
         # 是否为WECHAT 请求
         define('IS_WECHAT',Http::IS_WECHAT());
+        # 是否为AJAX 请求
+        define('IS_AJAX', \Whoops\Util\Misc::isAjaxRequest());
         # 是否为Model 请求
         define('IS_MOBILE',Http::IS_MOBILE());
-        # 是否为AJAX 请求
-        define('IS_AJAX', Http::IS_AJAX());
         # 是否为CCG 请求
         define('IS_CGI',Http::IS_CGI());
         # 是否为SLI 环境
@@ -239,7 +228,8 @@ class Kernel
         # 判断session存储方式
         if(env('session_save') == 'redis'){
             ini_set("session.save_handler", "redis");
-            ini_set("session.save_path", "tcp://".C('host','redis').":".C('port','redis'));
+            ini_set("session.save_path",
+                "tcp://".Config::get('redis','host').":".Config::get('redis','port'));
         }
         # 启动session
         session_start();
@@ -252,9 +242,9 @@ class Kernel
             $_SERVER['QUERY_STRING'] = $param_arr['U'];
         }
         # 设置url 分隔符
-        Route::set_key_word(C('url_split','sys'));
+        Route::set_key_word(Config::get('sys','url_split'));
         # 设置资源路由
-        Resources::set_folder(C('all','abstract'));
+        Resources::set_folder(Config::get('abstract'));
         # 设置资源路由的响应格式
         Resources::set_file_type([
             '.js'=>'application/javascript',
@@ -265,7 +255,9 @@ class Kernel
         ]);
         # 加载路由
         return Route::init(function($app,$controller,$action){
-            C('view_path','sys',['app' => ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View']);
+            Config::set('sys',
+                ['app' => ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View']
+                ,'view_path');
             # 应用名
             define('APP_NAME',$app);
             # 控制器名
