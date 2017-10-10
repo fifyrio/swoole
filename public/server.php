@@ -23,13 +23,20 @@ $http->on('request', function ($request, $response) use (&$task){
         $_SERVER[strtoupper($key)] = $item;
         unset($_SERVER[$key]);
     }
+    # 获取结果
+    $result = Kernel\Kernel::start();
+    # 获取域名
     $_SERVER['HTTP_HOST'] = $request -> header['host'];
+    # 获取cookie
     $_COOKIE = $request -> cookie;
+    # 获取get 参数
     $_GET = $request -> get;
+    # 获取post 参数
     $_POST = $request -> post;
+    # 获取files 数组
     $_FILES_ = $request -> files;
     # 启动程序
-    $response->end(Kernel\Kernel::start());
+    $response->end($result);
 });
 # 启动web服务器
 $http->start();
