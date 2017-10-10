@@ -223,7 +223,7 @@ class Kernel
         ini_set('upload_tmp_dir', UPLOAD_TMP_DIR);
 
         # 设置session有效期
-        // session_set_cookie_params( C('session_lifetime','sys') );
+        // session_set_cookie_params( Config::get('sys','session_lifetime') );
 
         # 判断session存储方式
         if(env('session_save') == 'redis'){

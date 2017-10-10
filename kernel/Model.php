@@ -4,6 +4,7 @@ use Illuminate\Container\Container;
 use Itxiao6\Database\Capsule\Manager as DB;
 use Itxiao6\Database\Eloquent\Model as Eloquent;
 use Itxiao6\Database\Eloquent\SoftDeletes;
+use Kernel\Config;
 /**
 * 模型父类
 */
@@ -137,13 +138,13 @@ class Model extends Eloquent
             # 连接数据库
             $database = new DB;
             # 载入数据库配置
-            $database->addConnection(C('all','database'));
+            $database->addConnection(Config::get('database'));
             # 设置全局静态可访问
             $database->setAsGlobal();
             # 启动Eloquent
             $database -> bootEloquent();
             # 判断是否开启LOG日志
-            if(C('database_log','sys')){
+            if(Config::get('sys','database_log')){
                 DB::connection()->enableQueryLog();
             }
         }

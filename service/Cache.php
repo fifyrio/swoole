@@ -5,6 +5,7 @@ use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\Common\Cache\MemcacheCache;
 use Redis;
 use Memcached;
+use Kernel\Config;
 /**
  * 缓存类
  * Class Cache
@@ -26,13 +27,13 @@ class Cache
         # 判断驱动是否初始化过
         if(self::$cacheDriver==false){
             # 选择缓存类型
-            switch(C('type','cache')){
+            switch(Config::get('cache','type')){
                 case 'redis' :
                     # redis驱动初始化
                     # 实例化系统Redis 扩展
                     $redis = new Redis();
                     # 链接redis
-                    $redis -> connect(C('host','redis'), C('port','redis'));
+                    $redis -> connect(Config::get('redis','host'), Config::get('redis','port'));
                     # 实例化缓存驱动
                     $redis_driver = new RedisCache;
                     # 设置缓存驱动的链接
@@ -52,7 +53,7 @@ class Cache
                     # 实例化系统Memcached 扩展
                     $memcached = new Memcached();
                     # 链接Memcached
-                    $memcached -> connect(C('host','memcached'), C('port','memcached'));
+                    $memcached -> connect(Config::get('memcached','host'),Config::get('memcached','port'));
                     # 实例化缓存驱动
                     $memcached_driver = new MemcacheCache;
                     # 设置缓存驱动的链接
