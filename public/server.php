@@ -29,6 +29,7 @@ $http->on('request', function ($request, $response) use (&$task,&$content_type){
     $result = Kernel\Kernel::start();
     # 设置协议头
     $response->header('Content-Type',$content_type);
+    $_SERVER['REQUEST_URI'] = $request -> header['request_uri'];
     # 获取域名
     $_SERVER['HTTP_HOST'] = $request -> header['host'];
     # 获取cookie
