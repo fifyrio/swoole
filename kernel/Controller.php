@@ -15,11 +15,23 @@ use Service\Umeditor;
 */
 class Controller
 {
-    # 视图数据
+
+    /**
+     * 视图数据
+     * @var array
+     */
     protected $viewData = [];
-    # 是否渲染debugbar
+
+    /**
+     * 是否渲染debugbar
+     * @var bool
+     */
     protected $debugbar = true;
 
+    /**
+     * 构造方法
+     * Controller constructor.
+     */
     public function __construct()
     {
         # 判断初始化函数属否定义
@@ -30,12 +42,13 @@ class Controller
 
     /**
      * 渲染模板
-     * @param string $view 要渲染的模板名
-     * @param array $data 要分配到模板引擎的变量
+     * @param string $view
+     * @param array $data
+     * @return mixed
      */
     public function display($view='default',Array $data = [])
     {
-        return $this -> getView($view,$data);
+        return $this -> getView($view,$data).$this -> debugbar();
     }
 
     /**
@@ -152,23 +165,23 @@ class Controller
         $this -> debugbar = false;
         if(empty($type)) $type  =   Config::get('sys','default_ajax_return');
         switch (strtoupper($type)){
-            case 'JSON' :
+            case 'JSON':
                 # 返回JSON数据格式到客户端 包含状态信息
                 header('Content-Type:application/json; charset=utf-8');
-                exit(json_encode($data,$json_option));
-            case 'XML'  :
+                return(json_encode($data,$json_option));
+            case 'XML':
                 # 返回xml格式数据
                 header('Content-Type:text/xml; charset=utf-8');
-                exit(xml_encode($data));
+                return(xml_encode($data));
             case 'JSONP':
                 # 返回JSON数据格式到客户端 包含状态信息
                 header('Content-Type:application/json; charset=utf-8');
                 $handler  =   $_GET['jsonpCallback'];
-                exit($handler.'('.json_encode($data,$json_option).');');
-            case 'EVAL' :
+                return($handler.'('.json_encode($data,$json_option).');');
+            case 'EVAL':
                 # 返回可执行的js脚本
                 header('Content-Type:text/html; charset=utf-8');
-                exit($data);
+                return($data);
             default:
                 # 用于扩展其他返回格式数据
                 return false;
@@ -184,8 +197,12 @@ class Controller
         Http::redirect($url);
     }
 
-    # 析构方法
-    public function __destruct(){
+    /**
+     * 调试面板
+     * @return string
+     */
+    protected function debugbar(){
+        $str = '';
         # 获取全局变量
         global $debugbar;
         global $debugbarRenderer;
@@ -205,9 +222,10 @@ class Controller
         }
         # 判断是否开启了 debugbar
         if(Config::get('sys','debugbar') && (!IS_AJAX) && $this ->debugbar){
-          echo preg_replace('!\/vendor\/maximebf\/debugbar\/src\/DebugBar\/!','/',$debugbarRenderer->renderHead());
-          echo $debugbarRenderer->render();
+            $str .= preg_replace('!\/vendor\/maximebf\/debugbar\/src\/DebugBar\/!','/',$debugbarRenderer->renderHead());
+            $str .= $debugbarRenderer->render();
         }
+        return $str;
     }
 
 }
