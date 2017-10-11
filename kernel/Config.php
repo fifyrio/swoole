@@ -13,11 +13,6 @@ class Config
      */
     protected static $config = [];
     /**
-     * 驱动 file | databases
-     * @var string
-     */
-    protected static $driver = 'file';
-    /**
      * 读取配置
      * @param string $type
      * @param null $key
