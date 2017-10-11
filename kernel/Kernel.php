@@ -208,10 +208,6 @@ class Kernel
         }
         # 是否为WEN 环境
         define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
-        # 定义数据库链接状态为全局变量
-        global $database;
-        # 定义全局数据库链接为未连接
-        $database = false;
 
         # 设置SessionCookie名称
         session_name('MiniKernelSession');
@@ -222,8 +218,12 @@ class Kernel
         # 设置图片上传临时目录
         ini_set('upload_tmp_dir', UPLOAD_TMP_DIR);
 
-        # 设置session有效期
-        // session_set_cookie_params( Config::get('sys','session_lifetime') );
+        # 修改session存储设置
+        session_set_cookie_params(
+            Config::get('sys','session_lifetime'),
+            Config::get('sys','session_cookie_path'),
+            Config::get('sys','session_range')
+        );
 
         # 判断session存储方式
         if(env('session_save') == 'redis'){

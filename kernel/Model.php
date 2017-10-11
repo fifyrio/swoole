@@ -131,10 +131,8 @@ class Model extends Eloquent
     */
     public function __construct($tableName='')
     {
-        # 获取全局的数据库连接
-        global $database;
         # 判断数据库是否已经连接
-        if ( $database === false || $database == null) {
+        if ( defined('DATABASES_STATUS') === false) {
             # 连接数据库
             $database = new DB;
             # 载入数据库配置
@@ -147,15 +145,8 @@ class Model extends Eloquent
             if(Config::get('sys','database_log')){
                 DB::connection()->enableQueryLog();
             }
-        }
-        # 判断实例化的时候已经制定了表名
-        if($tableName!=''){
-            $this -> table = $tableName;
-        }
-        # 判断是否定义了自定义初始化方法
-        if(method_exists($this,'init')){
-            # 调用自定义的初始化
-            $this -> __init();
+            # 定义数据库已经连接
+            define('DATABASES_STATUS',true);
         }
         # 调用父类构造方法
         parent::__construct();

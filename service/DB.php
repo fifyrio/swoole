@@ -15,10 +15,8 @@ class DB extends Manager
      * 数据库链接
      */
     public static function connection_databases(){
-        # 获取全局的数据库连接
-        global $database;
         # 判断数据库是否已经连接
-        if ( $database === false || $database == null) {
+        if ( defined('DATABASES_STATUS') === false) {
             # 连接数据库
             $database = new Manager;
             # 载入数据库配置
@@ -31,6 +29,8 @@ class DB extends Manager
             if(Config::get('sys','database_log')){
                 Manager::connection()->enableQueryLog();
             }
+            # 定义数据库已经连接
+            define('DATABASES_STATUS',true);
         }
     }
 
@@ -40,9 +40,8 @@ class DB extends Manager
      * @throws \Exception
      */
     public static function DB_LOG(){
-        # 获取全局的数据库连接
-        global $database;
-        if($database===false){
+        # 数据库是否连接
+        if(defined('DATABASES_STATUS')===false){
             return false;
         }
         # 判断是否开启了DB_log
