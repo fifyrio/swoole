@@ -27,20 +27,11 @@ class Config
     {
         # 判断配置文件是否加载过
         if(!isset(self::$config[$type])){
-            if(self::$config == 'file'){
-                # 判断配置文件是否存在
-                if(file_exists(ROOT_PATH.'config/'.$type.'.php')){
-                    self::$config[$type] = require(ROOT_PATH.'config/'.$type.'.php');
-                }else{
-                    return false;
-                }
+            # 判断配置文件是否存在
+            if(file_exists(ROOT_PATH.'config/'.$type.'.php')){
+                self::$config[$type] = require(ROOT_PATH.'config/'.$type.'.php');
             }else{
-                # 判断配置信息是否存在
-                if($data = \App\Model\Config::where(['type'=>$type]) -> pluck('value','key')){
-                    self::$config[$type] = $data -> toArray();
-                }else{
-                    return false;
-                }
+                return false;
             }
         }
         # 是否读取全部配置
@@ -62,17 +53,9 @@ class Config
     public static function set($type,$value,$key=null)
     {
         if($key===null){
-            if(self::$driver=='file'){
-                return self::$config[$type] = $value;
-            }else{
-                return \App\Model\Config::where(['type'=>$type]) -> update($value);
-            }
+            return self::$config[$type] = $value;
         }else{
-            if(self::$driver=='file'){
-                return self::$config[$type][$key] = $value;
-            }else{
-                return \App\Model\Config::where(['type'=>$type,'key'=>$key]) -> update(['value'=>$value]);
-            }
+            self::$config[$type][$key] = $value;
         }
     }
 }
