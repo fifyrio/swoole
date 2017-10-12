@@ -9,6 +9,7 @@ use Service\Http;
 use Service\DB;
 use Service\Timeer;
 use Service\Umeditor;
+use Service\Url;
 
 /**
  * 控制器基类
@@ -17,7 +18,6 @@ use Service\Umeditor;
  */
 class Controller
 {
-
     /**
      * 视图数据
      * @var array
@@ -25,20 +25,11 @@ class Controller
     protected $viewData = [];
 
     /**
-     * 是否渲染debugbar
-     * @var bool
-     */
-    protected $debugbar = true;
-
-    /**
      * 构造方法
      * Controller constructor.
      */
     public function __construct()
     {
-        # 定义默认的协议头
-        global $content_type;
-        $content_type = 'text/html';
         # 判断初始化函数属否定义
         if(method_exists($this,'__init')){
           $this -> __init();
@@ -53,7 +44,7 @@ class Controller
      */
     public function display($view='default',Array $data = [])
     {
-        return $this -> getView($view,$data).$this -> debugbar();
+        exit($this -> getView($view,$data).$this -> debugbar());
     }
 
     /**
@@ -171,20 +162,20 @@ class Controller
             case 'JSON':
                 # 返回JSON数据格式到客户端 包含状态信息
                 header('Content-Type:application/json; charset=utf-8');
-                return(json_encode($data,$json_option));
+                exit(json_encode($data,$json_option));
             case 'XML':
                 # 返回xml格式数据
                 header('Content-Type:text/xml; charset=utf-8');
-                return(xml_encode($data));
+                exit(xml_encode($data));
             case 'JSONP':
                 # 返回JSON数据格式到客户端 包含状态信息
                 header('Content-Type:application/json; charset=utf-8');
                 $handler  =   $_GET['jsonpCallback'];
-                return($handler.'('.json_encode($data,$json_option).');');
+                exit($handler.'('.json_encode($data,$json_option).');');
             case 'EVAL':
                 # 返回可执行的js脚本
                 header('Content-Type:text/html; charset=utf-8');
-                return($data);
+                exit($data);
             default:
                 # 用于扩展其他返回格式数据
                 return false;
@@ -196,8 +187,8 @@ class Controller
     * @param string $url 跳转的URL
     * @return void
     */
-    protected function redirect($url) {
-        Http::redirect($url);
+    protected function redirect($url,$param = []) {
+        Http::redirect(Url::make($url,$param));
     }
 
     /**

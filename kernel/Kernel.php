@@ -67,6 +67,7 @@ class Kernel
         }
         # 关闭文件
         fclose($f);
+
         # 设置协议头
         header("Content-Type:text/html;charset=utf-8");
 
@@ -80,8 +81,6 @@ class Kernel
             # 退出程序并提示
             exit('请在项目根目录执行:composer install');
         }
-
-
         # 判断是否为调试模式
         if( DE_BUG === TRUE ){
             # 屏蔽所有notice 和 warning 级别的错误

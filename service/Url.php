@@ -20,7 +20,7 @@ class Url
         # 组合url
         $url = '/'.implode(Config::get('sys','url_split'),$data).'.html';
         # 判断是否存在参数
-        if(count($param) > 0){
+        if(is_array($param) && count($param) > 0){
             $url .= '?';
             foreach ($param as $key=>$item){
                 $url .= $key.'='.$item.'&';
