@@ -16,7 +16,7 @@ class Auth extends Controller
     {
         if (IS_POST) {
             # 获取用户的信息
-            if($admin = M('admin') -> where(['username' => $_POST['username']])->first()){
+            if($admin = Admin::where(['username' => $_POST['username']])->first()){
                 # 判断密码是否正确
                 if(Hash::check($_POST['password'],$admin -> password)){
                     $_SESSION['admin']['user'] = $admin->toArray();
