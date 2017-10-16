@@ -24,13 +24,15 @@ class Url
             $url = '/'.implode(Config::get('sys','url_split'),$data).'.html';
         }else if(count($data)==2){
             $url = '/'.
-                APP_NAME.
-                Config::get('sys','url_split').
+                Config::get('host',$_SERVER['HTTP_HOST'])?APP_NAME.
+                Config::get('sys','url_split')
+                :''.
                 implode(Config::get('sys','url_split'),$data).'.html';
         }else if(count($data)==1){
             $url = '/'.
-                APP_NAME.
-                Config::get('sys','url_split').
+                Config::get('host',$_SERVER['HTTP_HOST'])?APP_NAME.
+                Config::get('sys','url_split')
+                :''.
                 CONTROLLER_NAME.
                 Config::get('sys','url_split').
                 implode(Config::get('sys','url_split'),$data).'.html';
