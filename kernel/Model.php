@@ -1,7 +1,7 @@
 <?php
 namespace Kernel;
 use Illuminate\Container\Container;
-use Itxiao6\Database\Capsule\Manager as DB;
+use Service\DB;
 use Itxiao6\Database\Eloquent\Model as Eloquent;
 use Itxiao6\Database\Eloquent\SoftDeletes;
 use Kernel\Config;
@@ -131,23 +131,8 @@ class Model extends Eloquent
     */
     public function __construct($tableName='')
     {
-        # 判断数据库是否已经连接
-        if ( defined('DATABASES_STATUS') === false) {
-            # 连接数据库
-            $database = new DB;
-            # 载入数据库配置
-            $database->addConnection(Config::get('database'));
-            # 设置全局静态可访问
-            $database->setAsGlobal();
-            # 启动Eloquent
-            $database -> bootEloquent();
-            # 判断是否开启LOG日志
-            if(Config::get('sys','database_log')){
-                DB::connection()->enableQueryLog();
-            }
-            # 定义数据库已经连接
-            define('DATABASES_STATUS',true);
-        }
+        # 检查数据库链接
+        DB::connection_databases();
         # 调用父类构造方法
         parent::__construct();
     }
