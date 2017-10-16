@@ -55,11 +55,6 @@ class User extends Base
     {
         return $this -> display();
     }
-    # 找回密码/重置密码
-    public function forget()
-    {
-        return $this -> display();
-    }
     # 用户主页
     public function home()
     {

@@ -20,6 +20,11 @@ class Auth extends Controller
         $verify = new Verify();
         $verify -> entry($_GET['id']);
     }
+    # 找回密码/重置密码
+    public function forget()
+    {
+        return $this -> display();
+    }
     # 用户登录
     public function login()
     {
