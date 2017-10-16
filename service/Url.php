@@ -1,5 +1,6 @@
 <?php
 namespace Service;
+use Kernel\Config;
 /**
  * url 处理类
  * Class Url
