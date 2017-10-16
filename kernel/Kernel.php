@@ -252,17 +252,31 @@ class Kernel
             '.jpeg'=>'image/jpeg',
             '.svg'=>'image/svg+xml',
         ]);
-        # 加载路由
-        return Route::init(function($app,$controller,$action){
-            Config::set('sys',
-                ['app' => ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View']
-                ,'view_path');
-            # 应用名
-            define('APP_NAME',$app);
-            # 控制器名
-            define('CONTROLLER_NAME',$controller);
-            # 操作名
-            define('ACTION_NAME',$action);
-        });
+        try{
+            # 加载路由
+            Route::init(function($app,$controller,$action){
+                $view_path = Config::get('sys','view_path');
+                $view_path[] = ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View';
+                Config::set('sys',
+                    $view_path
+                    ,'view_path');
+                # 应用名
+                define('APP_NAME',$app);
+                # 控制器名
+                define('CONTROLLER_NAME',$controller);
+                # 操作名
+                define('ACTION_NAME',$action);
+            });
+        }catch (\Exception $exception){
+            $view_path = Config::get('sys','view_path');
+            $view_path[] = ROOT_PATH.'common/';
+            # 设置公用模板
+            Config::set('sys',$view_path,'view_path');
+            # 默认的404 页面
+            $controller = new Controller;
+            # 输出默认的404 页面
+            echo $controller -> getView('404');
+        }
+
     }
 }

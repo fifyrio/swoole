@@ -42,8 +42,16 @@ class Controller
      * @param array $data
      * @return mixed
      */
-    public function display($view='default',Array $data = [])
+    public function display($view=null,Array $data = [])
     {
+        # 判断是否传入的模板名称
+        if($view===null){
+            $view = CONTROLLER_NAME.'.'.ACTION_NAME;
+        }else if(!strpos($view,'/') && $view != 'success' && $view != 'error'){
+            $view = CONTROLLER_NAME.'.'.$view;
+        }else{
+            $view = str_replace('/','.',$view);
+        }
         exit($this -> getView($view,$data).$this -> debugbar());
     }
 
@@ -54,7 +62,7 @@ class Controller
      * @return mixed 模板内容
      * @throws \Exception
      */
-    public function getView($view='default',Array $data = [])
+    public function getView($view=null,Array $data = [])
     {
         # 计时开始
         Timeer::start();
@@ -79,14 +87,6 @@ class Controller
         # 实例化模板
         $factory = new Factory($engine,$finder);
 
-        # 判断是否传入的模板名称
-        if($view=='default'){
-          $view = CONTROLLER_NAME.'.'.ACTION_NAME;
-        }else if(!strpos($view,'/') && $view != 'success' && $view != 'error'){
-          $view = CONTROLLER_NAME.'.'.$view;
-        }else{
-          $view = str_replace('/','.',$view);
-        }
         # 判断是否开启了 debugbar
         if(Config::get('sys','debugbar')) {
             # 定义全局变量
