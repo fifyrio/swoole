@@ -18,25 +18,36 @@ class Url
     {
         # 拆分模块
         $data = explode('.',$mode);
-        # 人性化兼容
-        if(count($data)==3){
-            # 组合url
-            $url = '/'.implode(Config::get('sys','url_split'),$data).'.html';
-        }else if(count($data)==2){
-            $url = '/'.
-                Config::get('host',$_SERVER['HTTP_HOST'])?APP_NAME.
-                Config::get('sys','url_split')
-                :''.
-                implode(Config::get('sys','url_split'),$data).'.html';
-        }else if(count($data)==1){
-            $url = '/'.
-                Config::get('host',$_SERVER['HTTP_HOST'])?APP_NAME.
-                Config::get('sys','url_split')
-                :''.
-                CONTROLLER_NAME.
-                Config::get('sys','url_split').
-                implode(Config::get('sys','url_split'),$data).'.html';
+        # 本模块是否为域名绑定
+        if(Config::get('host',$_SERVER['HTTP_HOST'])){
+            if(count($data)==2){
+                # 组合url
+                $url = '/'.implode(Config::get('sys','url_split'),$data).'.html';
+            }else if(count($data)==1){
+                $url = '/'.
+                    CONTROLLER_NAME.
+                    Config::get('sys','url_split').
+                    implode(Config::get('sys','url_split'),$data).'.html';
+            }
+        }else{
+            if(count($data)==3){
+                # 组合url
+                $url = '/'.implode(Config::get('sys','url_split'),$data).'.html';
+            }else if(count($data)==2){
+                $url = '/'.
+                    APP_NAME.
+                    Config::get('sys','url_split').
+                    implode(Config::get('sys','url_split'),$data).'.html';
+            }else if(count($data)==1){
+                $url = '/'.
+                    APP_NAME.
+                    Config::get('sys','url_split').
+                    CONTROLLER_NAME.
+                    Config::get('sys','url_split').
+                    implode(Config::get('sys','url_split'),$data).'.html';
+            }
         }
+
         # 判断是否存在参数
         if(is_array($param) && count($param) > 1 ){
             $url .= '?';
