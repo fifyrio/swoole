@@ -18,7 +18,7 @@ class User extends Base
         if(isset($_SESSION['home']['user']['id']) && $_SESSION['home']['user']['id']!='' && $_SESSION['home']['user']['id'] > 0){
 
         }else{
-            $this -> redirect('User.login');
+            $this -> redirect('Auth.login');
         }
     }
 
