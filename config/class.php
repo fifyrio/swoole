@@ -11,4 +11,6 @@ return [
     'Config'=>\Kernel\Config::class,
     # url 处理类
     'Url'=>\Service\Url::class,
+    # Http 类
+    'Http'=>\Service\Http::class,
 ];
