@@ -75,6 +75,6 @@ class Auth extends Controller
     public function logout()
     {
         $_SESSION['home'] = null;
-        $this -> redirect('Auth.login');
+        $this -> redirect('login');
     }
 }
