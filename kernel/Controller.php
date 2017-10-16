@@ -200,9 +200,10 @@ class Controller
         # 获取全局变量
         global $debugbar;
         global $debugbarRenderer;
-        global $database;
+        # 获取数据库查询记录
+        $databases_log = DB::DB_LOG();
         # 判断是否开启了数据库日志 并且数据库有查询语句
-        if($database && is_array(DB::DB_LOG()) && Config::get('sys','debugbar')){
+        if(defined(DATABASES_STATUS) && is_array($databases_log) && Config::get('sys','debugbar')){
             # 遍历计时器事件
             foreach (Timeer::get_event() as $item) {
                 $debugbar["Time"]
@@ -213,12 +214,13 @@ class Controller
                 $debugbar["Database"]
                     ->addMessage('语句:'.$value['query'].' 耗时:'.$value['time'].' 参数:'.$value['bindings']);
             }
-        }
-        # 判断是否开启了 debugbar
-        if(Config::get('sys','debugbar')){
-            $str .= preg_replace('!\/vendor\/maximebf\/debugbar\/src\/DebugBar\/!','/',$debugbarRenderer->renderHead());
+            $str .= preg_replace(
+                '!\/vendor\/maximebf\/debugbar\/src\/DebugBar\/!',
+                '/',
+                $debugbarRenderer->renderHead());
             $str .= $debugbarRenderer->render();
         }
+        # 返回debugbar 内容
         return $str;
     }
 
