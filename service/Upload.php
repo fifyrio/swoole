@@ -1,6 +1,6 @@
 <?php
 namespace Service;
-use Itxiao6\Upload\File;
+use Itxiao6\Upload\Upload as File;
 use Config;
 
 /**
