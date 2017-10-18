@@ -273,6 +273,7 @@ class Kernel
             # 设置公用模板
             Config::set('sys',$view_path,'view_path');
             dd(Config::get('sys','view_path'));
+            die();
             # 默认的404 页面
             $controller = new Controller;
             # 输出默认的404 页面
