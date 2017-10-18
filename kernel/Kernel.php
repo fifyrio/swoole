@@ -240,6 +240,7 @@ class Kernel
             $_SERVER['PHP_SELF'] = $param_arr['U'];
             $_SERVER['QUERY_STRING'] = $param_arr['U'];
         }
+        dd(Route::get_resources_driver());
         # 设置资源路由
         Route::set_resources_driver(
             Route::get_resources_driver() -> set_folder(Config::get('abstract')) -> set_file_type([
