@@ -18,7 +18,7 @@ class Base extends Controller{
 	    # 判断是否已经登陆过
         if($_SESSION['admin']['user']['id']<1){
             # 重定向到登陆页面
-            $this -> redirect('/Auth/login');
+            $this -> redirect('Auth.login');
         }
         # 获取后台导航
         $this -> assign('menu_list',Menu::where(['pid'=>0])
