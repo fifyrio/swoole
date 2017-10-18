@@ -4,7 +4,7 @@ use Service\Exception;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 use Itxiao6\Route\Route;
-use Itxiao6\Route\Http;
+use Service\Http;
 use Itxiao6\Route\Resources;
 use DebugBar\DebugBar;
 use DebugBar\DataCollector\ExceptionsCollector;
@@ -240,18 +240,18 @@ class Kernel
             $_SERVER['PHP_SELF'] = $param_arr['U'];
             $_SERVER['QUERY_STRING'] = $param_arr['U'];
         }
+        # 设置资源路由
+        Route::set_resources_driver(
+            Route::get_resources_driver() -> set_folder(Config::get('abstract')) -> set_file_type([
+                '.js'=>'application/javascript',
+                '.css'=>'text/css',
+                '.jpg'=>'image/jpg',
+                '.jpeg'=>'image/jpeg',
+                '.svg'=>'image/svg+xml',
+            ])
+        );
         # 设置url 分隔符
         Route::set_key_word(Config::get('sys','url_split'));
-        # 设置资源路由
-        Resources::set_folder(Config::get('abstract'));
-        # 设置资源路由的响应格式
-        Resources::set_file_type([
-            '.js'=>'application/javascript',
-            '.css'=>'text/css',
-            '.jpg'=>'image/jpg',
-            '.jpeg'=>'image/jpeg',
-            '.svg'=>'image/svg+xml',
-        ]);
         try{
             # 加载路由
             Route::init(function($app,$controller,$action){
@@ -268,14 +268,8 @@ class Kernel
                 define('ACTION_NAME',$action);
             });
         }catch (\Exception $exception){
-            $view_path = Config::get('sys','view_path');
-            $view_path[] = ROOT_PATH.'common/';
-            # 设置公用模板
-            Config::set('sys',$view_path,'view_path');
-            # 默认的404 页面
-            $controller = new Controller;
-            # 输出默认的404 页面
-            echo $controller -> getView('404');
+            # 页面找不到
+            Http::send_http_status(404);
         }
 
     }
