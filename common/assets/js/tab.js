@@ -188,9 +188,7 @@ layui.define(['element', 'common'], function (exports) {
 
                 ELEM.contentBox.find('content[data-id=' + globalTabIdIndex + ']').on('load', function () {
                     //debugger;
-                    if (_config.openWait) {
-                        layer.close(waitLoadIndex);
-                    }
+                    
                 });
             
         } else {
@@ -296,6 +294,7 @@ layui.define(['element', 'common'], function (exports) {
                 });
             });
         }
+        layer.close(waitLoadIndex);
      
      });       
     };
