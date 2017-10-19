@@ -94,7 +94,10 @@ layui.define(['element', 'common'], function (exports) {
 	 * @param {Object} data
 	 */
     Tab.prototype.tabAdd = function (data) {
-        var that = this;
+    /**
+     * 获取本对象
+     * */
+    var that = this;
     /**
      * 获取页面内容(并渲染)
      * */
@@ -103,9 +106,9 @@ layui.define(['element', 'common'], function (exports) {
         var tabIndex = that.exists(data.title);
         var waitLoadIndex;
         if (tabIndex === -1) {
-            if (_config.openWait) {
-                waitLoadIndex = layer.load(2);
-            }
+            // if (_config.openWait) {
+            //     waitLoadIndex = layer.load(2);
+            // }
             /**
              * 判断是否超出打开的窗口数量限制
              * */
