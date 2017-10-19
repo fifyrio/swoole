@@ -246,8 +246,10 @@ layui.define(['element', 'common'], function (exports) {
                             //
                             switch (target) {
                                 case 'refresh': //刷新当前
-                                    var src = ELEM.contentBox.find('content[data-id=' + id + ']')[0].src;
-                                    ELEM.contentBox.find('content[data-id=' + id + ']')[0].src = src;
+                                    var src = $(ELEM.contentBox.find('content[data-id=' + id + ']')[0]).attr('data-url');
+                                    $.get(src,{globalTabIdIndex:id},function(content){
+                                        $(ELEM.contentBox.find('content[data-id=' + id + ']')[0]).html(content);
+                                    });
                                     break;
                                 case 'closeCurrent': //关闭当前
                                     if (clickIndex !== 0) {
