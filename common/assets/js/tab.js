@@ -94,11 +94,11 @@ layui.define(['element', 'common'], function (exports) {
 	 * @param {Object} data
 	 */
     Tab.prototype.tabAdd = function (data) {
+        var that = this;
     /**
      * 获取页面内容(并渲染)
      * */
      $.get(data.href,{globalTabIdIndex:globalTabIdIndex},function(content){
-        var that = this;
         var _config = that.config;
         var tabIndex = that.exists(data.title);
         var waitLoadIndex;
