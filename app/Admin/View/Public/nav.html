@@ -1,0 +1,58 @@
+<style>
+    .layui-collapse{border: none;}
+    .layui-nav-child dd.layui-this a{color: #c2c2c2;}
+    .layui-colla-item{border:none;}
+    .layui-colla-title{background-color: #393D49;}
+    .layui-colla-title:hover{background-color: #4e5465;}
+    .layui-colla-content{padding: 0 15px;background-color: #393D49;border:none;}
+    .layui-colla-icon{left: 42px;}
+</style>
+<div class="layui-side layui-bg-black" id="admin-side">
+    <div class="layui-side-scroll" id="admin-navbar-side" lay-filter="side">
+        <ul class="layui-nav layui-nav-tree beg-navbar">
+            @foreach(\App\Model\Menu::where(['pid'=>0]) -> orderBy('sort','DESC') -> get() as $item)
+            <li class="layui-nav-item"><a href="javascript:;">
+                <i class="layui-icon" data-icon="{{$item -> icon}}">{{$item -> icon}}</i><cite>{{$item -> title}}</cite><span
+                    class="layui-nav-more"></span></a>
+                <dl class="layui-nav-child">
+                    @if($item -> son)
+                        @foreach($item -> son as $son)
+                            @if(\App\Model\Menu::where(['pid'=>$son -> id]) -> count() == 0)
+                            <dd title="{{$son -> title}}">
+                                <a href="javascript:;"
+                                   title="{{$son -> title}}"  data-url="{{$son -> href}}" >
+                                    <i class="layui-icon" data-icon="{{$son -> icon}}">{{$son -> icon}}</i>
+                                    <cite>{{$son -> title}}</cite>
+                                </a>
+                            </dd>
+                            @else
+                            <dd>
+                                <ul class="layui-collapse" lay-filter="test" lay-accordion>
+                                    <li class="layui-colla-item">
+                                        <a href="javascript:;" class="layui-colla-title">
+                                            <i class="layui-icon" data-icon="{{$son -> icon}}">{{$son -> icon}}</i>
+                                            <cite>{{$son -> title}}</cite>
+                                        </a>
+                                        <dl class="layui-colla-content">
+                                            @foreach($son -> son as $sson)
+                                            <dd title="{{$sson -> title}}">
+                                                <a href="javascript:;" title="{{$sson -> title}}" data-url="{{$sson -> href}}">
+                                                    <i class="layui-icon" data-icon="{{$sson -> icon}}">{{$sson -> icon}}</i>
+                                                    <cite>{{$sson -> title}}</cite>
+                                                </a>
+                                            </dd>
+                                            @endforeach
+                                        </dl>
+                                    </li>
+                                </ul>
+                            </dd>
+                            @endif
+                        @endforeach
+                    @endif
+                </dl>
+            </li>
+            @endforeach
+            <span class="layui-nav-bar" style="top: 67.5px; height: 0px; opacity: 0;"></span>
+        </ul>
+    </div>
+</div>
