@@ -101,7 +101,7 @@ layui.define(['element', 'common'], function (exports) {
     /**
      * 获取页面内容(并渲染)
      * */
-     $.get(data.href,{globalTabIdIndex:globalTabIdIndex},function(content) use(that,this){
+     $.get(data.href,{globalTabIdIndex:globalTabIdIndex},function(content){
         var _config = that.config;
         var tabIndex = that.exists(data.title);
         var waitLoadIndex;
