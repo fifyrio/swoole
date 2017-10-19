@@ -2,5 +2,7 @@
     <h1>Hello World</h1>
 </content>
 <script type="text/javascript">
-    alert('load success');
+    layui.use(['layer','paging', 'form'], function() {
+        layer.msg('login success');
+    });
 </script>
