@@ -101,14 +101,14 @@ layui.define(['element', 'common'], function (exports) {
     /**
      * 获取页面内容(并渲染)
      * */
-     $.get(data.href,{globalTabIdIndex:globalTabIdIndex},function(content){
+     $.get(data.href,{globalTabIdIndex:globalTabIdIndex},function(content) use(this){
         var _config = that.config;
         var tabIndex = that.exists(data.title);
         var waitLoadIndex;
         if (tabIndex === -1) {
-            // if (_config.openWait) {
-            //     waitLoadIndex = layer.load(2);
-            // }
+            if (_config.openWait) {
+                waitLoadIndex = layer.load(2);
+            }
             /**
              * 判断是否超出打开的窗口数量限制
              * */
@@ -135,7 +135,7 @@ layui.define(['element', 'common'], function (exports) {
                  * */
                 var title = '';
                 /**
-                 * 判断图片是否定义
+                 * 判断图标是否定义
                  * */
                 if (data.icon !== undefined) {
                     if (data.icon.indexOf('fa-') !== -1) {
