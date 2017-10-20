@@ -13,6 +13,7 @@ use Service\File;
  * @package App\Admin\Controller
  */
 class Base extends Controller{
+    protected static $debugbar = false;
 	# 构造函数
 	function __init(){
 	    # 判断是否已经登陆过

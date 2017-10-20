@@ -13,7 +13,6 @@ class Index extends Base{
     # 后台首页
     public function index()
     {
-        self::$debugbar = false;
         #渲染模板
         $this -> display();
     }
