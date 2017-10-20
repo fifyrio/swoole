@@ -24,6 +24,10 @@ class Controller
      * @var array
      */
     protected $viewData = [];
+    /**
+     * 开启调试面板
+     * @var bool
+     */
     protected static $debugbar = true;
 
     /**

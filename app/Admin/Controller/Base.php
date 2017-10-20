@@ -13,6 +13,10 @@ use Service\File;
  * @package App\Admin\Controller
  */
 class Base extends Controller{
+    /**
+     * 关闭调试面板
+     * @var bool
+     */
     protected static $debugbar = false;
 	# 构造函数
 	function __init(){
