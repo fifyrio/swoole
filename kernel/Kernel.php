@@ -65,6 +65,8 @@ class Kernel
                 putenv(preg_replace('!\n$!','',$line));
             }
         }
+        # 关闭文件
+        fclose($f);
     }
     /**
      * 启动框架
@@ -73,8 +75,6 @@ class Kernel
     {
         # 加载环境变量
         self::load_env();
-        # 关闭文件
-        fclose($f);
 
         # 设置协议头
         header("Content-Type:text/html;charset=utf-8");
