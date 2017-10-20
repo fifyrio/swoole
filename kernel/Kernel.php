@@ -45,20 +45,24 @@ class Kernel
         # 判断环境变量配置文件是否存在
         if(file_exists(ROOT_PATH.'.env')){
             # 自定义配置
-            $env = parse_ini_file(ROOT_PATH . '.env', true);
+            $f= fopen(ROOT_PATH.'.env',"r");
         }else{
             # 惯例配置
-            $env = parse_ini_file(ROOT_PATH . '.env.example', true);
+            $f= fopen(ROOT_PATH.'.env.example',"r");
         }
-        foreach ($env as $key => $val) {
-            $name = strtolower($key);
-            if (is_array($val)) {
-                foreach ($val as $k => $v) {
-                    $item = $name . '_' . strtolower($k);
-                    putenv("$item=$v");
-                }
-            } else {
-                putenv("$name=$val");
+        # 循环行
+        while (!feof($f))
+        {
+            $line = fgets($f);
+            # 替换单个空格
+            $line = preg_replace('! !','',$line);
+            # 替换连续空格
+            $line = preg_replace('! +!','',$line);
+            # 替换制表符或空格
+            $line = preg_replace('!\s+!','',$line);
+            if((!strstr($line,'#')) && $line!=''){
+                # 设置环境变量
+                putenv(preg_replace('!\n$!','',$line));
             }
         }
     }
