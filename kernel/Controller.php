@@ -218,7 +218,7 @@ class Controller
         }
         dump(defined(DATABASES_STATUS));
         dump(isset($databases_log));
-        dump($databases_log);
+        dump($databases_log);die();
         # 判断是否开启了数据库日志 并且数据库有查询语句
         if(defined(DATABASES_STATUS) && isset($databases_log) && is_array($databases_log)){
             # 遍历sql
