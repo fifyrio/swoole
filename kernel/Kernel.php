@@ -91,13 +91,19 @@ class Kernel
         }
         # 判断是否为调试模式
         if( DE_BUG === TRUE ){
-            # 屏蔽所有notice 和 warning 级别的错误
-            error_reporting(E_ALL^E_NOTICE^E_WARNING);
             $whoops = new Run;
             # 回调处理
-//            $whoops -> pushHandler(new \Whoops\Handler\CallbackHandler(function($ErrorException,$Inspector,$Run){
-//                dd(func_get_args());
-//            }));
+            $whoops -> pushHandler(new \Whoops\Handler\CallbackHandler(function($ErrorException,$Inspector,$Run){
+            # 判断是否开启了debugbar
+            if(Config::get('sys','debugbar')){
+                # 获取全局变量
+               global $debugbar;
+               global $debugbarRenderer;
+                # 遍历sql
+                $debugbar["Exceptions"]
+                    -> addException($ErrorException);
+            }
+           }));
             $PrettyPageHandler =  new PrettyPageHandler();
             # 设置错误页面标题
             $PrettyPageHandler -> setPageTitle('Minkernel-哎呀-出错了');
