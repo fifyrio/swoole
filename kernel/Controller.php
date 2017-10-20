@@ -24,7 +24,7 @@ class Controller
      * @var array
      */
     protected $viewData = [];
-    protected $debugbar = true;
+    protected static $debugbar = true;
 
     /**
      * 构造方法
