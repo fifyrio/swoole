@@ -10,6 +10,7 @@ use Itxiao6\DebugBar\DebugBar;
 use Itxiao6\DebugBar\DataCollector\ExceptionsCollector;
 use Itxiao6\DebugBar\DataCollector\MessagesCollector;
 use Itxiao6\DebugBar\DataCollector\PhpInfoCollector;
+use Itxiao6\DebugBar\DataCollector\RequestDataCollector;
 /**
 * 框架核心类
 */
@@ -127,7 +128,7 @@ class Kernel
             global $database;
 
             # 启动DEBUGBAR
-            $debugbar = new \Itxiao6\DebugBar\DebugBar();
+            $debugbar = new DebugBar();
             $debugbar->addCollector(new PhpInfoCollector());
             $debugbar->addCollector(new MessagesCollector('Time'));
             $debugbar->addCollector(new MessagesCollector('Request'));
@@ -135,7 +136,7 @@ class Kernel
             $debugbar->addCollector(new MessagesCollector('Database'));
             $debugbar->addCollector(new MessagesCollector('Application'));
             $debugbar->addCollector(new MessagesCollector('View'));
-            $debugbar->addCollector(new \DebugBar\DataCollector\RequestDataCollector());
+            $debugbar->addCollector(new RequestDataCollector());
 
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
