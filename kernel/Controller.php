@@ -10,6 +10,7 @@ use Service\DB;
 use Service\Timeer;
 use Service\Umeditor;
 use Service\Url;
+use Kernel\Config;
 
 /**
  * 控制器基类
@@ -44,6 +45,8 @@ class Controller
      */
     public function display($view=null,Array $data = [])
     {
+        # 开启输出缓存区
+        ob_start();
         # 判断是否传入的模板名称
         if($view===null){
             $view = CONTROLLER_NAME.'.'.ACTION_NAME;
@@ -52,7 +55,16 @@ class Controller
         }else{
             $view = str_replace('/','.',$view);
         }
-        exit($this -> getView($view,$data).$this -> debugbar());
+        # 获取视图
+        $this -> getView($view,$data));
+        # 获取缓存区内容
+        $content = ob_get_clean();
+        # 内容替换
+        foreach (Config::get('view_replace') as $key => $value) {
+            $content = str_replace($key,$value,$content);
+        }
+        # 输出内容
+        echo $content.$this -> debugbar();
     }
 
     /**
@@ -105,11 +117,10 @@ class Controller
         }
         # 解析模板
         $factory -> make($view,$this -> viewData);
-        # 获取渲染的结果
-        $result = $factory -> toString();
+        # 输出模板
+        echo = $factory -> toString();
         # 计时开始
         Timeer::end('【View】'.$view.' 完成');
-        return $result;
     }
 
     /**
