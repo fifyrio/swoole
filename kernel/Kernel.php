@@ -110,23 +110,25 @@ class Kernel
             # 回调处理
             $whoops -> pushHandler(new \Whoops\Handler\CallbackHandler(function($ErrorException,$Inspector,$Run){
             # 判断是否开启了debugbar
-            if(Config::get('sys','debugbar')){
-                # 获取全局变量
-               global $debugbar;
-               global $debugbarRenderer;
-                # 遍历sql
-                $debugbar["Exceptions"]
-                    -> addException($ErrorException);
-            }
+            // if(Config::get('sys','debugbar')){
+            //     # 获取全局变量
+            //    global $debugbar;
+            //    global $debugbarRenderer;
+            //     # 遍历sql
+            //     $debugbar["Exceptions"]
+            //         -> addException($ErrorException);
+            // }
            }));
             $PrettyPageHandler =  new PrettyPageHandler();
             # 设置错误页面标题
             $PrettyPageHandler -> setPageTitle('Minkernel-哎呀-出错了');
-            # 输入报错的页面
-            $whoops -> pushHandler($PrettyPageHandler);
             # 判断是否为ajax
             if (\Whoops\Util\Misc::isAjaxRequest()) {
+                # 输出json 格式的 错误信息
                 $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler);
+            }else{
+                # 输入页面 格式的 报错信息
+                $whoops -> pushHandler($PrettyPageHandler);
             }
             $whoops->register();
             # 禁止所有页面缓存
