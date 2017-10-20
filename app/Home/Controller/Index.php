@@ -1,5 +1,6 @@
 <?php
 namespace App\Home\Controller;
+use App\Model\User;
 /**
  * 前台首页控制器
  * Class Index
