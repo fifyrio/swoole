@@ -56,7 +56,7 @@ class Controller
             $view = str_replace('/','.',$view);
         }
         # 获取视图
-        $this -> getView($view,$data));
+        $this -> getView($view,$data);
         # 获取缓存区内容
         $content = ob_get_clean();
         # 内容替换
