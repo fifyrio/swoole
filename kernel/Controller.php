@@ -120,7 +120,7 @@ class Controller
         # 输出模板
         echo $factory -> toString();
         # 计时开始
-        Timeer::end('【View】'.$view.' 完成');
+        Timeer::end('【View】'.$view.' ');
     }
 
     /**
