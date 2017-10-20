@@ -151,7 +151,7 @@ class Kernel
             $debugbar->addCollector(new MessagesCollector('Database'));
             $debugbar->addCollector(new MessagesCollector('Application'));
             $debugbar->addCollector(new MessagesCollector('View'));
-            $debugbar->addCollector(new ExceptionsCollector());
+            $debugbar->addCollector(new \DebugBar\DataCollector\RequestDataCollector());
 
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
