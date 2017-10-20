@@ -221,7 +221,14 @@ class Controller
             # 遍历sql
             foreach (DB::DB_LOG() as $key => $value) {
                 $debugbar["Database"]
-                    ->addMessage('语句:'.$value['query'].' 耗时:'.$value['time'].' 参数:'.$value['bindings']);
+                    ->addMessage('语句:'.
+                        $value['query'].
+                        ' 耗时:'.
+                        $value['time'].
+                        ' 参数:'.
+                        json_encode($value['bindings']));
+                # 数据库查询耗时
+                $debugbar['Time'] -> addMessage('【Database】'.$value['query'].' 用时:'.$value['time'].'秒');
             }
         }
         # 判断是否开启debugbar
