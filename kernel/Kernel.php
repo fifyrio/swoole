@@ -92,6 +92,8 @@ class Kernel
         }
         # 判断是否为调试模式
         if( DE_BUG === TRUE ){
+            # 屏蔽提示错误和警告错误
+            error_reporting(E_ALL ^ E_NOTICE);
             # 运行Whoops 构造器
             $whoops = new Run;
             # 判断是否为ajax
