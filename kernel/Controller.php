@@ -208,18 +208,16 @@ class Controller
      */
     protected function debugbar(){
         $str = '';
-        # 获取全局变量
-        global $debugbar;
-        global $debugbarRenderer;
-        # 获取数据库查询记录
-        $databases_log = DB::DB_LOG();
+        # 判断是否开启debugbar
+        if(Config::get('sys','debugbar')){
+            # 获取全局变量
+            global $debugbar;
+            global $debugbarRenderer;
+            # 获取数据库查询记录
+            $databases_log = DB::DB_LOG();
+        }
         # 判断是否开启了数据库日志 并且数据库有查询语句
-        if(defined(DATABASES_STATUS) && is_array($databases_log) && Config::get('sys','debugbar')){
-            # 遍历计时器事件
-            foreach (Timeer::get_event() as $item) {
-                $debugbar["Time"]
-                    ->addMessage($item['message']);
-            }
+        if(defined(DATABASES_STATUS) && isset($databases_log) && is_array($databases_log)){
             # 遍历sql
             foreach (DB::DB_LOG() as $key => $value) {
                 $debugbar["Database"]

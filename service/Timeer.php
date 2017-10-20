@@ -1,5 +1,7 @@
 <?php
 namespace Service;
+use Kernel\Config;
+use Service\DB;
 /**
  * 计时器
  * Class Timeer
@@ -38,10 +40,14 @@ class Timeer{
         self::$end_time = explode(' ',microtime());
         $thistime = self::$end_time[0]+self::$end_time[1]-(self::$start_time[0]+self::$start_time[1]);
         $thistime = round($thistime,3);
-        self::$event_time[] = ['message'=>$name.'用时:'.$thistime.'秒'];
+        # 判断是否开启debugbar
+        if(Config::get('sys','debugbar')){
+            # 获取全局变量
+            global $debugbar;
+            global $debugbarRenderer;
+            # 添加事件信息到debugbar
+            $debugbar["Time"] -> addMessage($name.'用时:'.$thistime.'秒');
+        }
         self::$start_time = explode(' ',microtime());
-    }
-    public static function get_event(){
-        return self::$event_time;
     }
 }
