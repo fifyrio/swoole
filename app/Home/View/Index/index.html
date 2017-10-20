@@ -12,15 +12,13 @@
 <body>
 
 @include('Public.header')
-
-
 <div class="main layui-clear">
   <div class="wrap">
     <div class="content">
       <div class="fly-tab fly-tab-index">
         @include('Public.menu')
         @include('Public.search')
-        <a href="/Word/add.html" class="layui-btn jie-add">发布问题</a>
+        <a href="/Word/add.html" class="layui-btn jie-add">{{$test_title}}发布问题</a>
       </div>
       
       
