@@ -118,7 +118,7 @@ class Controller
         # 解析模板
         $factory -> make($view,$this -> viewData);
         # 输出模板
-        echo = $factory -> toString();
+        echo $factory -> toString();
         # 计时开始
         Timeer::end('【View】'.$view.' 完成');
     }
