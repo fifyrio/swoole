@@ -24,6 +24,7 @@ class Controller
      * @var array
      */
     protected $viewData = [];
+    protected $debugbar = true;
 
     /**
      * 构造方法
@@ -64,7 +65,7 @@ class Controller
             $content = str_replace($key,$value,$content);
         }
         # 输出内容
-        exit($content.$this -> debugbar());
+        exit($content.(self::$debugbar?$this -> debugbar():''));
     }
 
     /**
