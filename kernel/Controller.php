@@ -64,7 +64,7 @@ class Controller
             $content = str_replace($key,$value,$content);
         }
         # 输出内容
-        echo $content.$this -> debugbar();
+        exit($content.$this -> debugbar());
     }
 
     /**
