@@ -38,21 +38,6 @@ class Kernel
         }
     }
     /**
-     * 接管异常
-     * */
-    public static function appException($e){
-        dd($e);
-        # 判断是否开启了debugbar
-        if(Config::get('sys','debugbar')){
-            # 获取全局变量
-           global $debugbar;
-           global $debugbarRenderer;
-            # 遍历sql
-            $debugbar["Exceptions"]
-                -> addException($e);
-        }
-    }
-    /**
      * 加载环境变量
      * */
     public static function load_env()
@@ -88,7 +73,6 @@ class Kernel
      */
     public static function start()
     {
-        set_exception_handler('Kernel\Kernel::appException');
         # 加载环境变量
         self::load_env();
 
@@ -143,7 +127,7 @@ class Kernel
             global $database;
 
             # 启动DEBUGBAR
-            $debugbar = new DebugBar();
+            $debugbar = new \Itxiao6\DebugBar\DebugBar();
             $debugbar->addCollector(new PhpInfoCollector());
             $debugbar->addCollector(new MessagesCollector('Time'));
             $debugbar->addCollector(new MessagesCollector('Request'));
