@@ -216,22 +216,22 @@ class Controller
             # 获取数据库查询记录
             $databases_log = DB::DB_LOG();
         }
-        dump(defined(DATABASES_STATUS));
-        dump(isset($databases_log));
-        dump($databases_log);die();
         # 判断是否开启了数据库日志 并且数据库有查询语句
-        if(defined(DATABASES_STATUS) && isset($databases_log) && is_array($databases_log)){
+        if(defined('DATABASES_STATUS') && isset($databases_log) && is_array($databases_log)){
             # 遍历sql
             foreach (DB::DB_LOG() as $key => $value) {
                 $debugbar["Database"]
                     ->addMessage('语句:'.$value['query'].' 耗时:'.$value['time'].' 参数:'.$value['bindings']);
             }
         }
-        $str .= preg_replace(
+        # 判断是否开启debugbar
+        if(Config::get('sys','debugbar')){
+            $str .= preg_replace(
                 '!\/vendor\/maximebf\/debugbar\/src\/DebugBar\/!',
                 '/',
                 $debugbarRenderer->renderHead());
-        $str .= $debugbarRenderer->render();
+            $str .= $debugbarRenderer->render();
+        }
         # 返回debugbar 内容
         return $str;
     }

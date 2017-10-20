@@ -29,6 +29,7 @@ class DB extends Manager
             if(Config::get('sys','database_log')){
                 Manager::connection()->enableQueryLog();
             }
+            dd('22');
             # 定义数据库已经连接
             define('DATABASES_STATUS',true);
         }
