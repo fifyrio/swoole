@@ -6,10 +6,10 @@ use Whoops\Handler\PrettyPageHandler;
 use Itxiao6\Route\Route;
 use Service\Http;
 use Itxiao6\Route\Resources;
-use DebugBar\DebugBar;
-use DebugBar\DataCollector\ExceptionsCollector;
-use DebugBar\DataCollector\MessagesCollector;
-use DebugBar\DataCollector\PhpInfoCollector;
+use Itxiao6\DebugBar\DebugBar;
+use Itxiao6\DebugBar\DataCollector\ExceptionsCollector;
+use Itxiao6\DebugBar\DataCollector\MessagesCollector;
+use Itxiao6\DebugBar\DataCollector\PhpInfoCollector;
 /**
 * 框架核心类
 */
