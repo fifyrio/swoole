@@ -41,6 +41,7 @@ class Kernel
      * 接管异常
      * */
     public static function appException($e){
+        dd($e);
         # 判断是否开启了debugbar
         if(Config::get('sys','debugbar')){
             # 获取全局变量
