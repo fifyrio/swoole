@@ -1,5 +1,7 @@
 <?php
 namespace Kernel;
+use Itxiao6\Session\Session;
+use Service\DB;
 use Service\Exception;
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
@@ -232,15 +234,24 @@ class Kernel
             Config::get('sys','session_cookie_path'),
             Config::get('sys','session_range')
         );
-
-        # 判断session存储方式
+        # 判断session 存储方式
         if(env('session_save') == 'redis'){
-            ini_set("session.save_handler", "redis");
-            ini_set("session.save_path",
-                "tcp://".Config::get('redis','host').":".Config::get('redis','port'));
+            Session::set_driver(env('session_save'));
+            Session::session_start(
+                Config::get('redis','host'),
+                Config::get('redis','port'),
+                Config::get('redis','pwd'));
+        }else if(env('session_save') == 'mysql'){
+            Session::set_driver('mysql');
+            Session::session_start(DB::GET_PDO());
         }
-        # 启动session
-        session_start();
+        if(Session::get_driver()=='Local'){
+            # 启动session
+            Session::session_start(CACHE_SESSION);
+        }else{
+            # 启动Session
+            Session::session_start();
+        }
         # 获取API模式传入的参数
         $param_arr = getopt('U:');
         # 判断是否为API模式

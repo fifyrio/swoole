@@ -14,7 +14,7 @@ class DB extends Manager
     /**
      * 数据库链接
      */
-    public static function connection_databases(){
+    protected static function connection_databases(){
         # 判断数据库是否已经连接
         if ( defined('DATABASES_STATUS') === false) {
             # 连接数据库
@@ -32,6 +32,16 @@ class DB extends Manager
             # 定义数据库已经连接
             define('DATABASES_STATUS',true);
         }
+    }
+
+    /**
+     * 获取PDO 实例
+     * @return \PDO
+     */
+    public static function GET_PDO()
+    {
+        self::connection_databases();
+        return static::connection() -> getPdo();
     }
 
     /**
