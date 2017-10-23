@@ -234,19 +234,18 @@ class Kernel
             Config::get('sys','session_cookie_path'),
             Config::get('sys','session_range')
         );
-        dd(env('session_save'));
         # 判断session 存储方式
-        if(env('session_save') == 'redis'){
-            Session::set_driver(env('session_save'));
-            Session::session_start(
-                Config::get('redis','host'),
-                Config::get('redis','port'),
-                Config::get('redis','pwd'));
-        }else if(env('session_save') == 'mysql'){
+//        if(env('session_save') == 'redis'){
+//            Session::set_driver(env('session_save'));
+//            Session::session_start(
+//                Config::get('redis','host'),
+//                Config::get('redis','port'),
+//                Config::get('redis','pwd'));
+//        }else if(env('session_save') == 'mysql'){
             Session::set_driver('mysql');
             Session::session_start(DB::GET_PDO());
 
-        }
+//        }
         if(Session::get_driver()=='Local'){
             # 启动session
             Session::session_start(CACHE_SESSION);
