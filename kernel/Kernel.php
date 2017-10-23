@@ -242,7 +242,7 @@ class Kernel
 //                Config::get('redis','port'),
 //                Config::get('redis','pwd'));
 //        }else if(env('session_save') == 'mysql'){
-            Session::set_driver('mysql');
+            Session::set_driver('Mysql');
             Session::session_start(DB::GET_PDO());
 
 //        }
