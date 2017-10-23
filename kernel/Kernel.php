@@ -221,9 +221,6 @@ class Kernel
 
         # 设置SessionCookie名称
         session_name('MiniKernelSession');
-
-        # 修改session文件的储存位置
-        session_save_path(CACHE_SESSION);
         
         # 设置图片上传临时目录
         ini_set('upload_tmp_dir', UPLOAD_TMP_DIR);
