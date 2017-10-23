@@ -244,6 +244,7 @@ class Kernel
         }else if(env('session_save') == 'mysql'){
             Session::set_driver('mysql');
             Session::session_start(DB::GET_PDO());
+            dd(env('session_save'));
         }
         if(Session::get_driver()=='Local'){
             # 启动session
