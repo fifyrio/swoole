@@ -232,17 +232,17 @@ class Kernel
             Config::get('sys','session_range')
         );
         # 判断session 存储方式
-//        if(env('session_save') == 'redis'){
-//            Session::set_driver(env('session_save'));
-//            Session::session_start(
-//                Config::get('redis','host'),
-//                Config::get('redis','port'),
-//                Config::get('redis','pwd'));
-//        }else if(env('session_save') == 'mysql'){
+        if(env('session_save') == 'redis'){
+            Session::set_driver('Redis');
+            Session::session_start(
+                Config::get('redis','host'),
+                Config::get('redis','port'),
+                Config::get('redis','pwd'));
+        }else if(env('session_save') == 'mysql'){
             Session::set_driver('Mysql');
             Session::session_start(DB::GET_PDO());
-
-//        }
+        }
+        # 判断是否为本地存储
         if(Session::get_driver()=='Local'){
             # 启动session
             Session::session_start(CACHE_SESSION);
