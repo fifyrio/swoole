@@ -246,10 +246,7 @@ layui.define(['element', 'common'], function (exports) {
                             //
                             switch (target) {
                                 case 'refresh': //刷新当前
-                                    console.log(id);
-                                    console.log($('content[data-id=' + id + ']'));
-                                    var src = $('content[data-id=' + id + ']').attr('data-url');
-                                    console.log(src);
+                                    var src = $('content[data-id=' + (id-1) + ']').attr('data-url');
                                     $.get(src,{globalTabIdIndex:id},function(content){
                                         $(ELEM.contentBox.find('content[data-id=' + id + ']')[0]).html(content);
                                     });
