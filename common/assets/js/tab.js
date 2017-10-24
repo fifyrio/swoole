@@ -246,6 +246,7 @@ layui.define(['element', 'common'], function (exports) {
                             //
                             switch (target) {
                                 case 'refresh': //刷新当前
+                                    console.log(id);
                                     console.log($('content[data-id=' + id + ']'));
                                     var src = $('content[data-id=' + id + ']').attr('data-url');
                                     console.log(src);
