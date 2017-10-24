@@ -188,9 +188,9 @@ layui.define(['element', 'common'], function (exports) {
 
                 ELEM.contentBox.find('content[data-id=' + globalTabIdIndex + ']').on('load', function () {
                     //debugger;
-                    
+
                 });
-            
+
         } else {
             element.tabChange(ELEM.tabFilter, that.getTabId(data.title));
             //自动刷新
@@ -247,6 +247,7 @@ layui.define(['element', 'common'], function (exports) {
                             switch (target) {
                                 case 'refresh': //刷新当前
                                     var src = $(ELEM.contentBox.find('content[data-id=' + id + ']')).attr('data-url');
+                                    console.log(src);
                                     $.get(src,{globalTabIdIndex:id},function(content){
                                         $(ELEM.contentBox.find('content[data-id=' + id + ']')[0]).html(content);
                                     });
@@ -297,8 +298,8 @@ layui.define(['element', 'common'], function (exports) {
             });
         }
         layer.close(waitLoadIndex);
-     
-     });       
+
+     });
     };
 
 
