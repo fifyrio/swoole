@@ -14,7 +14,7 @@ class DB extends Manager
     /**
      * 数据库链接
      */
-    protected static function connection_databases(){
+    public static function connection_databases(){
         # 判断数据库是否已经连接
         if ( defined('DATABASES_STATUS') === false) {
             # 连接数据库
