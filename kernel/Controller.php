@@ -28,7 +28,7 @@ class Controller
      * 开启调试面板
      * @var bool
      */
-    protected static $debugbar = true;
+    protected $debugbar = true;
 
     /**
      * 构造方法
@@ -69,7 +69,7 @@ class Controller
             $content = str_replace($key,$value,$content);
         }
         # 输出内容
-        exit($content.(self::$debugbar?$this -> debugbar():''));
+        exit($content.($this -> debugbar?$this -> debugbar():''));
     }
 
     /**

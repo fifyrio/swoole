@@ -17,7 +17,7 @@ class Base extends Controller{
      * 关闭调试面板
      * @var bool
      */
-    protected static $debugbar = false;
+    protected $debugbar = false;
 	# 构造函数
 	function __init(){
 	    # 判断是否已经登陆过
