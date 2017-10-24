@@ -1,8 +1,15 @@
-<content data-id="{{$_GET['globalTabIdIndex']}}" data-url="{{'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']}}">
+@extends('Public.layout')
+
+@section('content')
     <h1>Hello World</h1>
-</content>
+
+
+@endsection
+
+@section('jsvascript')
 <script type="text/javascript">
     layui.use(['layer','paging', 'form'], function() {
         layer.msg('login success');
     });
 </script>
+@endsection
