@@ -34,6 +34,10 @@ class Cache
                     $redis = new Redis();
                     # 链接redis
                     $redis -> connect(Config::get('redis','host'), Config::get('redis','port'));
+                    # 判断密码是否存在
+                    if(Config::get('redis','pwd')!=null){
+                        $redis -> auth(Config::get('redis','pwd'));
+                    }
                     # 实例化缓存驱动
                     $redis_driver = new RedisCache;
                     # 设置缓存驱动的链接
