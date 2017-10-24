@@ -220,7 +220,7 @@ class Kernel
         define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
 
         # 设置SessionCookie名称
-        session_name('MiniKernelSession');
+        session_name(Config::get('sys','session_name'));
         
         # 设置图片上传临时目录
         ini_set('upload_tmp_dir', UPLOAD_TMP_DIR);

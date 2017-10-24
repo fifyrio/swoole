@@ -23,6 +23,8 @@ return [
     'session_range' => $_SERVER['HTTP_HOST'],
     # 此 cookie 的有效路径
     'session_cookie_path' => '/',
+    # session 的 Cookie name
+    'session_name' => 'Minkernel',
     # ajax提交的默认变量
     'var_ajax_submit'=>'ajax',
     # url 路由 分隔符
