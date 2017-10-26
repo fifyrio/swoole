@@ -55,12 +55,12 @@
                 form.on('submit(login)',function(data){
                     $.post('',{username:data.field.userName,password:data.field.password},function(data){
                         if(data.status==1){
+                            layer.msg('登录成功');
                             // 登录成功
                             window.location = data.url;
                         }else{
-                            alert(data.message);
                             // 登录失败
-                            window.location.href = window.location.href+"?message=登录失败";
+                            layer.msg(data.message);
                         }
                     });
                     return false;
