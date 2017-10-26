@@ -117,21 +117,23 @@
 	<script type="text/javascript" src="/assets/plugins/layui/layui.js"></script>
 	<script src="/assets/js/index.js"></script>
 	<script>
+        var $,layer;
         layui.use('layer', function() {
-            var $ = layui.jquery,
-                layer = layui.layer;
-
-            $('#video1').on('click', function() {
-                layer.open({
-                    title: 'YouTube',
-                    maxmin: true,
-                    type: 2,
-                    content: 'video.html',
-                    area: ['800px', '500px']
-                });
-            });
+            /**
+			 * 获取Jquery 对象
+             * @type {string|*}
+             */
+            $ = layui.jquery;
+            /**
+			 * 获取layer
+             */
+            layer = layui.layer;
+            /**
+			 * 绑定清除缓存事件
+             */
             $('#clear_cache').on('click', function() {
                 // 清除缓存
+				layer.msg('清除成功');
             });
         });
 	</script>
