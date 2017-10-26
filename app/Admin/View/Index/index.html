@@ -9,9 +9,9 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="format-detection" content="telephone=no">
-	<link rel="stylesheet" href="/assets/plugins/layui/css/layui.css" media="all" />
-	<link rel="stylesheet" href="/assets/css/global.css" media="all">
-	<link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="__PUBLIC__assets/plugins/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="__PUBLIC__assets/css/global.css" media="all">
+	<link rel="stylesheet" href="__PUBLIC__assets/plugins/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
 <body>
@@ -19,7 +19,7 @@
 	<div class="layui-header header header-demo">
 		<div class="layui-main">
 			<div class="admin-login-box">
-				<a class="logo" style="left: 0;" href="http://beginner.zhengjinfan.cn/demo/beginner_admin/">
+				<a class="logo" style="left: 0;" href="jsvascript:;">
 					<span style="font-size: 22px;">Minkernel</span>
 				</a>
 				<div class="admin-side-toggle">
@@ -41,7 +41,7 @@
 				</li>
 				<li class="layui-nav-item">
 					<a href="javascript:void(0);" class="admin-header-user">
-						<img src="/assets/images/0.jpg" />
+						<img src="__PUBLIC__assets/images/0.jpg" />
 						<span>beginner</span>
 					</a>
 					<dl class="layui-nav-child">
@@ -64,7 +64,7 @@
 			</ul>
 			<ul class="layui-nav admin-header-item-mobile">
 				<li class="layui-nav-item">
-					<a href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
+					<a href="/Auth/logout.html"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
 				</li>
 			</ul>
 		</div>
@@ -77,13 +77,13 @@
 	<div class="layui-body" style="bottom: 0;border-left: solid 2px #1AA094;" id="admin-body">
 		<div class="layui-tab admin-nav-card layui-tab-brief" lay-filter="admin-tab">
 			<ul class="layui-tab-title">
-				<li class="layui-this">
+				<li class="layui-this" data-index="0">
 					<i class="fa fa-dashboard" aria-hidden="true"></i>
 					<cite>控制面板</cite>
 				</li>
 			</ul>
 			<div class="layui-tab-content" style="min-height: 150px; padding: 5px 0 0 0;">
-				<div class="layui-tab-item layui-show">
+				<div class="layui-tab-item layui-show" data-content="0">
 					@include('Index.main')
 				</div>
 			</div>
