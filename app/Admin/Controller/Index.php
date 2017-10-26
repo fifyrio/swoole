@@ -21,7 +21,8 @@ class Index extends Base{
     {
         $this -> display();
     }
-    public function table(){
+    public function table()
+    {
         $this -> display();
     }
 }
