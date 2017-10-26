@@ -105,6 +105,9 @@ layui.define(['element', 'common'], function (exports) {
         var _config = that.config;
         var tabIndex = that.exists(data.title);
         var waitLoadIndex;
+         /**
+          * 判断tab 是否已经添加过了
+          */
         if (tabIndex === -1) {
             if (_config.openWait) {
                 waitLoadIndex = layer.load(2);
@@ -129,75 +132,104 @@ layui.define(['element', 'common'], function (exports) {
                     }
                 }
             }
+            /**
+             * 全局索引自增
+             */
             globalTabIdIndex++;
-                /**
-                 * 定义页面标题
-                 * */
-                var title = '';
-                /**
-                 * 判断图标是否定义
-                 * */
-                if (data.icon !== undefined) {
-                    if (data.icon.indexOf('fa-') !== -1) {
-                        title += '<i class="fa ' + data.icon + '" aria-hidden="true"></i>';
-                    } else {
-                        title += '<i class="layui-icon">' + data.icon + '</i>';
-                    }
+            /**
+             * 定义页面标题
+             * */
+            var title = '';
+            /**
+             * 判断图标是否定义
+             * */
+            if (data.icon !== undefined) {
+                if (data.icon.indexOf('fa-') !== -1) {
+                    title += '<i class="fa ' + data.icon + '" aria-hidden="true"></i>';
+                } else {
+                    title += '<i class="layui-icon">' + data.icon + '</i>';
                 }
-                title += '<cite>' + data.title + '</cite>';
-                if (_config.closed) {
-                    title += '<i class="layui-icon layui-unselect layui-tab-close" data-id="' + globalTabIdIndex + '">&#x1006;</i>';
-                }
-                var tabId = new Date().getTime();
-                //添加tab
-                element.tabAdd(ELEM.tabFilter, {
-                    title: title,
-                    content: content,
-                    id: tabId
-                });
-                //content 自适应
-                ELEM.contentBox.find('content[data-id=' + globalTabIdIndex + ']').each(function () {
-                    $(this).height(ELEM.contentBox.height());
-                });
-                if (_config.closed) {
-                    //监听关闭事件
-                    ELEM.titleBox.find('li').children('i.layui-tab-close[data-id=' + globalTabIdIndex + ']').on('click', function () {
-                        if (_config.closeBefore) {//tab关闭之前触发
-                            var flag = _config.closeBefore({
-                                title: data.title,
-                                url: data.href,
-                                id: globalTabIdIndex,
-                                tabId: tabId
-                            });
-                            if (flag) {
-                                element.tabDelete(ELEM.tabFilter, $(this).parent('li').attr('lay-id')).init();
-                                if (_config.contextMenu) {
-                                    $(document).find('div.uiba-contextmenu').remove(); //移除右键菜单dom
-                                }
-                            }
-                        } else {
+            }
+            title += '<cite>' + data.title + '</cite>';
+            if (_config.closed) {
+                title += '<i class="layui-icon layui-unselect layui-tab-close" data-id="' + globalTabIdIndex + '">&#x1006;</i>';
+            }
+            /**
+             * 获取随机的TabId
+             * @type {number}
+             */
+            var tabId = new Date().getTime();
+            /**
+             * 添加tab
+             */
+            element.tabAdd(ELEM.tabFilter, {
+                title: title,
+                content: content,
+                id: tabId
+            });
+            /**
+             * content 自适应
+             */
+            ELEM.contentBox.find('content[data-id=' + globalTabIdIndex + ']').each(function () {
+                $(this).height(ELEM.contentBox.height());
+            });
+            /**
+             * 判断是否存在关闭按钮
+             */
+            if (_config.closed) {
+                /**
+                 * 监听关闭事件
+                 */
+                ELEM.titleBox.find('li').children('i.layui-tab-close[data-id=' + globalTabIdIndex + ']').on('click', function () {
+                    /**
+                     * 在关闭前触发
+                     */
+                    if (_config.closeBefore) {
+                        var flag = _config.closeBefore({
+                            title: data.title,
+                            url: data.href,
+                            id: globalTabIdIndex,
+                            tabId: tabId
+                        });
+                        if (flag) {
                             element.tabDelete(ELEM.tabFilter, $(this).parent('li').attr('lay-id')).init();
                             if (_config.contextMenu) {
                                 $(document).find('div.uiba-contextmenu').remove(); //移除右键菜单dom
                             }
                         }
-                    });
-                };
-                //切换到当前打开的选项卡
-                element.tabChange(ELEM.tabFilter, that.getTabId(data.title));
-
-                ELEM.contentBox.find('content[data-id=' + globalTabIdIndex + ']').on('load', function () {
-                    //debugger;
-
+                    } else {
+                        element.tabDelete(ELEM.tabFilter, $(this).parent('li').attr('lay-id')).init();
+                        if (_config.contextMenu) {
+                            $(document).find('div.uiba-contextmenu').remove(); //移除右键菜单dom
+                        }
+                    }
                 });
+            }
+            /**
+             * 切换到当前打开的选项卡
+             */
+            element.tabChange(ELEM.tabFilter, that.getTabId(data.title));
+            /**
+             * 调试
+             */
+            ELEM.contentBox.find('content[data-id=' + globalTabIdIndex + ']').on('load', function () {
+                //debugger;
+            });
 
         } else {
+            /**
+             * 绑定修改事件
+             */
             element.tabChange(ELEM.tabFilter, that.getTabId(data.title));
-            //自动刷新
+            /**
+             * 自动刷新
+             */
             if (_config.autoRefresh) {
                 _config.elem.find('div.layui-tab-content > div').eq(tabIndex).children('content')[0].contentWindow.location.reload();
             }
         }
+
+
         if (_config.contextMenu) {
             element.on('tab(' + ELEM.tabFilter + ')', function (data) {
                 $(document).find('div.admin-contextmenu').remove();
@@ -296,6 +328,9 @@ layui.define(['element', 'common'], function (exports) {
                 });
             });
         }
+         /**
+          * 关闭调试框
+          */
         layer.close(waitLoadIndex);
 
      });
