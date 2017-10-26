@@ -60,7 +60,7 @@ class Auth extends Controller
     public function logout()
     {
         $_SESSION['admin'] = null;
-        redirect('/Auth/login.html');
+        $this -> redirect('Auth.login');
     }
     # 清除缓存
     public function clear(){
