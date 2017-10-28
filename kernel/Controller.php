@@ -69,7 +69,7 @@ class Controller
             $content = str_replace($key,$value,$content);
         }
         # 输出内容
-        exit($content.($this -> debugbar?$this -> debugbar():''));
+        Http::output($content.($this -> debugbar?$this -> debugbar():''));
     }
 
     /**

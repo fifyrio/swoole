@@ -74,7 +74,7 @@ class Kernel
     /**
      * 启动框架
      */
-    public static function start()
+    public static function start($request = null,$response = null)
     {
         # 加载环境变量
         self::load_env();
@@ -146,6 +146,8 @@ class Kernel
         }
         # 注册类映射方法
         spl_autoload_register('Kernel\Kernel::auto_load');
+        # 设置请求头
+        Http::set_request($request,$response);
 
         # 定义请求常量
         define('REQUEST_METHOD',Http::REQUEST_METHOD());
