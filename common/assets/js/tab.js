@@ -1,7 +1,6 @@
 /** tab.js By Beginner Emain:zheng_jinfan@126.com HomePage:http://www.zhengjinfan.cn */
 layui.define(['element', 'common'], function (exports) {
     "use strict";
-
     var mod_name = 'tab',
         $ = layui.jquery,
         element = layui.element(),
@@ -229,11 +228,14 @@ layui.define(['element', 'common'], function (exports) {
             }
         }
 
-
+         /**
+          * 判断菜单是否启用的 标签栏
+          */
         if (_config.contextMenu) {
             element.on('tab(' + ELEM.tabFilter + ')', function (data) {
                 $(document).find('div.admin-contextmenu').remove();
             });
+
             ELEM.titleBox.find('li').on('contextmenu', function (e) {
                 var $that = $(e.target);
                 e.preventDefault();
@@ -246,26 +248,42 @@ layui.define(['element', 'common'], function (exports) {
                 }
                 //创建一个div
                 var div = document.createElement('div');
-                //设置一些属性
+                /**
+                 * 设置一些属性
+                 * @type {string}
+                 */
                 div.className = 'admin-contextmenu';
                 div.style.width = '130px';
                 div.style.backgroundColor = 'white';
-
+                /**
+                 * 定义右键菜单栏
+                 * @type {string}
+                 */
                 var ul = '<ul>';
-                ul += '<li data-target="refresh" title="刷新当前选项卡"><i class="fa fa-refresh" aria-hidden="true"></i> 刷新</li>';
-                ul += '<li data-target="closeCurrent" title="关闭当前选项卡"><i class="fa fa-close" aria-hidden="true"></i> 关闭当前</li>';
-                ul += '<li data-target="closeOther" title="关闭其他选项卡"><i class="fa fa-window-close-o" aria-hidden="true"></i> 关闭其他</li>';
-                ul += '<li data-target="closeAll" title="关闭全部选项卡"><i class="fa fa-window-close-o" aria-hidden="true"></i> 全部关闭</li>';
+                ul += '<li data-target="refresh" title="刷新当前选项卡">' +
+                    '<i class="fa fa-refresh" aria-hidden="true"></i> 刷新</li>';
+                ul += '<li data-target="closeCurrent" title="关闭当前选项卡">' +
+                    '<i class="fa fa-close" aria-hidden="true"></i> 关闭当前</li>';
+                ul += '<li data-target="closeOther" title="关闭其他选项卡">' +
+                    '<i class="fa fa-window-close-o" aria-hidden="true"></i> 关闭其他</li>';
+                ul += '<li data-target="closeAll" title="关闭全部选项卡">' +
+                    '<i class="fa fa-window-close-o" aria-hidden="true"></i> 全部关闭</li>';
                 ul += '</ul>';
                 div.innerHTML = ul;
                 div.style.top = e.pageY + 'px';
                 div.style.left = e.pageX + 'px';
-                //将dom添加到body的末尾
+                /**
+                 * 将dom添加到body的末尾
+                 */
                 document.getElementsByTagName('body')[0].appendChild(div);
 
-                //获取当前点击选项卡的id值
+                /**
+                 * 获取当前点击选项卡的id值
+                 */
                 var id = $($target).find('i.layui-tab-close').data('id');
-                //获取当前点击选项卡的索引值
+                /**
+                 * 获取当前点击选项卡的索引值
+                 */
                 var clickIndex = $($target).attr('lay-id');
                 var $context = $(document).find('div.admin-contextmenu');
                 if ($context.length > 0) {
