@@ -4,6 +4,7 @@ use App\Model\AdminNode;
 use ReflectionClass;
 use ReflectionMethod;
 use Reflection;
+use Service\Http;
 
 /**
  * 后台权限管理
@@ -64,7 +65,7 @@ class Jurisdiction extends Base{
     # 添加结点
     public function add_node()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             dd($_POST);
         }else{
             $this -> display();

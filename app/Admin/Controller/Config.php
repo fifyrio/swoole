@@ -1,6 +1,6 @@
 <?php
 namespace App\Admin\Controller;
-
+use Service\Http;
 /**
  * 系统管理
  * Class System
@@ -11,7 +11,7 @@ class Config extends Base
     # 七牛配置
     public function qiniu()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             $data = [];
             # 访问key
             $data['accessKey'] = $_POST['accessKey'];
@@ -37,7 +37,7 @@ class Config extends Base
     # 阿里OSS配置
     public function alioss()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             $data = [];
             # 访问key
             $data['accessKey'] = $_POST['accessKey'];
@@ -67,7 +67,7 @@ class Config extends Base
     # 存储管理
     public function storage()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             $data = [];
             # 存储类型
             $data['type'] = $_POST['type'];
@@ -87,7 +87,7 @@ class Config extends Base
     # redis 管理
     public function redis()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             $data = [];
             # 主机
             $data['host'] = $_POST['host'];
@@ -114,7 +114,7 @@ class Config extends Base
     # 缓存管理
     public function cache()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             $data = [];
             # 存储类型
             $data['type'] = $_POST['type'];

@@ -1,6 +1,7 @@
 <?php
 namespace App\Home\Controller;
 use Kernel\Controller;
+use Service\Http;
 use Service\Url;
 use Service\Verify;
 use App\Model\User;
@@ -32,7 +33,7 @@ class Auth extends Controller
         if(isset($_SESSION['home']['user']['id']) && $_SESSION['home']['user']['id']!=''){
             $this -> redirect('Index.index');
         }
-        if(IS_POST){
+        if(Http::Http::IS_POST()()){
             try{
                 # 验证码验证
                 $verify = new Verify;
@@ -54,7 +55,7 @@ class Auth extends Controller
     # 用户注册
     public function reg()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             # 验证码验证
             $verify = new Verify;
             if(!$verify -> check($_POST['vcode'],'reg')){

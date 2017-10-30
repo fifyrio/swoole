@@ -3,6 +3,7 @@ namespace App\Admin\Controller;
 use App\Model\Admin;
 use Kernel\Controller;
 use Service\Hash;
+use Service\Http;
 
 /**
  * 后台鉴权控制器
@@ -14,7 +15,7 @@ class Auth extends Controller
     # 后台登录方法
     public function login()
     {
-        if (IS_POST) {
+        if (Http::IS_POST()) {
             # 获取用户的信息
             if($admin = Admin::where(['username' => $_POST['username']])->first()){
                 # 判断密码是否正确
@@ -31,12 +32,10 @@ class Auth extends Controller
             $this -> display();
         }
     }
-
-
     #修改管理员密码
     public function updatePassword()
     {
-        if (IS_POST) {
+        if (Http::IS_POST()) {
             if($user = Admin::where(['id'=>$_SESSION['admin']['id'],'password'=>md5($_POST['oldpwd'])])->first()){
                 if(Hash::check($_POST['oldpwd'],$user -> password)){
                     if(Admin::where(['id'=>$_SESSION['admin']['id']]) -> update(['password'=>Hash::make($_POST['pwd'])])){

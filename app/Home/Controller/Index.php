@@ -12,7 +12,7 @@ class Index extends Base{
   # 首页操作
   public function index(){
       # 渲染模板
-      var_dump(rand(0,500));
+//      var_dump(rand(0,500));
 //      Http::output('');
       #渲染模板
         $this -> display();

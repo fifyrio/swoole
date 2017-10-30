@@ -1,7 +1,7 @@
 <?php
 namespace App\Admin\Controller;
 use Service\Exception;
-
+use Service\Http;
 /**
  * 导航管理
  * Class Menu
@@ -51,7 +51,7 @@ class Menu extends Base
     # 添加导航
     public function add()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             try{
                 \App\Model\Menu::add_data($_POST);
                 $this -> message('添加成功');
@@ -70,7 +70,7 @@ class Menu extends Base
     # 修改导航
     public function edit()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             dd($_POST);
         }else{
             $this -> display();

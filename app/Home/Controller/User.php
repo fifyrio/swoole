@@ -4,6 +4,7 @@ use Itxiao6\Upload\Exception\UploadException;
 use Service\Exception;
 use Service\Upload;
 use Service\Verify;
+use Service\Http;
 
 /**
  * 用户操作类
@@ -31,7 +32,7 @@ class User extends Base
     # 基本设置
     public function set()
     {
-        if(IS_POST){
+        if(Http::IS_POST()){
             try{
                 # 修改资料
                 \App\Model\User::set_info($_POST,function($user){
