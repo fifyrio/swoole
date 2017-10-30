@@ -18,7 +18,21 @@ use Itxiao6\DebugBar\DataCollector\RequestDataCollector;
 */
 class Kernel
 {
+    /**
+     * 类影射数组
+     * @var array
+     */
     protected static $class = [];
+    /**
+     * 是否已经加载过env
+     * @var null | string
+     */
+    protected static $is_load_env = false;
+    /**
+     * 是否注册过autoload
+     * @var bool
+     */
+    protected static $is_register_autoload = false;
     /**
      * 类的映射
      */
@@ -76,21 +90,32 @@ class Kernel
      */
     public static function start($request = null,$response = null)
     {
-        # 加载环境变量
-        self::load_env();
+        if(self::$is_load_env){
+            # 加载环境变量
+            self::load_env();
+        }
+        # 是否为Swoole
+        if(defined('IS_SWOOLE') && IS_SWOOLE===true){
 
-        # 设置协议头
-        header("Content-Type:text/html;charset=utf-8");
+        }else{
+            # 设置协议头
+            header("Content-Type:text/html;charset=utf-8");
+        }
 
         # 判断是否下载了composer包
         if ( file_exists(ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php') ) {
-
             # 引用Composer自动加载规则
-            require(ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
+            require_once(ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
         }else{
-
             # 退出程序并提示
-            exit('请在项目根目录执行:composer install');
+            if(defined('IS_SWOOLE') && IS_SWOOLE===true){
+                # 发送状态码
+                self::$response->status(200);
+                # 发送内容
+                $response -> end('请在项目根目录执行:composer install');
+            }else{
+                exit('请在项目根目录执行:composer install');
+            }
         }
         # 判断是否为调试模式
         if( DE_BUG === TRUE ){
@@ -111,11 +136,15 @@ class Kernel
                 $whoops -> pushHandler($PrettyPageHandler);
             }
             $whoops->register();
-            # 禁止所有页面缓存
-            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
-            header('Cache-Control: no-cache, must-revalidate');
-            header('Pragma: no-cache');
+            if(defined('IS_SWOOLE') && IS_SWOOLE===true){
+
+            }else{
+                # 禁止所有页面缓存
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Pragma: no-cache');
+            }
         }else{
             # 屏蔽所有错误
             error_reporting(0);
@@ -144,83 +173,76 @@ class Kernel
 
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
-        # 注册类映射方法
-        spl_autoload_register('Kernel\Kernel::auto_load');
+        if(self::$is_register_autoload){
+            # 注册类映射方法
+            spl_autoload_register('Kernel\Kernel::auto_load');
+        }
         # 设置请求头
         Http::set_request($request,$response);
 
-        # 定义请求常量
-        define('REQUEST_METHOD',Http::REQUEST_METHOD());
-        # 是否为GET 请求
-        define('IS_GET',Http::IS_GET());
-        # 是否为POST 请求
-        define('IS_POST',Http::IS_POST());
-        # 是否为PUT 请求
-        define('IS_PUT',Http::IS_PUT());
-        # 是否为SSL(Https) 请求
-        define('IS_SSL',Http::IS_SSL());
-        # 是否为DELETE 请求
-        define('IS_DELETE',Http::IS_DELETE());
-        # 是否为WECHAT 请求
-        define('IS_WECHAT',Http::IS_WECHAT());
-        # 是否为AJAX 请求
-        define('IS_AJAX', \Whoops\Util\Misc::isAjaxRequest());
-        # 是否为Model 请求
-        define('IS_MOBILE',Http::IS_MOBILE());
-        # 是否为CCG 请求
-        define('IS_CGI',Http::IS_CGI());
-        # 是否为SLI 环境
-        define('IS_CLI',Http::IS_CLI());
         # 判断缓存主目录是否存在
         if(!is_dir(ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR)){
             # 递归创建目录
             mkdir(ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR,0777,true);
         }
-        # 数据缓存目录
-        define('CACHE_DATA',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR);
+        if(!(defined('CACHE_DATA') && CACHE_DATA != '')){
+            # 数据缓存目录
+            define('CACHE_DATA',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR);
+        }
         # 检查目录是否存在
         if(!is_dir(CACHE_DATA)){
             # 递归创建目录
             mkdir(CACHE_DATA,0777,true);
         }
-        # 类映射缓存目录
-        define('CLASS_PATH',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'class'.DIRECTORY_SEPARATOR);
+        if(!(defined('CLASS_PATH') && CLASS_PATH != '')){
+            # 类映射缓存目录
+            define('CLASS_PATH',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'class'.DIRECTORY_SEPARATOR);
+        }
         # 检查目录是否存在
         if(!is_dir(CLASS_PATH)){
             # 递归创建目录
             mkdir(CLASS_PATH,0777,true);
         }
-        # 日志文件缓存路径
-        define('CACHE_LOG',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
+        if(!(defined('CACHE_LOG') && CACHE_LOG != '')){
+            # 日志文件缓存路径
+            define('CACHE_LOG',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
+        }
         # 检查目录是否存在
         if(!is_dir(CACHE_LOG)){
             # 递归创建目录
             mkdir(CACHE_LOG,0777,true);
         }
-        # 会话文件缓存路径
-        define('CACHE_SESSION',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'session'.DIRECTORY_SEPARATOR);
+        if(!(defined('CACHE_SESSION') && CACHE_SESSION != '')){
+            # 会话文件缓存路径
+            define('CACHE_SESSION',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'session'.DIRECTORY_SEPARATOR);
+        }
         # 检查目录是否存在
         if(!is_dir(CACHE_SESSION)){
             # 递归创建目录
             mkdir(CACHE_SESSION,0777,true);
         }
-        # 上传文件临时目录
-        define('UPLOAD_TMP_DIR',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR);
+        if(!(defined('UPLOAD_TMP_DIR') && UPLOAD_TMP_DIR != '')){
+            # 上传文件临时目录
+            define('UPLOAD_TMP_DIR',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR);
+        }
         # 检查目录是否存在
         if(!is_dir(UPLOAD_TMP_DIR)){
             # 递归创建目录
             mkdir(UPLOAD_TMP_DIR,0777,true);
         }
-        # 模板编译缓存目录
-        define('CACHE_VIEW',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);
+        if(!(defined('CACHE_VIEW') && CACHE_VIEW != '')){
+            # 模板编译缓存目录
+            define('CACHE_VIEW',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);
+        }
         # 检查目录是否存在
         if(!is_dir(CACHE_VIEW)){
             # 递归创建目录
             mkdir(CACHE_VIEW,0777,true);
         }
-        # 是否为WEN 环境
-        define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
-
+        if(!(defined('IS_WIN') && IS_WIN != '')){
+            # 是否为WEN 环境
+            define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
+        }
         # 设置SessionCookie名称
         session_name(Config::get('sys','session_name'));
         
@@ -228,30 +250,30 @@ class Kernel
         ini_set('upload_tmp_dir', UPLOAD_TMP_DIR);
 
         # 修改session存储设置
-        session_set_cookie_params(
-            Config::get('sys','session_lifetime'),
-            Config::get('sys','session_cookie_path'),
-            Config::get('sys','session_range')
-        );
-        # 判断session 存储方式
-        if(env('session_save') == 'redis'){
-            Session::set_driver('Redis');
-            Session::session_start(
-                Config::get('redis','host'),
-                Config::get('redis','port'),
-                Config::get('redis','pwd'));
-        }else if(env('session_save') == 'mysql'){
-            Session::set_driver('Mysql');
-            Session::session_start(DB::GET_PDO());
-        }
-        # 判断是否为本地存储
-        if(Session::get_driver()=='Local'){
-            # 启动session
-            Session::session_start(CACHE_SESSION);
-        }else{
-            # 启动Session
-            Session::session_start();
-        }
+//        session_set_cookie_params(
+//            Config::get('sys','session_lifetime'),
+//            Config::get('sys','session_cookie_path'),
+//            Config::get('sys','session_range')
+//        );
+//        # 判断session 存储方式
+//        if(env('session_save') == 'redis'){
+//            Session::set_driver('Redis');
+//            Session::session_start(
+//                Config::get('redis','host'),
+//                Config::get('redis','port'),
+//                Config::get('redis','pwd'));
+//        }else if(env('session_save') == 'mysql'){
+//            Session::set_driver('Mysql');
+//            Session::session_start(DB::GET_PDO());
+//        }
+//        # 判断是否为本地存储
+//        if(Session::get_driver()=='Local'){
+//            # 启动session
+//            Session::session_start(CACHE_SESSION);
+//        }else{
+//            # 启动Session
+//            Session::session_start();
+//        }
         # 获取API模式传入的参数
         $param_arr = getopt('U:');
         # 判断是否为API模式
@@ -266,6 +288,7 @@ class Kernel
                 '.js'=>'application/javascript',
                 '.css'=>'text/css',
                 '.jpg'=>'image/jpg',
+                '.png'=>'image/png',
                 '.jpeg'=>'image/jpeg',
                 '.svg'=>'image/svg+xml',
             ])
@@ -276,18 +299,21 @@ class Kernel
             # 加载路由
             Route::init(function($app,$controller,$action){
                 $view_path = Config::get('sys','view_path');
-                $view_path[] = ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View';
-                Config::set('sys',
-                    $view_path
-                    ,'view_path');
-                # 应用名
-                define('APP_NAME',$app);
-                # 控制器名
-                define('CONTROLLER_NAME',$controller);
-                # 操作名
-                define('ACTION_NAME',$action);
+                if(!in_array(ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View',$view_path)){
+                    $view_path[] = ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View';
+                    Config::set('sys',
+                        $view_path
+                        ,'view_path');
+                }
+//                # 应用名
+//                define('APP_NAME',$app);
+//                # 控制器名
+//                define('CONTROLLER_NAME',$controller);
+//                # 操作名
+//                define('ACTION_NAME',$action);
             });
         }catch (\Exception $exception){
+            var_dump($exception -> getMessage());
             # 页面找不到
             Http::send_http_status(404);
         }

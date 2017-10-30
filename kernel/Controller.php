@@ -1,5 +1,6 @@
 <?php
 namespace Kernel;
+use Itxiao6\Route\Route;
 use Itxiao6\View\Compilers\ViewCompiler;
 use Itxiao6\View\Engines\CompilerEngine;
 use Itxiao6\View\FileViewFinder;
@@ -50,16 +51,17 @@ class Controller
      */
     public function display($view=null,Array $data = [])
     {
-        # 开启输出缓存区
-        ob_start();
+
         # 判断是否传入的模板名称
         if($view===null){
-            $view = CONTROLLER_NAME.'.'.ACTION_NAME;
+            $view = Route::get_controller().'.'.Route::get_action();
         }else if(!strpos($view,'/') && $view != 'success' && $view != 'error'){
-            $view = CONTROLLER_NAME.'.'.$view;
+            $view = Route::get_controller().'.'.$view;
         }else{
             $view = str_replace('/','.',$view);
         }
+        # 开启输出缓存区
+        ob_start();
         # 获取视图
         $this -> getView($view,$data);
         # 获取缓存区内容
@@ -74,9 +76,8 @@ class Controller
 
     /**
      * 获取模板内容
-     * @param string $view 要渲染的模板名
-     * @param array $data 要分配到模板引擎的变量
-     * @return mixed 模板内容
+     * @param null $view
+     * @param array $data
      * @throws \Exception
      */
     public function getView($view=null,Array $data = [])

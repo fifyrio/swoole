@@ -3,6 +3,7 @@ namespace App\Admin\Controller;
 use App\Model\AdminNode;
 use App\Model\AdminRight;
 use App\Model\AdminRoles;
+use Itxiao6\Route\Route;
 use Kernel\Controller;
 use App\Model\Menu;
 use Service\File;
@@ -38,9 +39,9 @@ class Base extends Controller{
 	# 权限检查
 	public function __AuthCache(){
         # 获取控制器
-        $controller = CONTROLLER_NAME;
+        $controller = Route::get_controller();
         # 获取操作
-        $action = ACTION_NAME;
+        $action = Route::get_action();
 
 	    # 判断是否为超级管理员
         if($_SESSION['admin']['user']['roles']=='-1'){

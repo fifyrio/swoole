@@ -1,5 +1,6 @@
 <?php
 namespace Service;
+use Itxiao6\Route\Route;
 use Kernel\Config;
 /**
  * url 处理类
@@ -25,7 +26,7 @@ class Url
                 $url = '/'.implode(Config::get('sys','url_split'),$data).'.html';
             }else if(count($data)==1){
                 $url = '/'.
-                    CONTROLLER_NAME.
+                    Route::get_default_controller().
                     Config::get('sys','url_split').
                     implode(Config::get('sys','url_split'),$data).'.html';
             }
@@ -35,14 +36,14 @@ class Url
                 $url = '/'.implode(Config::get('sys','url_split'),$data).'.html';
             }else if(count($data)==2){
                 $url = '/'.
-                    APP_NAME.
+                    Route::get_default_app().
                     Config::get('sys','url_split').
                     implode(Config::get('sys','url_split'),$data).'.html';
             }else if(count($data)==1){
                 $url = '/'.
-                    APP_NAME.
+                    Route::get_default_app().
                     Config::get('sys','url_split').
-                    CONTROLLER_NAME.
+                    Route::get_default_controller().
                     Config::get('sys','url_split').
                     implode(Config::get('sys','url_split'),$data).'.html';
             }

@@ -7,4 +7,9 @@ return [
 	'assets'=>ROOT_PATH.'common'.DIRECTORY_SEPARATOR.'assets',
     # 百度富文本编辑器资源路由
 	'umeditor'=>ROOT_PATH.'common'.DIRECTORY_SEPARATOR.'umeditor',
+	'layui'=>ROOT_PATH.'public'.DIRECTORY_SEPARATOR.'layui',
+	'css'=>ROOT_PATH.'public'.DIRECTORY_SEPARATOR.'css',
+	'images'=>ROOT_PATH.'public'.DIRECTORY_SEPARATOR.'images',
+	'mods'=>ROOT_PATH.'public'.DIRECTORY_SEPARATOR.'mods',
+	'upload'=>ROOT_PATH.'public'.DIRECTORY_SEPARATOR.'upload',
 ];
