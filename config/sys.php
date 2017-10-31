@@ -18,7 +18,7 @@ return [
     # 默认时区
     'default_timezone'      =>  'PRC',
     # session 过期时间(秒)默认1天
-    'session_lifetime' => 3600+12,
+    'session_lifetime' => time()+(3600*24),
     # session 有效范围(子主机名共享:.xxx.com)默认本域名
     'session_range' => $_SERVER['HTTP_HOST'],
     # 此 cookie 的有效路径

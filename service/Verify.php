@@ -166,10 +166,14 @@ class Verify {
         header('Cache-Control: post-check=0, pre-check=0', false);
         header('Pragma: no-cache');
         header("content-type: image/png");
-
-        # 输出图像
+        # 开启上下文环境
+        ob_start();
+        # 输出头像
         imagepng($this->_image);
+        # 销毁图像
         imagedestroy($this->_image);
+        # 输出图像
+        Http::output(ob_get_clean(),'image/png');
     }
 
     /**

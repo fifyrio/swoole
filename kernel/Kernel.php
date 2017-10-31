@@ -101,22 +101,6 @@ class Kernel
             # 设置协议头
             header("Content-Type:text/html;charset=utf-8");
         }
-
-        # 判断是否下载了composer包
-        if ( file_exists(ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php') ) {
-            # 引用Composer自动加载规则
-            require_once(ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
-        }else{
-            # 退出程序并提示
-            if(defined('IS_SWOOLE') && IS_SWOOLE===true){
-                # 发送状态码
-                self::$response->status(200);
-                # 发送内容
-                $response -> end('请在项目根目录执行:composer install');
-            }else{
-                exit('请在项目根目录执行:composer install');
-            }
-        }
         # 判断是否为调试模式
         if( DE_BUG === TRUE ){
             # 屏蔽提示错误和警告错误
@@ -173,10 +157,8 @@ class Kernel
 
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
-        if(self::$is_register_autoload){
-            # 注册类映射方法
-            spl_autoload_register('Kernel\Kernel::auto_load');
-        }
+        # 注册类映射方法
+        spl_autoload_register('Kernel\Kernel::auto_load');
         # 设置请求头
         Http::set_request($request,$response);
 
@@ -221,10 +203,6 @@ class Kernel
             # 递归创建目录
             mkdir(CACHE_SESSION,0777,true);
         }
-        if(!(defined('UPLOAD_TMP_DIR') && UPLOAD_TMP_DIR != '')){
-            # 上传文件临时目录
-            define('UPLOAD_TMP_DIR',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR);
-        }
         # 检查目录是否存在
         if(!is_dir(UPLOAD_TMP_DIR)){
             # 递归创建目录
@@ -243,37 +221,7 @@ class Kernel
             # 是否为WEN 环境
             define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
         }
-        # 设置SessionCookie名称
-        session_name(Config::get('sys','session_name'));
-        
-        # 设置图片上传临时目录
-        ini_set('upload_tmp_dir', UPLOAD_TMP_DIR);
 
-        # 修改session存储设置
-//        session_set_cookie_params(
-//            Config::get('sys','session_lifetime'),
-//            Config::get('sys','session_cookie_path'),
-//            Config::get('sys','session_range')
-//        );
-//        # 判断session 存储方式
-//        if(env('session_save') == 'redis'){
-//            Session::set_driver('Redis');
-//            Session::session_start(
-//                Config::get('redis','host'),
-//                Config::get('redis','port'),
-//                Config::get('redis','pwd'));
-//        }else if(env('session_save') == 'mysql'){
-//            Session::set_driver('Mysql');
-//            Session::session_start(DB::GET_PDO());
-//        }
-//        # 判断是否为本地存储
-//        if(Session::get_driver()=='Local'){
-//            # 启动session
-//            Session::session_start(CACHE_SESSION);
-//        }else{
-//            # 启动Session
-//            Session::session_start();
-//        }
         # 获取API模式传入的参数
         $param_arr = getopt('U:');
         # 判断是否为API模式
@@ -305,12 +253,6 @@ class Kernel
                         $view_path
                         ,'view_path');
                 }
-//                # 应用名
-//                define('APP_NAME',$app);
-//                # 控制器名
-//                define('CONTROLLER_NAME',$controller);
-//                # 操作名
-//                define('ACTION_NAME',$action);
             });
         }catch (\Exception $exception){
             var_dump($exception -> getMessage());
