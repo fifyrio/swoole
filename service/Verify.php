@@ -80,7 +80,14 @@ class Verify {
      */
     public function check($code, $id = 0)
     {
+        # 判断验证码是否为空
+        if($code == null){
+            return false;
+        }
+        # 判断验证码是否正确
         if(strtoupper($_SESSION['verify_code'][$id]) ==  strtoupper($code)){
+            # 验证后销毁
+            $_SESSION['verify_code'][$id] = null;
             return true;
         }else{
             return false;
