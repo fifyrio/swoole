@@ -162,17 +162,13 @@ class Verify {
         # 保存验证码
         $key        =   $this->authcode($this->seKey);
         // $code       =   $this->authcode(strtoupper(implode('', $code)));
-        $str = '';
-        foreach ($code as $key => $value) {
-            $str .= $value;
-        }
-
-        $_SESSION['verify_code'][$id] = $str;
-
-        header('Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate');
-        header('Cache-Control: post-check=0, pre-check=0', false);
-        header('Pragma: no-cache');
-        header("content-type: image/png");
+        # 存储到session内
+        $_SESSION['verify_code'][$id] = implode('',$code);
+        # 设置协议头
+//        header('Cache-Control: private, max-age=0, no-store, no-cache, must-revalidate');
+//        header('Cache-Control: post-check=0, pre-check=0', false);
+//        header('Pragma: no-cache');
+//        header("content-type: image/png");
         # 开启上下文环境
         ob_start();
         # 输出头像
