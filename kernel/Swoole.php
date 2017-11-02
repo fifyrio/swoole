@@ -32,11 +32,9 @@ class Swoole
         'max_request' => 10000,
         'dispatch_mode' => 2,
         'debug_mode'=> 1,
-        'log_file'=> ROOT_PATH.'runtime/log/swoole.log',
+        'log_file'=> CACHE_LOG.'swoole.log',
+        'upload_tmp_dir'=> UPLOAD_TMP_DIR,
     ];
-
-
-
     /**
      * 获取接口
      */
