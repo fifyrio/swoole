@@ -32,8 +32,6 @@ class Swoole
         'max_request' => 10000,
         'dispatch_mode' => 2,
         'debug_mode'=> 1,
-        'log_file'=> CACHE_LOG.'swoole.log',
-        'upload_tmp_dir'=> UPLOAD_TMP_DIR,
     ];
     /**
      * 获取接口
@@ -70,14 +68,23 @@ class Swoole
             self::$param['enable_static_handler'] = true;
             self::$param['document_root'] = self::$documentRoot;
         }
+        # 定义日志文件
+        self::$param['log_file'] = CACHE_LOG.'swoole.log';
+        # 定义上传临时文件夹
+        self::$param['upload_tmp_dir'] = UPLOAD_TMP_DIR;
         # 判断是否要设置自定义参数
         if(count($param) > 0){
             foreach ($param as $key=>$item){
                 self::$param[$key] = $item;
             }
         }
+        var_dump(self::$param);
         # 设置参数
         self::$server -> set(self::$param);
+        # 启动时执行
+        self::$server -> on("start", function ($server) use ($port,$host){
+            echo "Swoole http server is started at http://{$host}:{$port}\n";
+        });
         # 监听请求
         self::$server -> on('request',[&$this,'onRequest']);
         # 启动server
@@ -121,7 +128,6 @@ class Swoole
             # 发送内容
             $response -> end('请在项目根目录执行:composer install');
         }
-//        echo $request -> server['request_uri']."\n";
         # 获取GET 数据
         $_GET = $request -> get;
         # 获取SERVER数据
