@@ -12,6 +12,28 @@ class Swoole
      * @var null | object
      */
     protected static $interface = null;
+    /**
+     * Server
+     * @var null | object
+     */
+    protected static $server = null;
+    /**
+     * 静态资源目录
+     * @var null | string
+     */
+    protected static $documentRoot = null;
+    /**
+     * 要设置的参数
+     * @var array
+     */
+    protected static $param = [
+        'worker_num' => 20,
+        'daemonize' => 0,
+        'max_request' => 10000,
+        'dispatch_mode' => 2,
+        'debug_mode'=> 1,
+        'log_file'=> ROOT_PATH.'runtime/log/swoole.log',
+    ];
 
     /**
      * 获取接口
@@ -34,24 +56,46 @@ class Swoole
     protected function __construct($host = '0.0.0.0',$port=9501,$param = [])
     {
         # 创建server
-        $server = new \swoole_http_server($host,$port);
-        # 设置运行参数
-        $server->set([
-            'worker_num' => 20,
-            'daemonize' => 0,
-            'max_request' => 10000,
-            'dispatch_mode' => 2,
-            'debug_mode'=> 1,
-            'upload_tmp_dir' => UPLOAD_TMP_DIR,
-        ]);
-        # 判断是否要设置参数
-        if(count($param) > 0){
-            $server -> set($param);
+        self::$server = new \swoole_http_server($host,$port);
+        # 判断是否设置了静态资源目录
+        if(self::getDocumentRoot() != null){
+            self::$param['enable_static_handler'] = true;
+            self::$param['document_root'] = self::$documentRoot;
         }
+        # 判断是否要设置自定义参数
+        if(count($param) > 0){
+            foreach ($param as $key=>$item){
+                self::$param[$key] = $item;
+            }
+        }
+        # 设置参数
+        self::$server -> set(self::$param);
         # 监听请求
-        $server -> on('request',[&$this,'onRequest']);
+        self::$server -> on('request',[&$this,'onRequest']);
         # 启动server
-        $server -> start();
+        self::$server -> start();
+    }
+
+    /**
+     * 设置静态文件目录
+     * @param $finder
+     */
+    public static function setDocumentRoot($finder)
+    {
+        if(is_dir($finder)){
+            self::$documentRoot = $finder;
+        }else{
+            var_dump("静态文件目录不存在");
+        }
+    }
+
+    /**
+     * 获取静态资源目录
+     * @return mixed
+     */
+    public static function getDocumentRoot()
+    {
+        return self::$documentRoot;
     }
 
     /**
