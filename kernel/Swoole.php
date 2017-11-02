@@ -35,6 +35,8 @@ class Swoole
         'log_file'=> ROOT_PATH.'runtime/log/swoole.log',
     ];
 
+
+
     /**
      * 获取接口
      */
@@ -55,6 +57,14 @@ class Swoole
      */
     protected function __construct($host = '0.0.0.0',$port=9501,$param = [])
     {
+        # 目录常量检测
+        \Kernel\Kernel::init();
+        # 加载ENV配置
+        \Kernel\Kernel::load_env();
+        # 注册类映射方法
+        spl_autoload_register('Kernel\Kernel::auto_load');
+        # 设置时区
+        date_default_timezone_set(Config::get('sys','default_timezone'));
         # 创建server
         self::$server = new \swoole_http_server($host,$port);
         # 判断是否设置了静态资源目录

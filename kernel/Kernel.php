@@ -23,18 +23,10 @@ class Kernel
      * @var array
      */
     protected static $class = [];
-    /**
-     * 是否已经加载过env
-     * @var null | string
-     */
-    protected static $is_load_env = false;
-    /**
-     * 是否注册过autoload
-     * @var bool
-     */
-    protected static $is_register_autoload = false;
+
     /**
      * 类的映射
+     * @param $class
      */
     public static function auto_load($class){
         if(count(self::$class)==0){
@@ -54,9 +46,10 @@ class Kernel
             require($class_name);
         }
     }
+
     /**
      * 加载环境变量
-     * */
+     */
     public static function load_env()
     {
         # 判断环境变量配置文件是否存在
@@ -86,82 +79,10 @@ class Kernel
         fclose($f);
     }
     /**
-     * 启动框架
+     * 常亮和目录检查
      */
-    public static function start($request = null,$response = null)
+    public static function init()
     {
-        if(self::$is_load_env){
-            # 加载环境变量
-            self::load_env();
-        }
-        # 是否为Swoole
-        if(defined('IS_SWOOLE') && IS_SWOOLE===true){
-
-        }else{
-            # 设置协议头
-            header("Content-Type:text/html;charset=utf-8");
-        }
-        # 判断是否为调试模式
-        if( DE_BUG === TRUE ){
-            # 屏蔽提示错误和警告错误
-            error_reporting(E_ALL ^ E_NOTICE);
-            # 运行Whoops 构造器
-            $whoops = new Run;
-            # 判断是否为ajax
-            if (\Whoops\Util\Misc::isAjaxRequest()) {
-                # 输出json 格式的 错误信息
-                $whoops->pushHandler(new \Whoops\Handler\JsonResponseHandler);
-            }else{
-                # 实例化错误页面类
-                $PrettyPageHandler =  new PrettyPageHandler();
-                # 设置错误页面标题
-                $PrettyPageHandler -> setPageTitle('Minkernel-哎呀-出错了');
-                # 输入页面 格式的 报错信息
-                $whoops -> pushHandler($PrettyPageHandler);
-            }
-            $whoops->register();
-            if(defined('IS_SWOOLE') && IS_SWOOLE===true){
-
-            }else{
-                # 禁止所有页面缓存
-                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . 'GMT');
-                header('Cache-Control: no-cache, must-revalidate');
-                header('Pragma: no-cache');
-            }
-        }else{
-            # 屏蔽所有错误
-            error_reporting(0);
-        }
-
-        # 设置时区
-        date_default_timezone_set(Config::get('sys','default_timezone'));
-
-        # 判断是否开启了debugbar
-        if(Config::get('sys','debugbar')) {
-            # 定义全局变量
-            global $debugbar;
-            global $debugbarRenderer;
-            global $database;
-
-            # 启动DEBUGBAR
-            $debugbar = new DebugBar();
-            $debugbar->addCollector(new PhpInfoCollector());
-            $debugbar->addCollector(new MessagesCollector('Time'));
-            $debugbar->addCollector(new MessagesCollector('Request'));
-            $debugbar->addCollector(new MessagesCollector('Session'));
-            $debugbar->addCollector(new MessagesCollector('Database'));
-            $debugbar->addCollector(new MessagesCollector('Application'));
-            $debugbar->addCollector(new MessagesCollector('View'));
-            $debugbar->addCollector(new RequestDataCollector());
-
-            $debugbarRenderer = $debugbar->getJavascriptRenderer();
-        }
-        # 注册类映射方法
-        spl_autoload_register('Kernel\Kernel::auto_load');
-        # 设置请求头
-        Http::set_request($request,$response);
-
         # 判断缓存主目录是否存在
         if(!is_dir(ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR)){
             # 递归创建目录
@@ -203,11 +124,15 @@ class Kernel
             # 递归创建目录
             mkdir(CACHE_SESSION,0777,true);
         }
-        # 检查目录是否存在
-        if(!is_dir(UPLOAD_TMP_DIR)){
-            # 递归创建目录
-            mkdir(UPLOAD_TMP_DIR,0777,true);
+        # 判断是否定义了临时上传目录
+        if(!(defined('UPLOAD_TMP_DIR') && UPLOAD_TMP_DIR!='' )){
+            # 检查目录是否存在
+            if(!is_dir(UPLOAD_TMP_DIR)){
+                # 递归创建目录
+                mkdir(UPLOAD_TMP_DIR,0777,true);
+            }
         }
+
         if(!(defined('CACHE_VIEW') && CACHE_VIEW != '')){
             # 模板编译缓存目录
             define('CACHE_VIEW',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);
@@ -217,30 +142,37 @@ class Kernel
             # 递归创建目录
             mkdir(CACHE_VIEW,0777,true);
         }
-        if(!(defined('IS_WIN') && IS_WIN != '')){
-            # 是否为WEN 环境
-            define('IS_WIN',strstr(PHP_OS, 'WIN') ? 1 : 0 );
+    }
+
+    /**
+     * 启动框架
+     */
+    public static function start($request = null,$response = null)
+    {
+        # 判断是否开启了debugbar
+        if(Config::get('sys','debugbar')) {
+            # 定义全局变量
+            global $debugbar;
+            global $debugbarRenderer;
+            global $database;
+
+            # 启动DEBUGBAR
+            $debugbar = new DebugBar();
+            $debugbar->addCollector(new PhpInfoCollector());
+            $debugbar->addCollector(new MessagesCollector('Time'));
+            $debugbar->addCollector(new MessagesCollector('Request'));
+            $debugbar->addCollector(new MessagesCollector('Session'));
+            $debugbar->addCollector(new MessagesCollector('Database'));
+            $debugbar->addCollector(new MessagesCollector('Application'));
+            $debugbar->addCollector(new MessagesCollector('View'));
+            $debugbar->addCollector(new RequestDataCollector());
+
+            $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
 
-        # 获取API模式传入的参数
-        $param_arr = getopt('U:');
-        # 判断是否为API模式
-        if($param_arr['U']){
-            $_SERVER['REDIRECT_URL'] = $param_arr['U'];
-            $_SERVER['PHP_SELF'] = $param_arr['U'];
-            $_SERVER['QUERY_STRING'] = $param_arr['U'];
-        }
-        # 设置资源路由
-        Route::set_resources_driver(
-            Route::get_resources_driver() -> set_folder(Config::get('abstract')) -> set_file_type([
-                '.js'=>'application/javascript',
-                '.css'=>'text/css',
-                '.jpg'=>'image/jpg',
-                '.png'=>'image/png',
-                '.jpeg'=>'image/jpeg',
-                '.svg'=>'image/svg+xml',
-            ])
-        );
+        # 设置请求头
+        Http::set_request($request,$response);
+
         # 设置url 分隔符
         Route::set_key_word(Config::get('sys','url_split'));
         try{
@@ -255,10 +187,8 @@ class Kernel
                 }
             });
         }catch (\Exception $exception){
-            var_dump($exception -> getMessage());
             # 页面找不到
             Http::send_http_status(404);
         }
-
     }
 }

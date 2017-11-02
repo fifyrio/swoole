@@ -8,7 +8,7 @@ define('IS_SWOOLE', true);
 # 开启调试模式
 define('DE_BUG',true);
 # 引入处理类
-require_once( ROOT_PATH.'kernel'.DIRECTORY_SEPARATOR.'Swoole.php');
+require( ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
 # 设置web 静态资源目录
 Kernel\Swoole::setDocumentRoot(ROOT_PATH.'public/');
 # 获取接口
