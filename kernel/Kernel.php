@@ -169,6 +169,8 @@ class Kernel
 
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
+        # 启动会话
+        Session::session_start();
 
         # 设置请求
         Http::set_request($request);
