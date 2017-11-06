@@ -169,13 +169,15 @@ class Kernel
 
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
-        # 启动会话
-        Session::session_start(ROOT_PATH.'common/session');
 
         # 设置请求
         Http::set_request($request);
         # 设置响应
         Http::set_response($response);
+        # 启动会话
+        Session::session_start(ROOT_PATH.'common/session');
+        Session::set('name','戒尺');
+        Session::save();
 
         # 设置url 分隔符
         Route::set_key_word(Config::get('sys','url_split'));
