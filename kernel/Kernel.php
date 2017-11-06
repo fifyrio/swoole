@@ -170,7 +170,7 @@ class Kernel
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
         # 启动会话
-        Session::session_start();
+        Session::session_start(ROOT_PATH.'common/session');
 
         # 设置请求
         Http::set_request($request);
