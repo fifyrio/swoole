@@ -53,6 +53,8 @@ class Swoole
      */
     protected function __construct($host = '0.0.0.0',$port=9501,$param = [])
     {
+        # 设置PHP运行时 最大内存
+        ini_set('memory_limit', '128M');
         # 目录常量检测
         \Kernel\Kernel::init();
         # 加载ENV配置
@@ -78,7 +80,6 @@ class Swoole
                 self::$param[$key] = $item;
             }
         }
-        var_dump(self::$param);
         # 设置参数
         self::$server -> set(self::$param);
         # 启动时执行
@@ -118,16 +119,6 @@ class Swoole
      */
     public function onRequest($request, $response)
     {
-        # 判断是否下载了composer包
-        if ( file_exists(ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php') ) {
-            # 引用Composer自动加载规则
-            require_once(ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
-        }else{
-            # 发送状态码
-            $response->status(200);
-            # 发送内容
-            $response -> end('请在项目根目录执行:composer install');
-        }
         # 获取GET 数据
         $_GET = $request -> get;
         # 获取SERVER数据

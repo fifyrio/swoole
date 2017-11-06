@@ -125,7 +125,7 @@ class Kernel
             mkdir(CACHE_SESSION,0777,true);
         }
         # 判断是否定义了临时上传目录
-        if(!(defined('UPLOAD_TMP_DIR') && UPLOAD_TMP_DIR!='' )){
+        if(defined('UPLOAD_TMP_DIR')){
             # 检查目录是否存在
             if(!is_dir(UPLOAD_TMP_DIR)){
                 # 递归创建目录

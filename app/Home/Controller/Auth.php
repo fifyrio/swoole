@@ -29,7 +29,6 @@ class Auth extends Controller
     # 用户登录
     public function login()
     {
-        var_dump('1');
         # 判断是否已经登陆过了
         if(isset($_SESSION['home']['user']['id']) && $_SESSION['home']['user']['id']!=''){
             $this -> redirect('Index.index');

@@ -7,7 +7,7 @@ define('ROOT_PATH',__DIR__.DIRECTORY_SEPARATOR);
 define('IS_SWOOLE', true);
 # 开启调试模式
 define('DE_BUG',true);
-# 引入处理类
+# 引入自动加载类
 require( ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
 # 设置web 静态资源目录
 Kernel\Swoole::setDocumentRoot(ROOT_PATH.'public');
