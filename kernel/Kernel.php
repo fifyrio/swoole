@@ -170,8 +170,10 @@ class Kernel
             $debugbarRenderer = $debugbar->getJavascriptRenderer();
         }
 
-        # 设置请求头
-        Http::set_request($request,$response);
+        # 设置请求
+        Http::set_request($request);
+        # 设置响应
+        Http::set_response($response);
 
         # 设置url 分隔符
         Route::set_key_word(Config::get('sys','url_split'));
