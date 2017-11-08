@@ -1,5 +1,6 @@
 <?php
 namespace App\Home\Controller;
+use App\Model\Menu;
 use App\Model\User;
 use Itxiao6\Route\Bridge\Http;
 
@@ -11,9 +12,11 @@ use Itxiao6\Route\Bridge\Http;
 class Index extends Base{
   # 首页操作
   public function index(){
-      # 渲染模板
-//      var_dump(rand(0,500));
-//      Http::output('');
+      # 打印导航表里的数据
+      $this -> output(function(){
+          var_dump(Menu::get() -> toArray());
+      });
+      return ;
       #渲染模板
         $this -> display();
   }
