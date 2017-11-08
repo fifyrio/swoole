@@ -1,6 +1,6 @@
 {
-  "name":"itxiao6/mini-kernel",
-  "description":"This is the smallest Kernel Framework",
+  "name":"itxiao6/minkernel-swoole",
+  "description":"基于PHP.Wwoole 扩展 的 Minkernel框架",
   "keywords": ["framework"],
   "license": "MIT",
   "require": {
