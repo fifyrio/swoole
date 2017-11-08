@@ -125,14 +125,14 @@ class Kernel
             mkdir(CACHE_SESSION,0777,true);
         }
         # 判断是否定义了临时上传目录
-        if(defined('UPLOAD_TMP_DIR')){
-            # 检查目录是否存在
-            if(!is_dir(UPLOAD_TMP_DIR)){
-                # 递归创建目录
-                mkdir(UPLOAD_TMP_DIR,0777,true);
-            }
+        if(!defined('UPLOAD_TMP_DIR')){
+            define('UPLOAD_TMP_DIR',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR);
         }
-
+        # 检查目录是否存在
+        if(!is_dir(UPLOAD_TMP_DIR)){
+            # 递归创建目录
+            mkdir(UPLOAD_TMP_DIR,0777,true);
+        }
         if(!(defined('CACHE_VIEW') && CACHE_VIEW != '')){
             # 模板编译缓存目录
             define('CACHE_VIEW',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);
