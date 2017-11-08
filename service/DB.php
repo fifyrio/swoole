@@ -12,11 +12,16 @@ use Kernel\Config;
 class DB extends Manager
 {
     /**
+     * 定义数据库状态
+     * @var bool
+     */
+    protected static $databases_status = false;
+    /**
      * 数据库链接
      */
     public static function connection_databases(){
         # 判断数据库是否已经连接
-        if ( defined('DATABASES_STATUS') === false) {
+        if ( self::$databases_status === false) {
             # 连接数据库
             $database = new Manager;
             # 载入数据库配置
@@ -30,7 +35,7 @@ class DB extends Manager
                 Manager::connection()->enableQueryLog();
             }
             # 定义数据库已经连接
-            define('DATABASES_STATUS',true);
+            self::$databases_status = true;
         }
     }
 
@@ -51,7 +56,7 @@ class DB extends Manager
      */
     public static function DB_LOG(){
         # 数据库是否连接
-        if(defined('DATABASES_STATUS')===false){
+        if(self::$databases_status){
             return false;
         }
         # 判断是否开启了DB_log
@@ -73,11 +78,11 @@ class DB extends Manager
         self::connection_databases();
         return static::connection()->$method(...$parameters);
     }
+
     /**
-     * Create a new database capsule manager.
-     *
-     * @param  \Illuminate\Container\Container|null  $container
-     * @return void
+     * 创建一个 数据库容器
+     * DB constructor.
+     * @param Container|null $container
      */
     public function __construct(Container $container = null)
     {

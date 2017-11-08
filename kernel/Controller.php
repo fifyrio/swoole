@@ -75,6 +75,20 @@ class Controller
     }
 
     /**
+     * 使用php 缓存区输出内容
+     * @param $func
+     */
+    public function output($func)
+    {
+        # 开启输出缓存区
+        ob_start();
+        $func();
+        # 获取缓存区内容
+        $content = ob_get_clean();
+        \Itxiao6\Route\Bridge\Http::output($content);
+    }
+
+    /**
      * 获取模板内容
      * @param null $view
      * @param array $data
