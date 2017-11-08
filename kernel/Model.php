@@ -127,13 +127,13 @@ class Model extends Eloquent
     }
 
     /**
-    * @param String 表名(可为空)
+     * 实例化一个模型
     */
-    public function __construct($tableName='')
+    public function __construct()
     {
         # 检查数据库链接
         DB::connection_databases();
         # 调用父类构造方法
-        parent::__construct();
+        parent::__construct(func_get_args());
     }
 }
