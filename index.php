@@ -12,5 +12,5 @@ require( ROOT_PATH.'vendor'.DIRECTORY_SEPARATOR.'autoload.php');
 # 设置web 静态资源目录
 Kernel\Swoole::setDocumentRoot(ROOT_PATH.'public');
 # 获取接口
-$swoole = Kernel\Swoole::get_interface('0.0.0.0',9502);
+Kernel\Swoole::get_interface('0.0.0.0',9502);
 
