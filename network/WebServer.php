@@ -1,5 +1,6 @@
 <?php
 namespace Network;
+use Kernel\Config;
 /**
  * Class WebServer
  * @package Network
