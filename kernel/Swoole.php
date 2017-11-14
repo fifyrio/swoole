@@ -1,5 +1,10 @@
 <?php
 namespace Kernel;
+use Network\TcpServer;
+use Network\UdpServer;
+use Network\WebServer;
+use Network\WebSocket;
+
 /**
  * Swoole Class
  * Class Swoole
@@ -8,137 +13,38 @@ namespace Kernel;
 class Swoole
 {
     /**
-     * 定义接口
-     * @var null | object
+     * 启动 web server
+     * @return WebServer
      */
-    protected static $interface = null;
-    /**
-     * Server
-     * @var null | object
-     */
-    protected static $server = null;
-    /**
-     * 静态资源目录
-     * @var null | string
-     */
-    protected static $documentRoot = null;
-    /**
-     * 要设置的参数
-     * @var array
-     */
-    protected static $param = [
-        'worker_num' => 20,
-        'daemonize' => 0,
-        'max_request' => 10000,
-        'dispatch_mode' => 2,
-        'debug_mode'=> 1,
-    ];
-    /**
-     * 获取接口
-     */
-    public static function get_interface()
+    public static function web_server_start()
     {
-        if(self::$interface===null){
-//            echo "实例化Swoole类\n";
-            self::$interface = new self(...func_get_args());
-        }
-        return self::$interface;
+        return new WebServer(...func_get_args());
     }
 
     /**
-     * Swoole类 构造方法
-     * @param string $host
-     * @param int $port
-     * @param array $param
+     * 启动 tcp server
+     * @return TcpServer
      */
-    protected function __construct($host = '0.0.0.0',$port=9501,$param = [])
+    public static function tcp_server_start()
     {
-        # 设置PHP运行时 最大内存
-        ini_set('memory_limit', '128M');
-        # 目录常量检测
-        \Kernel\Kernel::init();
-        # 加载ENV配置
-        \Kernel\Kernel::load_env();
-        # 注册类映射方法
-        spl_autoload_register('Kernel\Kernel::auto_load');
-        # 设置时区
-        date_default_timezone_set(Config::get('sys','default_timezone'));
-        # 创建server
-        self::$server = new \swoole_http_server($host,$port);
-        # 判断是否设置了静态资源目录
-        if(self::getDocumentRoot() != null){
-            self::$param['enable_static_handler'] = true;
-            self::$param['document_root'] = self::$documentRoot;
-        }
-        # 定义日志文件
-        self::$param['log_file'] = CACHE_LOG.'swoole.log';
-        # 定义上传临时文件夹
-        self::$param['upload_tmp_dir'] = UPLOAD_TMP_DIR;
-        # 判断是否要设置自定义参数
-        if(count($param) > 0){
-            foreach ($param as $key=>$item){
-                self::$param[$key] = $item;
-            }
-        }
-        # 设置参数
-        self::$server -> set(self::$param);
-        # 启动时执行
-        self::$server -> on("start", function ($server) use ($port,$host){
-            echo "Swoole http server is started at http://{$host}:{$port}\n";
-        });
-        # 监听请求
-        self::$server -> on('request',[&$this,'onRequest']);
-        # 启动server
-        self::$server -> start();
+        return new TcpServer(...func_get_args());
     }
 
     /**
-     * 设置静态文件目录
-     * @param $finder
+     * 启动 udp server
+     * @return UdpServer
      */
-    public static function setDocumentRoot($finder)
+    public static function udp_server_start()
     {
-        if(is_dir($finder)){
-            self::$documentRoot = $finder;
-        }else{
-            var_dump("静态文件目录不存在");
-        }
+        return new UdpServer(...func_get_args());
     }
 
     /**
-     * 获取静态资源目录
-     * @return mixed
+     * 启动 web socket server
+     * @return SocketServer
      */
-    public static function getDocumentRoot()
+    public static function socket_server_start()
     {
-        return self::$documentRoot;
-    }
-
-    /**
-     * 请求处理
-     */
-    public function onRequest($request, $response)
-    {
-        # 获取GET 数据
-        $_GET = $request -> get;
-        # 获取SERVER数据
-        $_SERVER = $request -> server;
-        # 获取POST 数据
-        $_POST = $request -> post;
-        # 获取COOKIE 数据
-        $_COOKIE = $request -> cookie;
-        # 获取上传的文件数据
-        $_FILES = $request -> files;
-        # 设置session_id
-        session_id($request->cookie[Config::get('sys','session_name')]);
-        # 设置session的回话到cookie里
-        $response -> cookie(
-            Config::get('sys','session_name'),
-            session_id($request->cookie[Config::get('sys','session_name')]),
-            Config::get('sys','session_lifetime'),
-            Config::get('sys','session_cookie_path'),
-            Config::get('sys','session_range'));
-        # 开启应用
-        Kernel::start($request,$response);
+        return new WebSocket(...func_get_args());
     }
 }

@@ -24,6 +24,7 @@
       "Kernel\\":"kernel/",
       "Service\\":"service/",
       "App\\":"app/",
+      "Network\\":"network/",
       "App\\Model\\":"models/"
     }
   }

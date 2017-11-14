@@ -84,13 +84,13 @@ class Kernel
     public static function init()
     {
         # 判断缓存主目录是否存在
-        if(!is_dir(ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR)){
+        if(!is_dir(ROOT_PATH.'runtime'.DS)){
             # 递归创建目录
-            mkdir(ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR,0777,true);
+            mkdir(ROOT_PATH.'runtime'.DS,0777,true);
         }
         if(!(defined('CACHE_DATA') && CACHE_DATA != '')){
             # 数据缓存目录
-            define('CACHE_DATA',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR);
+            define('CACHE_DATA',ROOT_PATH.'runtime'.DS.'data'.DS);
         }
         # 检查目录是否存在
         if(!is_dir(CACHE_DATA)){
@@ -99,7 +99,7 @@ class Kernel
         }
         if(!(defined('CLASS_PATH') && CLASS_PATH != '')){
             # 类映射缓存目录
-            define('CLASS_PATH',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'class'.DIRECTORY_SEPARATOR);
+            define('CLASS_PATH',ROOT_PATH.'runtime'.DS.'class'.DS);
         }
         # 检查目录是否存在
         if(!is_dir(CLASS_PATH)){
@@ -108,7 +108,7 @@ class Kernel
         }
         if(!(defined('CACHE_LOG') && CACHE_LOG != '')){
             # 日志文件缓存路径
-            define('CACHE_LOG',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'log'.DIRECTORY_SEPARATOR);
+            define('CACHE_LOG',ROOT_PATH.'runtime'.DS.'log'.DS);
         }
         # 检查目录是否存在
         if(!is_dir(CACHE_LOG)){
@@ -117,7 +117,7 @@ class Kernel
         }
         if(!(defined('CACHE_SESSION') && CACHE_SESSION != '')){
             # 会话文件缓存路径
-            define('CACHE_SESSION',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'session'.DIRECTORY_SEPARATOR);
+            define('CACHE_SESSION',ROOT_PATH.'runtime'.DS.'session'.DS);
         }
         # 检查目录是否存在
         if(!is_dir(CACHE_SESSION)){
@@ -126,7 +126,7 @@ class Kernel
         }
         # 判断是否定义了临时上传目录
         if(!defined('UPLOAD_TMP_DIR')){
-            define('UPLOAD_TMP_DIR',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'upload'.DIRECTORY_SEPARATOR);
+            define('UPLOAD_TMP_DIR',ROOT_PATH.'runtime'.DS.'upload'.DS);
         }
         # 检查目录是否存在
         if(!is_dir(UPLOAD_TMP_DIR)){
@@ -135,7 +135,7 @@ class Kernel
         }
         if(!(defined('CACHE_VIEW') && CACHE_VIEW != '')){
             # 模板编译缓存目录
-            define('CACHE_VIEW',ROOT_PATH.'runtime'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR);
+            define('CACHE_VIEW',ROOT_PATH.'runtime'.DS.'view'.DS);
         }
         # 检查目录是否存在
         if(!is_dir(CACHE_VIEW)){
@@ -183,8 +183,8 @@ class Kernel
             # 加载路由
             Route::init(function($app,$controller,$action){
                 $view_path = Config::get('sys','view_path');
-                if(!in_array(ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View',$view_path)){
-                    $view_path[] = ROOT_PATH.'app'.DIRECTORY_SEPARATOR.$app.DIRECTORY_SEPARATOR.'View';
+                if(!in_array(ROOT_PATH.'app'.DS.$app.DS.'View',$view_path)){
+                    $view_path[] = ROOT_PATH.'app'.DS.$app.DS.'View';
                     Config::set('sys',
                         $view_path
                         ,'view_path');
