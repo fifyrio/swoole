@@ -1,12 +1,50 @@
 <?php
 namespace Network;
 use Kernel\Config;
+use Kernel\Kernel;
 /**
  * Class WebServer
  * @package Network
  */
 class WebServer
 {
+    /**
+     * 定义接口
+     * @var null | object
+     */
+    protected static $interface = null;
+    /**
+     * Server
+     * @var null | object
+     */
+    protected static $server = null;
+    /**
+     * 静态资源目录
+     * @var null | string
+     */
+    protected static $documentRoot = null;
+    /**
+     * 要设置的参数
+     * @var array
+     */
+    protected static $param = [
+        'worker_num' => 20,
+        'daemonize' => 0,
+        'max_request' => 10000,
+        'dispatch_mode' => 2,
+        'debug_mode'=> 1,
+    ];
+    /**
+     * 监听主机
+     * @var string
+     */
+    protected static $host = '0.0.0.0';
+    /**
+     * 监听端口
+     * @var int
+     */
+    protected static $port = 9501;
+
     /**
      * WebServer 类 构造方法
      * @param string $host
@@ -15,18 +53,16 @@ class WebServer
      */
     public function __construct($host = '0.0.0.0',$port=9501,$param = [])
     {
+        # 获取监听的主机
+        self::$host = $host;
+        # 获取监听的端口
+        self::$port = $port;
         # 设置PHP运行时 最大内存
         ini_set('memory_limit', '128M');
-        # 目录常量检测
-        \Kernel\Kernel::init();
-        # 加载ENV配置
-        \Kernel\Kernel::load_env();
-        # 注册类映射方法
-        spl_autoload_register('Kernel\Kernel::auto_load');
-        # 设置时区
-        date_default_timezone_set(Config::get('sys','default_timezone'));
+        # 核心组件初始化
+        Kernel::init();
         # 创建server
-        self::$server = new \swoole_http_server($host,$port);
+        self::$server = new \swoole_http_server(self::$host,self::$port);
         # 判断是否设置了静态资源目录
         if(self::getDocumentRoot() != null){
             self::$param['enable_static_handler'] = true;
@@ -45,9 +81,7 @@ class WebServer
         # 设置参数
         self::$server -> set(self::$param);
         # 启动时执行
-        self::$server -> on("start", function ($server) use ($port,$host){
-            echo "Swoole http server is started at http://{$host}:{$port}\n";
-        });
+        self::$server -> on("start", [&$this,'onStart']);
         # 监听请求
         self::$server -> on('request',[&$this,'onRequest']);
         # 启动server
@@ -76,7 +110,16 @@ class WebServer
     }
 
     /**
+     * 启动时执行
+     */
+    public function onStart()
+    {
+        echo "Swoole http server is started at http://".self::$host.":".self::$port."\n";
+    }
+    /**
      * 请求处理
+     * @param $request
+     * @param $response
      */
     public function onRequest($request, $response)
     {

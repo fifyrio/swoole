@@ -83,6 +83,13 @@ class Kernel
      */
     public static function init()
     {
+
+        # 加载ENV配置
+        self::load_env();
+        # 注册类映射方法
+        spl_autoload_register('\Kernel\Kernel::auto_load');
+        # 设置时区
+        date_default_timezone_set(Config::get('sys','default_timezone'));
         # 判断缓存主目录是否存在
         if(!is_dir(ROOT_PATH.'runtime'.DS)){
             # 递归创建目录
