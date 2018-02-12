@@ -1,6 +1,6 @@
 <?php
 namespace App\Model;
-use Kernel\Model;
+use Service\Model;
 
 /**
  * 后台权限结点

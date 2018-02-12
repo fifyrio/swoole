@@ -5,6 +5,7 @@ namespace Service;
  * Class Http
  * @package Service
  */
-class Http extends \Itxiao6\Route\Bridge\Http{
+class Http
+{
 
 }

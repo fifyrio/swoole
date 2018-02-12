@@ -39,6 +39,11 @@ class WebServer
      * @var int
      */
     protected static $port = 9501;
+    /**
+     * 回调方法
+     * @var array
+     */
+    protected $callback = [];
 
     /**
      * WebServer 类 构造方法
@@ -83,6 +88,32 @@ class WebServer
         self::$server -> on("shutdown", [&$this,'onShutdown']);
         # 监听请求
         self::$server -> on('request',[&$this,'onRequest']);
+
+    }
+
+    /**
+     * 设置参数
+     * @param $key
+     * @param null $value
+     * @return $this
+     */
+    public function set_callback($key,$value = null)
+    {
+        if(is_array($key) && count($key) > 0 && $value === null){
+            foreach ($key as $k=>$v){
+                $this -> set_callback($k,$v);
+            }
+        }else{
+            $this -> callback[$key] = $value;
+        }
+        return $this;
+    }
+
+    /**
+     * 启动server
+     */
+    public function start()
+    {
         # 启动server
         self::$server -> start();
     }
@@ -92,17 +123,28 @@ class WebServer
      */
     public function onStart()
     {
-        echo "Swoole http server is started at http://".self::$host.":".self::$port."\n";
+        if($this -> callback['start'] != null){
+            $this -> callback['start'](...func_get_args());
+        }
     }
-    # 当服务结束的时候
+    /**
+     * 当服务结束的时候
+     */
     public function onClose()
     {
-        echo "Swoole http server Close";
+        if($this -> callback['close'] != null){
+            $this -> callback['close'](...func_get_args());
+        }
     }
-    # 当服务关闭的时候
+
+    /**
+     * 当服务关闭的时候
+     */
     public function onShutdown()
     {
-        echo "Swoole http server Shutdown";
+        if($this -> callback['shutdown'] != null){
+            $this -> callback['shutdown'](...func_get_args());
+        }
     }
     /**
      * 请求处理
@@ -111,17 +153,8 @@ class WebServer
      */
     public function onRequest($request, $response)
     {
-        # 获取GET 数据
-        $_GET = $request -> get;
-        # 获取SERVER数据
-        $_SERVER = $request -> server;
-        # 获取POST 数据
-        $_POST = $request -> post;
-        # 获取COOKIE 数据
-        $_COOKIE = $request -> cookie;
-        # 获取上传的文件数据
-        $_FILES = $request -> files;
-        # 开启应用
-        Kernel::start($request,$response);
+        if($this -> callback['request'] != null){
+            $this -> callback['request']($request, $response);
+        }
     }
 }

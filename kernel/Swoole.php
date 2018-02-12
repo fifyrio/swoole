@@ -41,7 +41,7 @@ class Swoole
 
     /**
      * 启动 web socket server
-     * @return SocketServer
+     * @return WebSocket
      */
     public static function socket_server_start()
     {

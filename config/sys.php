@@ -20,7 +20,7 @@ return [
     # session 过期时间(秒)默认1天
     'session_lifetime' => time()+(3600*24),
     # session 有效范围(子主机名共享:.xxx.com)默认本域名
-    'session_range' => $_SERVER['HTTP_HOST'],
+    'session_range' => null,
     # 此 cookie 的有效路径
     'session_cookie_path' => '/',
     # session 的 Cookie name
