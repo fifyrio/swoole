@@ -53,25 +53,19 @@ class WebServer
      */
     public function __construct($host = '0.0.0.0',$port=9501,$param = [])
     {
-        # 设置主进程永不过期
+        # 设置进程永不过期
         set_time_limit(0);
-        # 获取监听的主机
-        self::$host = $host;
-        # 获取监听的端口
-        self::$port = $port;
         # 设置PHP运行时 最大内存
         ini_set('memory_limit', '128M');
-        # 核心组件初始化
-        Kernel::init();
         # 创建server
-        self::$server = new \swoole_http_server(self::$host,self::$port);
+        self::$server = new \swoole_http_server($host,$port);
         # 设置静态资源目录
         self::$param['enable_static_handler'] = true;
         self::$param['document_root'] = self::$documentRoot;
         # 定义日志文件
-        self::$param['log_file'] = CACHE_LOG.'swoole.log';
+        self::$param['log_file'] = ROOT_PATH.'runtime'.DS.'log'.DS.'swoole.log';
         # 定义上传临时文件夹
-        self::$param['upload_tmp_dir'] = UPLOAD_TMP_DIR;
+        self::$param['upload_tmp_dir'] = ROOT_PATH.'runtime'.DS.'upload';
         # 判断是否要设置自定义参数
         if(count($param) > 0){
             foreach ($param as $key=>$item){

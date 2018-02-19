@@ -5,7 +5,8 @@
   "license": "MIT",
   "require": {
     "itxiao6/database":"dev-master",
-    "itxiao6/route":"dev-master"
+    "itxiao6/route":"dev-master",
+    "itxiao6/session":"dev-master"
   },
   "authors": [
     {
@@ -19,7 +20,8 @@
       "Service\\":"service/",
       "App\\":"app/",
       "Network\\":"network/",
-      "App\\Model\\":"models/"
+      "App\\Model\\":"models/",
+      "Container\\":"container/"
     }
   }
 }

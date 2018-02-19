@@ -1,6 +1,8 @@
 <?php
 namespace App\Http;
-use Kernel\Config;
+use Container\Request;
+use Container\Response;
+use Itxiao6\Session\Session;
 use Service\Exception;
 /**
 * 框架核心类
@@ -44,17 +46,23 @@ class Kernel
      * @param null $request
      * @param null $response
      * @return mixed
+     * @throws \Exception
      */
     public static function start($request = null,$response = null)
     {
 
         # 启动会话
-//        Session::session_start(ROOT_PATH.'runtime/session');
+        $session = Session::getInterface(Request::getInterface($request),Response::getInterface($response)) ->
+        start(ROOT_PATH.'runtime'.DS.'session'.DS);
+//        $session -> set('name','戒尺');
+
+        $response -> write('你好:'.$session -> get('name'));
+        return $response -> end();
 //
 //        $response -> write('111111111');
 //        return $response -> end();
         # 设置url 分隔符
-        Route::set_key_word(Config::get('sys','url_split'));
+//        Route::set_key_word(Config::get('sys','url_split'));
         /**
          * 匹配路由
          */
