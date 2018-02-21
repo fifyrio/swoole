@@ -50,14 +50,26 @@ class Kernel
      */
     public static function start($request = null,$response = null)
     {
-
+        # 实例化请求
+        $request = Request::getInterface($request);
+        # 实例化响应
+        $response = Response::getInterface($response);
+        /**
+         * REDIS SESSION
+         */
+        $redis = new \Redis();
+        $redis -> connect('127.0.0.1',6379);
         # 启动会话
-        $session = Session::getInterface(Request::getInterface($request),Response::getInterface($response)) ->
-        start(ROOT_PATH.'runtime'.DS.'session'.DS);
-//        $session -> set('name','戒尺');
+        $session = Session::getInterface($request,$response) -> driver('Redis') -> start($redis);
+        /**
+         * Local File SESSION
+         */
+//        $session = Session::getInterface($request,$response) -> start(ROOT_PATH.'runtime'.DS.'session'.DS);
 
-        $response -> write('你好:'.$session -> get('name'));
-        return $response -> end();
+         $session -> set('name','戒尺');
+
+        $response -> RawResponse() -> write('你好:'.$session -> get('name'));
+        return $response -> RawResponse() -> end();
 //
 //        $response -> write('111111111');
 //        return $response -> end();
