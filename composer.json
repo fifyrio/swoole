@@ -1,6 +1,6 @@
 {
   "name":"itxiao6/minkernel-swoole",
-  "description":"基于PHP.Wwoole 扩展 的 Minkernel框架",
+  "description":"基于PHP.Wwoole 扩展 的 PHP框架",
   "keywords": ["framework"],
   "license": "MIT",
   "require": {
