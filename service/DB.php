@@ -3,6 +3,7 @@ namespace Service;
 use Itxiao6\Database\Capsule\Manager;
 use Illuminate\Container\Container;
 use Kernel\Config;
+use Kernel\Event;
 
 /**
  * 数据库类
@@ -11,33 +12,6 @@ use Kernel\Config;
  */
 class DB extends Manager
 {
-    /**
-     * 定义数据库状态
-     * @var bool
-     */
-    protected static $databases_status = false;
-    /**
-     * 数据库链接
-     */
-    public static function connection_databases(){
-        # 判断数据库是否已经连接
-        if ( self::$databases_status === false) {
-            # 连接数据库
-            $database = new Manager;
-            # 载入数据库配置
-            $database->addConnection(Config::get('database'));
-            # 设置全局静态可访问
-            $database->setAsGlobal();
-            # 启动Eloquent
-            $database -> bootEloquent();
-            # 判断是否开启LOG日志
-            if(Config::get('sys','database_log')){
-                Manager::connection()->enableQueryLog();
-            }
-            # 定义数据库已经连接
-            self::$databases_status = true;
-        }
-    }
 
     /**
      * 获取PDO 实例
@@ -45,7 +19,9 @@ class DB extends Manager
      */
     public static function GET_PDO()
     {
-        self::connection_databases();
+        if(!Event::get_databases_status()){
+            Event::databases_connection();
+        }
         return static::connection() -> getPdo();
     }
 
@@ -56,7 +32,7 @@ class DB extends Manager
      */
     public static function DB_LOG(){
         # 数据库是否连接
-        if(self::$databases_status){
+        if(Event::get_databases_status()){
             return false;
         }
         # 判断是否开启了DB_log
@@ -75,7 +51,9 @@ class DB extends Manager
      */
     public static function __callStatic($method, $parameters)
     {
-        self::connection_databases();
+        if(!Event::get_databases_status()){
+            Event::databases_connection();
+        }
         return static::connection()->$method(...$parameters);
     }
 
@@ -86,7 +64,9 @@ class DB extends Manager
      */
     public function __construct(Container $container = null)
     {
-        self::connection_databases();
+        if(!Event::get_databases_status()){
+            Event::databases_connection();
+        }
         $this->setupContainer($container ?: new Container);
 
         // Once we have the container setup, we will setup the default configuration
@@ -98,12 +78,16 @@ class DB extends Manager
     }
     public static function table($table, $connection = null)
     {
-        self::connection_databases();
+        if(!Event::get_databases_status()){
+            Event::databases_connection();
+        }
         return parent::table($table, $connection);
     }
     public static function schema($connection = null)
     {
-        self::connection_databases();
+        if(!Event::get_databases_status()){
+            Event::databases_connection();
+        }
         return parent::schema($connection);
     }
 }

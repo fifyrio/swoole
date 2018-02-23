@@ -1,1 +1,6 @@
-hello {{$name}}
+<meta charset="UTF-8">
+<ul>
+    @foreach($user as $key=>$item)
+    <li>{{$item -> true_name}}</li>
+    @endforeach
+</ul>
