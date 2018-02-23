@@ -59,7 +59,7 @@ class Response
         if(!$this -> is_end){
             return $this -> response -> write(...func_get_args());
         }else{
-            // TODO 一般应用异常
+            // TODO 一般应用异常 请求已经结束
         }
     }
 
@@ -72,9 +72,87 @@ class Response
             $this -> response -> end();
             $this -> is_end = true;
         }else{
-            // TODO 一般应用异常
+            // TODO 一般应用异常 请求已经结束
         }
+    }
 
+    /**
+     * 设置cookie
+     * @param $key
+     * @param string $value
+     * @param int $expire
+     * @param string $path
+     * @param string $domain
+     * @param bool $secure
+     * @param bool $httponly
+     * @return mixed
+     */
+    public function set_cookie($key,$value = '',$expire = 0,$path = '/',$domain  = '',$secure = false , $httponly = false)
+    {
+        if(!$this -> is_end){
+            return $this -> response -> cookie($key,$value,$expire,$path,$domain,$secure,$httponly);
+        }else{
+            // TODO 一般应用异常 请求已经结束
+        }
+    }
+
+    /**
+     * 设置header 头
+     * @param $key
+     * @param $value
+     * @return mixed
+     */
+    public function set_header($key,$value)
+    {
+        if(!$this -> is_end){
+            return $this -> response -> header($key,$value);
+        }else{
+            // TODO 一般应用异常 请求已经结束
+        }
+    }
+
+    /**
+     * 响应状态码
+     * @param $http_status_code
+     * @return mixed
+     */
+    public function set_status($http_status_code)
+    {
+        if(!$this -> is_end){
+            return $this -> response -> status($http_status_code);
+        }else{
+            // TODO 一般应用异常 请求已经结束
+        }
+    }
+
+    /**
+     * 启用Http GZIP压缩
+     * @param int $level 1-9
+     * @return mixed
+     */
+    public function gzip($level = 1)
+    {
+        if(!$this -> is_end){
+            return $this -> response -> gzip($level);
+        }else{
+            // TODO 一般应用异常 请求已经结束
+        }
+    }
+
+    /**
+     * 发送文件到客户端
+     * @param $filename
+     * @param int $offset
+     * @param int $length
+     * @return mixed
+     */
+    public function sendfile($filename,$offset = 0,$length = 0)
+    {
+        if(!$this -> is_end){
+            return $this -> response -> sendfile($filename,$offset,$length);
+        }else{
+            // TODO 一般应用异常 请求已经结束
+        }
     }
 
     /**
@@ -83,10 +161,10 @@ class Response
     public function NotFound()
     {
         if(!$this -> is_end){
-            $this -> response -> status();
-            return$this -> response -> end();
+            $this -> set_status(404);
+            return $this -> end();
         }else{
-            // TODO 一般应用异常
+            // TODO 一般应用异常 请求已经结束
         }
     }
 }
