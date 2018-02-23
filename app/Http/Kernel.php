@@ -2,7 +2,9 @@
 namespace App\Http;
 use Container\Request;
 use Container\Response;
+use Itxiao6\Route\Route;
 use Itxiao6\Session\Session;
+use Kernel\Config;
 use Service\Exception;
 /**
 * 框架核心类
@@ -50,43 +52,33 @@ class Kernel
      */
     public static function start($request = null,$response = null)
     {
-        # 实例化请求
-        $request = Request::getInterface($request);
-        # 实例化响应
-        $response = Response::getInterface($response);
         /**
          * REDIS SESSION
          */
-        $redis = new \Redis();
-        $redis -> connect('127.0.0.1',6379);
-        # 启动会话
-        $session = Session::getInterface($request,$response) -> driver('Redis') -> start($redis);
+//        $redis = new \Redis();
+//        $redis -> connect('127.0.0.1',6379);
+//        # 启动会话
+//        $session = Session::getInterface($request,$response) -> driver('Redis') -> start($redis);
         /**
          * Local File SESSION
          */
+//        if(!is_dir(ROOT_PATH.'runtime'.DS.'session'.DS)){
+//            mkdir(ROOT_PATH.'runtime'.DS.'session'.DS);
+//        }
 //        $session = Session::getInterface($request,$response) -> start(ROOT_PATH.'runtime'.DS.'session'.DS);
-
-         $session -> set('name','戒尺');
-
-        $response -> RawResponse() -> write('你好:'.$session -> get('name'));
-        return $response -> RawResponse() -> end();
-//
-//        $response -> write('111111111');
-//        return $response -> end();
-        # 设置url 分隔符
-//        Route::set_key_word(Config::get('sys','url_split'));
         /**
-         * 匹配路由
+         * MySql Session
          */
-        try{
-            # 加载路由
-//            Route::init($request,$response,function($app,$controller,$action){
-//                // 后置操作
-//            });
-            throw new Exception('SUCCESS');
-        }catch (\Exception $exception){
-            $response -> write('404');
-            return $response -> end();
-        }
+//        $pdo = new \PDO("mysql:host=47.104.85.153;dbname=new_baihua",'new_baihua','new_baihua2017');
+//        $session = Session::getInterface($request,$response) -> driver('MySql') -> start($pdo,'session_table');
+        /**
+         * Route ing
+         */
+        Route::getInterface($request,$response) ->
+            config('keyword',Config::get('sys','url_split')) ->
+            start(function($app,$controller,$action) use($request,$response){
+                $response -> RawResponse() -> write('app:'.$app.',controller:'.$controller.',action:'.$action);
+                $response -> RawResponse() -> end();
+            });
     }
 }
