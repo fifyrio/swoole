@@ -1,6 +1,5 @@
 <?php
-namespace App\Home\Controller;
-use App\Model\Menu;
+namespace App\Http\Home\Controller;
 /**
  * 前台首页控制器
  * Class Index
@@ -8,13 +7,12 @@ use App\Model\Menu;
  */
 class Index extends Base{
     # 首页操作
-    public function index(){
-        # 打印导航表里的数据
-//        $this -> output(function(){
-//          var_dump(Menu::get() -> toArray());
-//        });
-//        return ;
-        #渲染模板
+    public function index($request,$response,$session){
+//        $session -> set('name','itxiao6');
+//        $response -> write('hello:'.$session -> get('name'));
+//        $response -> write('hello');
+//        return $response -> end();
+        $this -> assign('name',$session -> get('name'));
         $this -> display();
     }
 }

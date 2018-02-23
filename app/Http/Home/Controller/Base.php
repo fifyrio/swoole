@@ -1,6 +1,6 @@
 <?php
-namespace App\Home\Controller;
-use Kernel\Controller;
+namespace App\Http\Home\Controller;
+use App\Http\Controller;
 /**
 * 前台中间件
 */

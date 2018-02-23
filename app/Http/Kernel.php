@@ -5,6 +5,7 @@ use Container\Response;
 use Itxiao6\Route\Route;
 use Itxiao6\Session\Session;
 use Kernel\Config;
+use Kernel\Event;
 use Service\Exception;
 /**
 * 框架核心类
@@ -53,32 +54,16 @@ class Kernel
     public static function start($request = null,$response = null)
     {
         /**
-         * REDIS SESSION
+         * SESSION
          */
-//        $redis = new \Redis();
-//        $redis -> connect('127.0.0.1',6379);
-//        # 启动会话
-//        $session = Session::getInterface($request,$response) -> driver('Redis') -> start($redis);
-        /**
-         * Local File SESSION
-         */
-//        if(!is_dir(ROOT_PATH.'runtime'.DS.'session'.DS)){
-//            mkdir(ROOT_PATH.'runtime'.DS.'session'.DS);
-//        }
-//        $session = Session::getInterface($request,$response) -> start(ROOT_PATH.'runtime'.DS.'session'.DS);
-        /**
-         * MySql Session
-         */
-//        $pdo = new \PDO("mysql:host=47.104.85.153;dbname=new_baihua",'new_baihua','new_baihua2017');
-//        $session = Session::getInterface($request,$response) -> driver('MySql') -> start($pdo,'session_table');
+        $session = Event::session($request,$response);
         /**
          * Route ing
          */
         Route::getInterface($request,$response) ->
             config('keyword',Config::get('sys','url_split')) ->
-            start(function($app,$controller,$action) use($request,$response){
-                $response -> RawResponse() -> write('app:'.$app.',controller:'.$controller.',action:'.$action);
-                $response -> RawResponse() -> end();
-            });
+            start(function($app,$controller,$action) use($request,$response,$session){
+                Event::route($app,$controller,$action,$request,$response,$session);
+        });
     }
 }

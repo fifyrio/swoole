@@ -117,7 +117,7 @@ class WebServer
      */
     public function onStart()
     {
-        if($this -> callback['start'] != null){
+        if(isset($this -> callback['start']) && $this -> callback['start'] != null){
             $this -> callback['start'](...func_get_args());
         }
     }
@@ -126,7 +126,7 @@ class WebServer
      */
     public function onClose()
     {
-        if($this -> callback['close'] != null){
+        if(isset($this -> callback['close']) && $this -> callback['close'] != null){
             $this -> callback['close'](...func_get_args());
         }
     }
@@ -136,7 +136,7 @@ class WebServer
      */
     public function onShutdown()
     {
-        if($this -> callback['shutdown'] != null){
+        if(isset($this -> callback['shutdown']) && $this -> callback['shutdown'] != null){
             $this -> callback['shutdown'](...func_get_args());
         }
     }
@@ -147,7 +147,7 @@ class WebServer
      */
     public function onRequest($request, $response)
     {
-        if($this -> callback['request'] != null){
+        if(isset($this -> callback['request']) && $this -> callback['request'] != null){
             $this -> callback['request']($request, $response);
         }
     }
