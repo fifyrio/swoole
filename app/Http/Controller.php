@@ -1,5 +1,8 @@
 <?php
 namespace App\Http;
+use Container\Request;
+use Container\Response;
+use Itxiao6\Session\Interfaces\Storage;
 use Kernel\Config;
 use Itxiao6\View\Compilers\ViewCompiler;
 use Itxiao6\View\Engines\CompilerEngine;
@@ -124,28 +127,28 @@ class Controller
 
     /**
      * 获取控制器接口
-     * @param $appName
-     * @param $controllerName
-     * @param $actionName
-     * @param $request
-     * @param $response
-     * @param $session
+     * @param string $appName
+     * @param string $controllerName
+     * @param string $actionName
+     * @param Request $request
+     * @param Response $response
+     * @param Storage $session
      */
-    public static function getInterface($appName,$controllerName,$actionName,$request,$response,$session)
+    public static function getInterface($appName,$controllerName,$actionName,Request $request,Response $response,Storage $session)
     {
         new static($appName,$controllerName,$actionName,$request,$response,$session);
     }
 
     /**
-     * 控制器构造方法
-     * @param $appName
-     * @param $controllerName
-     * @param $actionName
-     * @param $request
-     * @param $response
-     * @param $session
+     * 控制器入口
+     * @param string $appName
+     * @param string $controllerName
+     * @param string $actionName
+     * @param Request $request
+     * @param Response $response
+     * @param Storage $session
      */
-    protected function __construct($appName,$controllerName,$actionName,$request,$response,$session)
+    protected function __construct($appName,$controllerName,$actionName,Request $request,Response $response,Storage $session)
     {
         /**
          * 判断操作是否存在
