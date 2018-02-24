@@ -194,4 +194,15 @@ class Controller
          */
         $this -> mvc['action'] = $actionName;
     }
+
+    /**
+     * 析构
+     */
+    protected function __destruct()
+    {
+        if(!$this -> response -> is_end()){
+            $this -> response -> end();
+        }
+        // TODO: Implement __destruct() method.
+    }
 }

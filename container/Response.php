@@ -17,6 +17,15 @@ class Response
      * @var bool
      */
     protected $is_end = false;
+
+    /**
+     * 是否已经结束
+     * @return bool
+     */
+    public function is_end()
+    {
+        return $this -> is_end;
+    }
     /**
      * 获取接口
      * @param $response

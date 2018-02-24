@@ -14,9 +14,10 @@ class Index extends Base{
     public function index(Request $request,Response $response,Storage $session){
 //        $session -> set('name','itxiao6');
 //        $response -> write('hello:'.$session -> get('name'));
+//        $response -> end();
 //        $response -> write('hello');
 //        return $response -> end();
-        $this -> assign('user',\App\Model\User::take(15) -> get());
+//        $this -> assign('user',\App\Model\User::take(15) -> get());
         $this -> display();
     }
 }
