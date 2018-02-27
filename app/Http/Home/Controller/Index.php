@@ -18,6 +18,7 @@ class Index extends Base{
 //        $response -> write('hello');
 //        return $response -> end();
 //        $this -> assign('user',\App\Model\User::take(15) -> get());
+//        $this -> response -> exception(new \Exception('测试'));
         $this -> display();
     }
 }

@@ -7,6 +7,8 @@ use Itxiao6\Session\Session;
 use Kernel\Config;
 use Kernel\Event;
 use Service\Exception;
+use Service\Whoops;
+
 /**
 * 框架核心类
 */
@@ -46,13 +48,19 @@ class Kernel
 
     /**
      * 启动框架
-     * @param null $request
-     * @param null $response
+     * @param Request $request
+     * @param Response $response
      * @return mixed
      * @throws \Exception
      */
-    public static function start($request = null,$response = null)
+    public static function start(Request $request = null,Response $response = null)
     {
+        /**
+         * Whoops
+         */
+//        $whoops = new \Whoops\Run;
+//        $whoops->pushHandler(new Whoops($request,$response));
+//        $whoops->register();
         /**
          * SESSION
          */
@@ -63,7 +71,7 @@ class Kernel
         Route::getInterface($request,$response) ->
             config('keyword',Config::get('sys','url_split')) ->
             start(function($app,$controller,$action) use($request,$response,$session){
-                Event::route($app,$controller,$action,$request,$response,$session);
+                Event::web_route($app,$controller,$action,$request,$response,$session);
         });
     }
 }

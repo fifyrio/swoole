@@ -16,7 +16,7 @@ class Event
      */
     protected static $databases_status = false;
     /**
-     * 路由入口
+     * web 路由入口
      * @param $appName
      * @param $controllerName
      * @param $actionName
@@ -24,7 +24,7 @@ class Event
      * @param $response
      * @param $session
      */
-    public static function route($appName,$controllerName,$actionName,$request,$response,$session)
+    public static function web_route($appName,$controllerName,$actionName,$request,$response,$session)
     {
         sprintf('\App\Http\%s\Controller\%s',$appName,$controllerName)::getInterface($appName,$controllerName,$actionName,$request,$response,$session);
     }
@@ -63,7 +63,8 @@ class Event
     /**
      * 数据库连接
      */
-    public static function databases_connection(){
+    public static function databases_connection()
+    {
         # 判断数据库是否已经连接
         if (!self::get_databases_status()) {
             # 连接数据库

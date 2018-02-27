@@ -39,18 +39,18 @@ class Response
     /**
      * 构造方法
      * Response constructor.
-     * @param $response
+     * @param \swoole_http_response $response
      */
-    protected function __construct($response)
+    protected function __construct(\swoole_http_response $response)
     {
         $this -> response = $response;
     }
     /**
      * 获取或设置响应
-     * @param null $response
+     * @param \swoole_http_response $response
      * @return $this
      */
-    public function RawResponse($response = null)
+    public function RawResponse(\swoole_http_response $response = null)
     {
         if($response === null){
             return $this -> response;
@@ -162,6 +162,23 @@ class Response
         }else{
             // TODO 一般应用异常 请求已经结束
         }
+    }
+
+    /**
+     * 抛出异常
+     * @param \Throwable $exception
+     */
+    public function exception(\Throwable $exception){
+//        TODO 响应HTTP 服务内部错误
+        $exception -> getCode();
+        $exception -> getFile();
+        $exception -> getLine();
+        $exception -> getMessage();
+        $exception -> getPrevious();
+        $exception -> getTrace();
+        $this -> response -> write($exception -> getMessage());
+        $this -> set_status(500);
+        return $this -> end();
     }
 
     /**
