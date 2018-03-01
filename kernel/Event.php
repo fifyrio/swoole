@@ -77,15 +77,17 @@ class Event
 
             # 设置全局静态可访问
             $database -> setAsGlobal();
+
             # 启动Eloquent
             $database -> bootEloquent();
+
+            # 定义数据库已经连接
+            self::$databases_status = true;
+
             # 判断是否开启LOG日志
             if(Config::get('sys','database_log')){
                 DB::connection()->enableQueryLog();
             }
-
-            # 定义数据库已经连接
-            self::$databases_status = true;
         }
     }
 
