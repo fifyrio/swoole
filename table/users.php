@@ -7,12 +7,12 @@ use Service\DB;
 use Itxiao6\Database\Schema\Blueprint;
 
 /**
- * 删除表
+ * 删除表users
  */
 DB::schema() -> dropIfExists('users');
 
 /**
- * 创建users 表
+ * 创建 users 表
  */
 DB::schema() -> create('users', function(Blueprint $table)
 {
