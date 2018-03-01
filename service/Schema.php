@@ -1,5 +1,4 @@
 <?php
-include_once(__DIR__.'/../init.php');
 /**
  * 数据库迁移
  */

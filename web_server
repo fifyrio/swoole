@@ -16,9 +16,13 @@ switch ($argv[1]){
             }) -> start(isset($argv[2])&&$argv[2]=='--d');
         break;
     case 'stop':
-        # 创建一个web服务
+        # 停止一个web 服务
         Kernel\Swoole::web_server_start('0.0.0.0',9501,[],false)
             -> stop((isset($argv[2])&&$argv[2]>0)?$argv[2]:9501);
+        break;
+    case 'schema':
+        # 数据库迁移
+        require_once(__DIR__.'/service/Schema.php');
         break;
 }
 
