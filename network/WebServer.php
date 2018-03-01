@@ -2,6 +2,9 @@
 namespace Network;
 use Kernel\Config;
 use Kernel\Kernel;
+use Swoole\Http\Server;
+use Swoole\Process;
+
 /**
  * Class WebServer
  * @package Network
@@ -12,17 +15,17 @@ class WebServer
      * Server
      * @var null | object
      */
-    protected static $server = null;
+    protected $server = null;
     /**
      * 静态资源目录
      * @var null | string
      */
-    protected static $documentRoot = ROOT_PATH.'public';
+    protected $documentRoot = ROOT_PATH.'public';
     /**
      * 要设置的参数
      * @var array
      */
-    protected static $param = [
+    protected $param = [
         'worker_num' => 20,
         'daemonize' => 0,
         'max_request' => 10000,
@@ -33,12 +36,12 @@ class WebServer
      * 监听主机
      * @var string
      */
-    protected static $host = '0.0.0.0';
+    protected $host = '0.0.0.0';
     /**
      * 监听端口
      * @var int
      */
-    protected static $port = 9501;
+    protected $port = 9501;
     /**
      * 回调方法
      * @var array
@@ -47,41 +50,44 @@ class WebServer
 
     /**
      * WebServer 类 构造方法
+     * WebServer constructor.
      * @param string $host
      * @param int $port
      * @param array $param
+     * @param bool $is_start
      */
-    public function __construct($host = '0.0.0.0',$port=9501,$param = [])
+    public function __construct($host = '0.0.0.0',$port=9501,$param = [],$is_start = true)
     {
+        if(!$is_start){
+            return;
+        }
         # 设置进程永不过期
         set_time_limit(0);
         # 设置PHP运行时 最大内存
         ini_set('memory_limit', '128M');
         # 创建server
-        self::$server = new \swoole_http_server($host,$port);
+        $this -> server = new \swoole_http_server($host,$port);
         # 设置静态资源目录
-        self::$param['enable_static_handler'] = true;
-        self::$param['document_root'] = self::$documentRoot;
+        $this  -> param['enable_static_handler'] = true;
+        $this  -> param['document_root'] = $this -> documentRoot;
         # 定义日志文件
-        self::$param['log_file'] = ROOT_PATH.'runtime'.DS.'log'.DS.'swoole.log';
+        $this -> param['log_file'] = ROOT_PATH.'runtime'.DS.'log'.DS.'swoole.log';
         # 定义上传临时文件夹
-        self::$param['upload_tmp_dir'] = ROOT_PATH.'runtime'.DS.'upload';
+        $this -> param['upload_tmp_dir'] = ROOT_PATH.'runtime'.DS.'upload';
         # 判断是否要设置自定义参数
         if(count($param) > 0){
             foreach ($param as $key=>$item){
-                self::$param[$key] = $item;
+                $this -> param[$key] = $item;
             }
         }
-        # 设置参数
-        self::$server -> set(self::$param);
         # 启动时执行
-        self::$server -> on("start", [&$this,'onStart']);
+        $this -> server -> on("start", [&$this,'onStart']);
         # 当服务结束时执行
-        self::$server -> on("close", [&$this,'onClose']);
+        $this -> server -> on("close", [&$this,'onClose']);
         # 当服务关闭的时候
-        self::$server -> on("shutdown", [&$this,'onShutdown']);
+        $this -> server -> on("shutdown", [&$this,'onShutdown']);
         # 监听请求
-        self::$server -> on('request',[&$this,'onRequest']);
+        $this -> server -> on('request',[&$this,'onRequest']);
 
     }
 
@@ -105,18 +111,43 @@ class WebServer
 
     /**
      * 启动server
+     * @param bool $is_daemon
+     * @return bool
      */
-    public function start()
+    public function start($is_daemon = false)
     {
+        $this -> param['daemonize'] = $is_daemon;
+        # 设置参数
+        $this -> server -> set($this -> param);
         # 启动server
-        self::$server -> start();
+        return $this -> server -> start();
+    }
+
+    /**
+     * 停止server
+     * @param $port
+     * @return bool
+     */
+    public function stop($port)
+    {
+        echo "Http Server stop at ".date('Y-m-d H:i:s')."\n";
+        Process::kill(file_get_contents(ROOT_PATH.'runtime'.DS.'process'.DS.'web_server_'.$port));
+        unlink(file_get_contents(ROOT_PATH.'runtime'.DS.'process'.DS.'web_server_'.$port));
+        return true;
     }
 
     /**
      * 启动时执行
      */
-    public function onStart()
+    public function onStart(Server $server)
     {
+        # 检查目录
+        if(!is_dir(ROOT_PATH.'runtime'.DS.'process')){
+            mkdir(ROOT_PATH.'runtime'.DS.'process');
+        }
+        # 写入pid 文件
+        file_put_contents(ROOT_PATH.'runtime'.DS.'process'.DS.'web_server_'.$this -> port,$server -> master_pid);
+        # 判断是否定义了 参数
         if(isset($this -> callback['start']) && $this -> callback['start'] != null){
             $this -> callback['start'](...func_get_args());
         }
