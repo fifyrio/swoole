@@ -4,7 +4,6 @@ use Itxiao6\Database\Capsule\Manager;
 use Illuminate\Container\Container;
 use Kernel\Config;
 use Kernel\Event;
-
 /**
  * 数据库类
  * Class DB
@@ -39,7 +38,7 @@ class DB extends Manager
         if(Config::get('sys','database_log')){
             return self::getQueryLog();
         }else{
-            throw new \Exception('未开启DB_log');
+//            TODO 未开启DB_log
         }
     }
     /**
@@ -87,6 +86,13 @@ class DB extends Manager
 
         $this->setupManager();
     }
+
+    /**
+     * 通过table 获取一个 Query Builder
+     * @param string $table
+     * @param null $connection
+     * @return \Itxiao6\Database\Query\Builder
+     */
     public static function table($table, $connection = null)
     {
         if(!Event::get_databases_status()){
@@ -94,6 +100,12 @@ class DB extends Manager
         }
         return parent::table($table, $connection);
     }
+
+    /**
+     * 获取一个 Schema Builder
+     * @param null $connection
+     * @return \Itxiao6\Database\Schema\Builder
+     */
     public static function schema($connection = null)
     {
         if(!Event::get_databases_status()){
