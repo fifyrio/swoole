@@ -58,12 +58,24 @@ class DB extends Manager
     }
 
     /**
+     * 实例化DB
+     * @return static
+     */
+    public static function getInterface()
+    {
+        return new static(...func_get_args(),false);
+    }
+
+    /**
      * 创建一个 数据库容器
      * DB constructor.
      * @param Container|null $container
      */
-    public function __construct(Container $container = null)
+    public function __construct(Container $container = null,$is_cache_connection)
     {
+        if((!Event::get_databases_status()) && $is_cache_connection){
+            Event::databases_connection();
+        }
         $this->setupContainer($container ?: new Container);
 
         // Once we have the container setup, we will setup the default configuration
