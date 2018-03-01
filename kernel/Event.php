@@ -2,6 +2,7 @@
 namespace Kernel;
 use Itxiao6\Database\Capsule\Manager;
 use Itxiao6\Session\Session;
+use Service\DB;
 
 /**
  * 系统事件
@@ -67,18 +68,22 @@ class Event
     {
         # 判断数据库是否已经连接
         if (!self::get_databases_status()) {
+
             # 连接数据库
-            $database = new Manager;
+            $database = new DB();
+
             # 载入数据库配置
             $database -> addConnection(Config::get('database'));
+
             # 设置全局静态可访问
             $database -> setAsGlobal();
             # 启动Eloquent
             $database -> bootEloquent();
             # 判断是否开启LOG日志
             if(Config::get('sys','database_log')){
-                Manager::connection()->enableQueryLog();
+                DB::connection()->enableQueryLog();
             }
+
             # 定义数据库已经连接
             self::$databases_status = true;
         }
