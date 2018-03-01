@@ -64,9 +64,6 @@ class DB extends Manager
      */
     public function __construct(Container $container = null)
     {
-        if(!Event::get_databases_status()){
-            Event::databases_connection();
-        }
         $this->setupContainer($container ?: new Container);
 
         // Once we have the container setup, we will setup the default configuration
