@@ -59,19 +59,21 @@ class DB extends Manager
 
     /**
      * 实例化DB
+     * @param Container|null $container
      * @return static
      */
-    public static function getInterface()
+    public static function getInterface(Container $container = null)
     {
-        return new static(...func_get_args(),false);
+        return new static($container,false);
     }
 
     /**
      * 创建一个 数据库容器
      * DB constructor.
      * @param Container|null $container
+     * @param bool $is_cache_connection
      */
-    public function __construct(Container $container = null,$is_cache_connection)
+    public function __construct(Container $container = null,$is_cache_connection = true)
     {
         if((!Event::get_databases_status()) && $is_cache_connection){
             Event::databases_connection();
