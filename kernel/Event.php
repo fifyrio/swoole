@@ -70,7 +70,7 @@ class Event
         if (!self::get_databases_status()) {
 
             # 连接数据库
-            $database = new DB();
+            $database = DB::getInterface();
 
             # 载入数据库配置
             $database -> addConnection(Config::get('database'));
