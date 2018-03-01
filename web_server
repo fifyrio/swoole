@@ -1,6 +1,9 @@
+#!/usr/bin/env php
 <?php
+
 # 框架初始化
 require_once('./init.php');
+
 # 选择操作名
 switch ($argv[1]){
     case 'start':
