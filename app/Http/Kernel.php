@@ -68,7 +68,7 @@ class Kernel
         /**
          * Route ing
          */
-        Route::getInterface($request,$response) ->
+        Route::getInterface($request) ->
             config('keyword',Config::get('sys','url_split')) ->
             start(function($app,$controller,$action) use($request,$response,$session){
                 Event::web_route($app,$controller,$action,$request,$response,$session);
